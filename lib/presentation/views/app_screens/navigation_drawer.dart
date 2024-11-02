@@ -1,175 +1,11 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/core/utils/screen_size.dart';
-import 'package:sunofa_map/themes/app_themes.dart';
 
-// ignore: must_be_immutable
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+import '../../../themes/app_themes.dart';
 
-  @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  String selectedLanguage = 'French';
-    void _onLanguageChanged(String newLanguage) {
-    setState(() {
-      selectedLanguage = newLanguage;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          'Sunofa Map',
-          style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: AppTheme.white),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-        actions: [
-          Container(
-            height: context.heightPercent(10),
-            width: context.widthPercent(10),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.white, width: 3)),
-            child: IconButton(
-              icon: const HeroIcon(
-                HeroIcons.bellAlert,
-                color: AppTheme.white,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/NotifScreen');
-              },
-            ),
-          ),
-          SizedBox(
-            width: context.widthPercent(2),
-          ),
-          Container(
-            height: context.heightPercent(10),
-            width: context.widthPercent(10),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.white, width: 3)),
-            child: Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.question_mark,
-                  color: AppTheme.white,
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/AboutScreen');
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            width: context.widthPercent(2),
-          ),
-            DropdownButton<String>(
-            value: selectedLanguage,
-            onChanged: (String? newValue) {
-              _onLanguageChanged(newValue!);
-            },
-            items: <String>['French', 'English', 'Spanish']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ],
-        backgroundColor: AppTheme.primaryColor,
-      ),
-      drawer: NavigationDrawer(
-        selectedLanguage: selectedLanguage,
-        onLanguageChanged: _onLanguageChanged,
-      ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.1,
-              child: Image.asset(
-                'assets/dash.jpeg',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Container(
-                      width: context.widthPercent(30),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: AppTheme.primaryColor,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/AddMapFormScreen');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.add, color: AppTheme.white),
-                              Text(
-                                'Address',
-                                style: AppTheme()
-                                    .stylish1(15, AppTheme.white, isBold: true),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: context.widthPercent(2)),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Search.....",
-                          hintStyle: AppTheme().stylish1(15, AppTheme.black),
-                          suffixIcon: const Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 16.0,
-                            horizontal: 12.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Expanded(child: SizedBox()),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Drawer personnalisé
 class NavigationDrawer extends StatefulWidget {
   final String selectedLanguage;
   final ValueChanged<String> onLanguageChanged;
@@ -352,7 +188,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             onTap: () {
               Navigator.pushNamed(context, '/Loginscreen');
             },
-          )
+          ),
         ],
       ),
     );

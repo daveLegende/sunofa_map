@@ -83,14 +83,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         onTap: () {
                             Navigator.pushNamed(context, '/AddMapFormScreen');
                         },
-                        text: 'Add one\n address',
+                        text: 'Add\n address',
                         icon: HeroIcons.mapPin,
                       ),
                       _buildOption(
                          onTap: () {
                             Navigator.pushNamed(context, '/AddMapFormScreen');
                         },
-                        text: 'Join one\n address',
+                        text: 'Join\n address',
                         icon: HeroIcons.map,
                       ),
                     ],
