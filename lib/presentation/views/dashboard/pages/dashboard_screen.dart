@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:sunofa_map/core/utils/screen_size.dart';
+import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
+
+import '../widgets/addresse_find.dart';
+import '../widgets/search_field.dart';
 
 // ignore: must_be_immutable
 class DashboardScreen extends StatefulWidget {
@@ -12,13 +16,28 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final controller = TextEditingController(text: "Maison IDAH");
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String selectedLanguage = 'French';
-    void _onLanguageChanged(String newLanguage) {
+  void _onLanguageChanged(String newLanguage) {
     setState(() {
       selectedLanguage = newLanguage;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,58 +56,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
         ),
         actions: [
-          Container(
-            height: context.heightPercent(10),
-            width: context.widthPercent(10),
-            decoration: BoxDecoration(
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.notifScreen);
+            },
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.white, width: 3)),
-            child: IconButton(
-              icon: const HeroIcon(
+                border: Border.all(
+                  color: AppTheme.white,
+                  width: 1,
+                ),
+              ),
+              child: const HeroIcon(
                 HeroIcons.bellAlert,
                 color: AppTheme.white,
+                size: 20,
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/NotifScreen');
-              },
             ),
           ),
           SizedBox(
             width: context.widthPercent(2),
           ),
-          Container(
-            height: context.heightPercent(10),
-            width: context.widthPercent(10),
-            decoration: BoxDecoration(
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.paramScreen);
+            },
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppTheme.white, width: 3)),
-            child: Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.question_mark,
+                border: Border.all(
                   color: AppTheme.white,
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/AboutScreen');
-                },
+              ),
+              child: const HeroIcon(
+                HeroIcons.cog,
+                color: AppTheme.white,
+                size: 20,
               ),
             ),
           ),
           SizedBox(
             width: context.widthPercent(2),
-          ),
-            DropdownButton<String>(
-            value: selectedLanguage,
-            onChanged: (String? newValue) {
-              _onLanguageChanged(newValue!);
-            },
-            items: <String>['French', 'English', 'Spanish']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
           ),
         ],
         backgroundColor: AppTheme.primaryColor,
@@ -99,7 +112,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: Stack(
         children: [
-          Positioned.fill(
+          SizedBox(
+            width: context.width,
+            height: context.height,
             child: Opacity(
               opacity: 0.1,
               child: Image.asset(
@@ -109,6 +124,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -142,19 +158,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     SizedBox(width: context.widthPercent(2)),
                     Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Search.....",
-                          hintStyle: AppTheme().stylish1(15, AppTheme.black),
-                          suffixIcon: const Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 16.0,
-                            horizontal: 12.0,
-                          ),
-                        ),
+                      child: SearchField(
+                        controller: controller,
                       ),
                     ),
                   ],
@@ -163,18 +168,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Expanded(child: SizedBox()),
             ],
           ),
+          if(controller.text == "Maison IDAH")
+            Positioned(
+            left: 20,
+            right: 20,
+            bottom: context.height / 1.5,
+            child: const AddresseSearch(),
+          ),
         ],
       ),
     );
   }
 }
 
+
 // Drawer personnalisé
 class NavigationDrawer extends StatefulWidget {
   final String selectedLanguage;
   final ValueChanged<String> onLanguageChanged;
-  const NavigationDrawer({super.key, required this.selectedLanguage,
-    required this.onLanguageChanged,});
+  const NavigationDrawer({
+    super.key,
+    required this.selectedLanguage,
+    required this.onLanguageChanged,
+  });
 
   @override
   State<NavigationDrawer> createState() => _NavigationDrawerState();
@@ -288,7 +304,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               style: AppTheme().stylish1(15, AppTheme.black),
             ),
             onTap: () {
-               Navigator.pushNamed(context, '/AddressBookScreen');
+              Navigator.pushNamed(context, '/AddressBookScreen');
             },
           ),
           ListTile(
@@ -301,7 +317,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/FavScreen');
             },
           ),
-           ListTile(
+          ListTile(
             leading: const Icon(Icons.bookmark),
             title: Text(
               'My addresses',
@@ -311,7 +327,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/MyAddressesScreen');
             },
           ),
-           ListTile(
+          ListTile(
             leading: const Icon(Icons.language),
             title: DropdownButton<String>(
               value: widget.selectedLanguage,

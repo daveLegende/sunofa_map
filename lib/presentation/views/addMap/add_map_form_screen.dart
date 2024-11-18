@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/core/utils/app_helpers.dart';
 import 'package:sunofa_map/core/utils/screen_size.dart';
-import 'package:sunofa_map/presentation/views/app_screens/widgets/audio_player_widget.dart';
+import 'package:sunofa_map/presentation/views/dashboard/widgets/audio_player_widget.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 import 'package:file_picker/file_picker.dart';
 

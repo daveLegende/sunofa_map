@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sunofa_map">
     <application
         android:label="sunofa_map"
         android:name="${applicationName}"

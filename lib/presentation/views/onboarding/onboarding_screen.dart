@@ -25,8 +25,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel(); 
-    _pageController.dispose(); 
+    _timer?.cancel();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             controller: _pageController,
             onPageChanged: (int page) {
               setState(() {
-                _currentPage = page; 
+                _currentPage = page;
               });
             },
             children: [
@@ -61,7 +61,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           Container(
-            color: AppTheme.primaryColor.withOpacity(0.6), // Couche bleue transparente
+            color: AppTheme.primaryColor
+                .withOpacity(0.6), // Couche bleue transparente
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,14 +82,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     children: [
                       _buildOption(
                         onTap: () {
-                            Navigator.pushNamed(context, '/AddMapFormScreen');
+                          Navigator.pushNamed(context, '/AddMapFormScreen');
                         },
                         text: 'Add\n address',
                         icon: HeroIcons.mapPin,
                       ),
                       _buildOption(
-                         onTap: () {
-                            Navigator.pushNamed(context, '/AddMapFormScreen');
+                        onTap: () {
+                          Navigator.pushNamed(context, '/AddMapFormScreen');
                         },
                         text: 'Join\n address',
                         icon: HeroIcons.map,
@@ -103,11 +104,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     child: InkWell(
                       onTap: () {
-                          Navigator.pushNamed(context, '/Loginscreen');
+                        Navigator.pushNamed(context, '/Loginscreen');
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 12),
+                          horizontal: 50,
+                          vertical: 12,
+                        ),
                         child: Text(
                           'Connexion',
                           style: AppTheme().stylish1(15, AppTheme.black),
@@ -119,7 +122,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
           ),
-        
           Positioned(
             bottom: 30,
             left: 0,
@@ -145,9 +147,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildOption({required String text, required HeroIcons icon, required VoidCallback onTap}) {
+  Widget _buildOption(
+      {required String text,
+      required HeroIcons icon,
+      required VoidCallback onTap}) {
     return InkWell(
-       onTap: onTap, 
+      onTap: onTap,
       child: Container(
         height: 120,
         width: 140,
