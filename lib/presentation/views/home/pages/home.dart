@@ -3,7 +3,6 @@ import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/presentation/views/addresses/pages/addresses.dart';
 import 'package:sunofa_map/presentation/views/books/pages/books.dart';
-import 'package:sunofa_map/presentation/views/favoris/pages/favorites.dart';
 import 'package:sunofa_map/presentation/views/notes/pages/notes.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 

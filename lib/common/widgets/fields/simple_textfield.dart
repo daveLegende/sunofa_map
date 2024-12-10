@@ -135,7 +135,7 @@ class CustomFormField extends StatelessWidget {
           inputFormatters: inputFormatters,
           obscureText: obscureText,
           cursorColor: mblack,
-          style: AppTheme().stylish1(16, mblack),
+          style: AppTheme().stylish1(15, mblack),
           // style: StyleText().googleTitre.copyWith(color: mblack),
           decoration: InputDecoration(
             suffixIcon: suffixIcon,
@@ -155,7 +155,7 @@ class CustomFormField extends StatelessWidget {
               isBold: false,
             ),
             focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: mwhite),
+              borderSide: BorderSide(color: AppTheme.primaryColor),
             ),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: mgrey),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sunofa_map/chargement.dart';
 import 'package:sunofa_map/presentation/views/about/about.dart';
-import 'package:sunofa_map/presentation/views/addMap/add_map_form_screen.dart';
+import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
 import 'package:sunofa_map/presentation/views/addresses/pages/addresses.dart';
 import 'package:sunofa_map/presentation/views/books/pages/books.dart';
 import 'package:sunofa_map/presentation/views/dashboard/pages/dashboard_screen.dart';
@@ -8,8 +9,8 @@ import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dar
 import 'package:sunofa_map/presentation/views/favoris/pages/favorites.dart';
 import 'package:sunofa_map/presentation/views/gestionAdresse/pages/gestion_adresse.dart';
 import 'package:sunofa_map/presentation/views/home/pages/home.dart';
-import 'package:sunofa_map/presentation/views/auth/login_screen.dart';
-import 'package:sunofa_map/presentation/views/auth/register_screen.dart';
+import 'package:sunofa_map/presentation/views/auth/pages/login_screen.dart';
+import 'package:sunofa_map/presentation/views/auth/pages/register_screen.dart';
 import 'package:sunofa_map/presentation/views/infos/pages/infos.dart';
 import 'package:sunofa_map/presentation/views/itineraire/pages/itineraire.dart';
 import 'package:sunofa_map/presentation/views/notes/pages/add_notes.dart';
@@ -23,6 +24,7 @@ import 'package:sunofa_map/presentation/views/profil/pages/profil.dart';
 class Routes {
   static const String home = '/';
   static const String home2 = '/Home';
+  static const String chargement = '/ChargementScreen';
   static const String loginScreen = '/Loginscreen';
   static const String registerScreen = '/Registerscreen';
   static const String dashboardScreen = '/Dashboardscreen';
@@ -50,6 +52,8 @@ class Routes {
             builder: (context) => const OnboardingScreen());
       case home2:
         return MaterialPageRoute(builder: (context) => const Home());
+      case chargement:
+        return MaterialPageRoute(builder: (context) => const Chargement());
       case registerScreen:
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
       case loginScreen:

@@ -9,12 +9,14 @@ class AppHelpers {
     Widget? suffixIcon,
     Widget? prefixIcon,
     String? Function(String?)? validator,
+    int? maxLines = 1,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: isPassword,
       cursorColor: AppTheme.black,
       cursorErrorColor: AppTheme.red,
+      maxLines: maxLines,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: AppTheme().stylish1(

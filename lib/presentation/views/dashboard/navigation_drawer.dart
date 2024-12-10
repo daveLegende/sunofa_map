@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:sunofa_map/core/utils/constant.dart';
 import 'package:sunofa_map/core/utils/screen_size.dart';
 
 import '../../../themes/app_themes.dart';
@@ -9,8 +8,11 @@ import '../../../themes/app_themes.dart';
 class NavigationDrawer extends StatefulWidget {
   final String selectedLanguage;
   final ValueChanged<String> onLanguageChanged;
-  const NavigationDrawer({super.key, required this.selectedLanguage,
-    required this.onLanguageChanged,});
+  const NavigationDrawer({
+    super.key,
+    required this.selectedLanguage,
+    required this.onLanguageChanged,
+  });
 
   @override
   State<NavigationDrawer> createState() => _NavigationDrawerState();
@@ -29,22 +31,18 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'Sunofa Map',
-                  style: AppTheme().stylish1(24, AppTheme.black, isBold: true),
+                const CircleAvatar(
+                  radius: 30,
+                  child: HeroIcon(HeroIcons.user, size: 30),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const HeroIcon(
-                    HeroIcons.xMark,
-                    size: 30,
-                  ),
-                )
+                Text(
+                  "User Name",
+                  style: AppTheme().stylish1(15, mgrey),
+                ),
               ],
             ),
           ),
@@ -124,7 +122,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               style: AppTheme().stylish1(15, AppTheme.black),
             ),
             onTap: () {
-               Navigator.pushNamed(context, '/AddressBookScreen');
+              Navigator.pushNamed(context, '/AddressBookScreen');
             },
           ),
           ListTile(
@@ -137,7 +135,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/FavScreen');
             },
           ),
-           ListTile(
+          ListTile(
             leading: const Icon(Icons.bookmark),
             title: Text(
               'My addresses',
@@ -147,7 +145,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Navigator.pushNamed(context, '/MyAddressesScreen');
             },
           ),
-           ListTile(
+          ListTile(
             leading: const Icon(Icons.language),
             title: DropdownButton<String>(
               value: widget.selectedLanguage,

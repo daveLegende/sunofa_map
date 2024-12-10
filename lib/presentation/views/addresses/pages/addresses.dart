@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
+import 'package:sunofa_map/common/widgets/text/notfound_text.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_cubit.dart';
+import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_state.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class AddresseScreen extends StatefulWidget {
@@ -58,108 +63,132 @@ class _AddresseScreenState extends State<AddresseScreen> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.gestionAdresseScreen,
+              child: BlocBuilder<AdresseCubit, AdresseState>(
+                builder: (context, state) {
+                  if (state is AdresseSuccessState) {
+                    if (state.adresses.isEmpty) {
+                      return const NotFoundText(
+                        text: "Aucune adresse disponible",
                       );
-                    },
-                    child: Container(
-                      height: context.width / 3,
-                      margin: EdgeInsets.only(
-                        bottom: 20,
-                        top: index == 0 ? 20 : 0,
+                    }
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 0,
                       ),
-                      decoration: BoxDecoration(
-                        color: mgrey[100],
-                        border: Border.all(color: AppTheme.primaryColor),
-                        borderRadius: BorderRadiusDirectional.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: SizedBox(
-                              height: double.infinity,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  index == 0
-                                      ? "assets/villa.jpg"
-                                      : index == 1
-                                          ? "assets/villa4.jpg"
-                                          : "assets/villa5.jpg",
-                                  fit: BoxFit.cover,
+                      itemCount: state.adresses.length,
+                      itemBuilder: (context, index) {
+                        final adresse = state.adresses[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.gestionAdresseScreen,
+                              arguments: adresse,
+                            );
+                          },
+                          child: Container(
+                            height: context.width / 3,
+                            margin: EdgeInsets.only(
+                              bottom: 20,
+                              top: index == 0 ? 20 : 0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: mgrey[100],
+                              border: Border.all(color: AppTheme.primaryColor),
+                              borderRadius:
+                                  BorderRadiusDirectional.circular(20),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: SizedBox(
+                                    height: double.infinity,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        index == 0
+                                            ? "assets/villa.jpg"
+                                            : index == 1
+                                                ? "assets/villa4.jpg"
+                                                : "assets/villa5.jpg",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          adresse.adressName,
+                                          style:
+                                              AppTheme().stylish1(20, mblack),
+                                        ),
+                                        Text(
+                                          adresse.city,
+                                          style: AppTheme().stylish1(16, mgrey),
+                                        ),
+                                        Text(
+                                          index == 2
+                                              ? "Ajouté depuis 02/07/2024"
+                                              : "Ajouté à l'instant",
+                                          style: AppTheme().stylish1(16, mgrey),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            ShareDeleteEditCircle(
+                                              size: 30,
+                                              color: mwhite,
+                                              iconColor: !adresse.isFavorited
+                                                  ? AppTheme.complementaryColor
+                                                  : mblack,
+                                              icon: HeroIcons.heart,
+                                              onTap: () {},
+                                            ),
+                                            const SizedBox(width: 10),
+                                            // ShareDeleteEditCircle(
+                                            //   size: 30,
+                                            //   color: mwhite,
+                                            //   icon: HeroIcons.share,
+                                            //   iconColor: mblack,
+                                            //   onTap: () {},
+                                            // ),
+                                            // const SizedBox(width: 10),
+                                            ShareDeleteEditCircle(
+                                              size: 30,
+                                              color: mwhite,
+                                              iconColor: mblack,
+                                              icon: HeroIcons.trash,
+                                              onTap: () {},
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Maison IDAH",
-                                    style: AppTheme().stylish1(20, mblack),
-                                  ),
-                                  Text(
-                                    "Togo, Lomé, Casanblaca ca",
-                                    style: AppTheme().stylish1(16, mgrey),
-                                  ),
-                                  Text(
-                                    index == 2
-                                        ? "Ajouté depuis 02/07/2024"
-                                        : "Ajouté à l'instant",
-                                    style: AppTheme().stylish1(16, mgrey),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      ShareDeleteEditCircle(
-                                        size: 30,
-                                        color: mwhite,
-                                        iconColor: mblack,
-                                        icon: HeroIcons.heart,
-                                        onTap: () {},
-                                      ),
-                                      const SizedBox(width: 10),
-                                      // ShareDeleteEditCircle(
-                                      //   size: 30,
-                                      //   color: mwhite,
-                                      //   icon: HeroIcons.share,
-                                      //   iconColor: mblack,
-                                      //   onTap: () {},
-                                      // ),
-                                      // const SizedBox(width: 10),
-                                      ShareDeleteEditCircle(
-                                        size: 30,
-                                        color: mwhite,
-                                        iconColor: mblack,
-                                        icon: HeroIcons.trash,
-                                        onTap: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else {
+                    return const LoadingCircle();
+                  }
                 },
               ),
             ),

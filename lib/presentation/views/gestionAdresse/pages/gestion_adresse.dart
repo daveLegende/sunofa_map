@@ -3,14 +3,32 @@ import 'package:sunofa_map/common/widgets/adresse/vocal_adresse.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class GestionAdresseScreen extends StatelessWidget {
-  const GestionAdresseScreen({super.key});
+  const GestionAdresseScreen({
+    super.key,
+    // this.adresse,
+  });
+  // final AdressesEntity? adresse;
 
   @override
   Widget build(BuildContext context) {
+    // Récupération des arguments
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+    debugPrint('Arguments reçus : $arguments');
+
+    final adresse = arguments is AdressesEntity ? arguments : null;
+
+    if (adresse == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text("Gestion d'Adresse")),
+        body: Center(child: Text("Aucune adresse fournie.")),
+      );
+    }
+    
     return Scaffold(
       backgroundColor: mgrey[100],
       appBar: AppBar(
@@ -48,19 +66,19 @@ class GestionAdresseScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const ListTileCustom(
+                  ListTileCustom(
                     title: "Pseudo/Identifiant",
-                    subtitle: "Sadath01",
+                    subtitle: adresse.pseudo,
                   ),
                   const SizedBox(height: 20),
-                  const ListTileCustom(
+                  ListTileCustom(
                     title: "Nom de l'adresse",
-                    subtitle: "Maison IDAH",
+                    subtitle: adresse.adressName,
                   ),
                   const SizedBox(height: 20),
-                  const ListTileCustom(
+                  ListTileCustom(
                     title: "Pays, ville, quartier ou rue",
-                    subtitle: "Togo, Lomé, E,treprise de l'union",
+                    subtitle: adresse.city,
                   ),
                   const SizedBox(height: 20),
                   const ListTileCustom(
@@ -74,6 +92,7 @@ class GestionAdresseScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         "Info adresse",
@@ -85,7 +104,7 @@ class GestionAdresseScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         color: mgrey[100],
                         child: Text(
-                          lorem,
+                          adresse.info,
                           maxLines: 4,
                           textAlign: TextAlign.justify,
                           style: AppTheme().stylish1(

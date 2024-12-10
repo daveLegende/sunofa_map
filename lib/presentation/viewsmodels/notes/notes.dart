@@ -17,13 +17,13 @@ List<NoteModel> noteList = [
         "Mercredi : Conférence de presse\n Jeudi : Institut français \nVendredi : Parade + prestations ",
   ),
   const NoteModel(
-    title: "RDV Chez Nous",
+    title: "PROGRAMME DE CE LUNDI",
     desc:
-        "Mercredi : Conférence de presse\n Jeudi : Institut français \nVendredi : Parade + prestations ",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
   ),
   const NoteModel(
-    title: "RDV Chez Nous",
+    title: "LOREM IPSUM",
     desc:
-        "Mercredi : Conférence de presse\n Jeudi : Institut français \nVendredi : Parade + prestations ",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   ),
 ];

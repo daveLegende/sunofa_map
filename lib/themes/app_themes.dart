@@ -7,10 +7,10 @@ class AppTheme {
   static const Color white = Colors.white;
   //
   static const Color complementaryColor = Color(0xFFFFA45B); // Orange clair
-  static const Color lightBlue = Color(0xFF40C4FF); // Bleu clair
+  static Color lightPrimary = primaryColor.withOpacity(.1); // Bleu clair
   static const Color mintGreen = Color(0xFF4DD0E1); // Vert menthe
   static const Color lightGray = Color(0xFFF2F2F2); // Gris clair
-  static const Color darkGray = Color(0xFF4A4A4A); // Gris foncé
+  static const Color background = Color.fromARGB(255, 209, 240, 248);
   static const Color red = Color.fromARGB(255, 189, 4, 4); // Blanc cassé
 
   static Color grey = Colors.grey.shade200;

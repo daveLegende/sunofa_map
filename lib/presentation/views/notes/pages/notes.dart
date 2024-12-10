@@ -60,7 +60,7 @@ class _NoteScreenState extends State<NoteScreen> {
       ),
       body: Container(
         height: context.height,
-        color: AppTheme.lightGray,
+        color: mwhite,
         child: GridView.builder(
           itemCount: notes.length,
           padding: const EdgeInsets.symmetric(
@@ -80,7 +80,7 @@ class _NoteScreenState extends State<NoteScreen> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: mwhite,
+                color: AppTheme.lightGray,
               ),
               child: Column(
                 children: [
@@ -101,7 +101,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       14,
                       mgrey,
                     ),
-                    maxLines: 3,
+                    maxLines: 6,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],

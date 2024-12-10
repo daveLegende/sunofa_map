@@ -61,8 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           Container(
-            color: AppTheme.primaryColor
-                .withOpacity(0.6), // Couche bleue transparente
+            color: AppTheme.primaryColor.withOpacity(0.6),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
