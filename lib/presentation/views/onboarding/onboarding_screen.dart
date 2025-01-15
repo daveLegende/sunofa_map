@@ -20,7 +20,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    _startAutoScroll();
+    // _startAutoScroll();
   }
 
   @override
@@ -30,16 +30,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
-  void _startAutoScroll() {
-    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
-      int nextPage = (_currentPage + 1) % 3; // Boucle entre 0, 1, et 2
-      _pageController.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    });
-  }
+  // void _startAutoScroll() {
+  //   _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+  //     int nextPage = (_currentPage + 1) % 3; // Boucle entre 0, 1, et 2
+  //     _pageController.animateToPage(
+  //       nextPage,
+  //       duration: const Duration(milliseconds: 300),
+  //       curve: Curves.easeIn,
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

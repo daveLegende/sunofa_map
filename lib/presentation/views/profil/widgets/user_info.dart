@@ -1,15 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 
 import '../pages/profil.dart';
 
 class UserInfos extends StatelessWidget {
   const UserInfos({
-    super.key,
+    super.key, required this.user,
   });
+  final UserEntity user;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,8 @@ class UserInfos extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const SettingListTileItem(
-                title: "User name & lastname",
+              SettingListTileItem(
+                title: user.name,
                 leading: HeroIcons.user,
               ),
               Container(
@@ -45,8 +46,8 @@ class UserInfos extends StatelessWidget {
                   child: CustomDivider(),
                 ),
               ),
-              const SettingListTileItem(
-                title: "monmail@gmail.com",
+              SettingListTileItem(
+                title: user.email,
                 leading: HeroIcons.envelope,
               ),
               Container(
@@ -56,8 +57,8 @@ class UserInfos extends StatelessWidget {
                   child: CustomDivider(),
                 ),
               ),
-              const SettingListTileItem(
-                title: "+228 98965272",
+              SettingListTileItem(
+                title: user.phoneNumber,
                 leading: HeroIcons.phone,
               ),
               Container(

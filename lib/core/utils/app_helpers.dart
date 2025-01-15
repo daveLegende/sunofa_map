@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class AppHelpers {
@@ -10,9 +11,13 @@ class AppHelpers {
     Widget? prefixIcon,
     String? Function(String?)? validator,
     int? maxLines = 1,
+    TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters
   }) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       obscureText: isPassword,
       cursorColor: AppTheme.black,
       cursorErrorColor: AppTheme.red,

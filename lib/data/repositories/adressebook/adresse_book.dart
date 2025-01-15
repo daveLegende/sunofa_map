@@ -1,23 +1,34 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:tournoi_zemoz/features/data/models/forgotpass/forgotpass.dto.dart';
-// import 'package:tournoi_zemoz/features/data/sources/forgotpass/forgotpass_service.dart';
-// import 'package:tournoi_zemoz/features/domain/repositories/forgotpass/forgotpass_repository.dart';
-// import 'package:tournoi_zemoz/service_locator.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sunofa_map/data/models/adressebook/adresse_book.dto.dart';
+import 'package:sunofa_map/data/models/id.dto.dart';
+import 'package:sunofa_map/data/sources/adressebook/adresse_book_service.dart';
+import 'package:sunofa_map/domain/repositories/adressebook/adresse_book_repo.dart';
+import 'package:sunofa_map/service_locator.dart';
 
-// class ForgotPassRepositoryImpl extends ForgotPassRepository {
-  
-//   @override
-//   Future<Either> sendEmail(ForgotPassDTO data) async {
-//     return await sl<ForgotPassService>().sendEmail(data);
-//   }
+class AdresseBookRepositoryImpl extends AdresseBookRepository {
+  @override
+  Future<Either> getAdresseBooks() async {
+    return await sl<AdresseBookService>().getAdresseBooks();
+  }
 
-//   @override
-//   Future<Either> verifyCode(ForgotPassDTO data) async {
-//     return await sl<ForgotPassService>().verifyCode(data);
-//   }
-  
-//   @override
-//   Future<Either> changePass(ReinitialisePassDTO data) async {
-//     return await sl<ForgotPassService>().changePass(data);
-//   }
-// }
+  @override
+  Future<Either> createAdresseBook(AdresseBookDTO data) async {
+    return await sl<AdresseBookService>().createAdresseBook(data);
+  }
+
+  @override
+  Future<Either> getAdresseBook(IdParms data) {
+    // TODO: implement getAdresse
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either> updateAdresseBook(AdresseBookDTO data) async {
+    return await sl<AdresseBookService>().updateAdresseBook(data);
+  }
+
+  @override
+  Future<Either> deleteAdresseBook(IdParms data) async {
+    return await sl<AdresseBookService>().deleteAdresseBook(data);
+  }
+}

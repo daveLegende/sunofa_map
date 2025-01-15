@@ -1,14 +1,14 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:tournoi_zemoz/core/usecases/usecase.dart';
-// import 'package:tournoi_zemoz/features/data/models/infos/info.dto.dart';
-// import 'package:tournoi_zemoz/features/domain/repositories/infos/info_repository.dart';
-// import 'package:tournoi_zemoz/service_locator.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sunofa_map/core/usecases/usecase.dart';
+import 'package:sunofa_map/data/models/notes/notes.dto.dart';
+import 'package:sunofa_map/domain/repositories/notes/notes_repository.dart';
+import 'package:sunofa_map/service_locator.dart';
 
-// class InfoUseCase implements UseCase<Either, InfoDTO> {
+class NoteUseCase implements UseCase<Either, NoteDTO> {
 
-//   @override
-//   Future<Either> call({InfoDTO? params}) async {
-//     return sl<InfoRepository>().getInfos();
-//   }
+  @override
+  Future<Either> call({NoteDTO? params}) async {
+    return sl<NotesRepository>().getNotes();
+  }
 
-// }
+}

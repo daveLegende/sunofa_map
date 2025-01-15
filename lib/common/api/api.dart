@@ -1,5 +1,6 @@
 class APIURL {
   // static const String ip = "192.168.1.74";
+  static const String apiKey = "AIzaSyCX_tA47PuLrlO5Qa7_ADV0sllc98_K3d8";
   static const String localhost = "https://sunofamap.com/api/v1";
   static const String users = "$localhost/users";
   static const String login = "$localhost/login";

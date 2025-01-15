@@ -6,6 +6,7 @@ import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/data/models/user/user.dto.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
@@ -33,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   PhoneNumber phoneNumber = PhoneNumber(isoCode: 'US');
 
   bool isObscure = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -229,16 +231,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           SizedBox(height: context.heightPercent(5)),
-                          SubmitButton(
+                          isLoading ? const LoadingCircle() : SubmitButton(
                             text: 'Register',
                             onTap: () {
-                              context.read<RegisterCubit>().register(
+                              setState(() {
+                                isLoading = false;
+                              });
+                              context
+                                  .read<RegisterCubit>()
+                                  .register(
                                     UserDTO(
                                       name: nameController.text.trim(),
                                       email: emailController.text.trim(),
                                       phoneNumber: phoneController.text.trim(),
                                       password: passwordController.text.trim(),
                                     ),
+                                  )
+                                  .then(
+                                    (value) => setState(() {
+                                      isLoading = false;
+                                    }),
                                   );
                             },
                           ),

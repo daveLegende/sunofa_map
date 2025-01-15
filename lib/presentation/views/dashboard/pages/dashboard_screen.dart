@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:sunofa_map/common/helpers/helper.dart';
+// import 'package:geolocator/geolocator.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
+import 'package:sunofa_map/presentation/views/home/bloc/user/user_cubit.dart';
+import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
+import 'package:sunofa_map/presentation/views/params/pages/params.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 import '../widgets/addresse_find.dart';
@@ -9,7 +17,11 @@ import '../widgets/search_field.dart';
 
 // ignore: must_be_immutable
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({
+    super.key,
+    this.user,
+  });
+  final UserEntity? user;
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -29,10 +41,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    // getPermissions();
     controller.addListener(() {
       setState(() {});
     });
   }
+
+  // getPermissions() async {
+  //   await Geolocator.openAppSettings();
+  //   await Geolocator.openLocationSettings();
+  // }
 
   @override
   void dispose() {
@@ -42,145 +60,191 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(
-          'Sunofa Map',
-          style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: AppTheme.white),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.notifScreen);
-            },
-            child: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.white,
-                  width: 1,
-                ),
+    return PopScope(
+      onPopInvoked: (didPop) {},
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          return Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              title: Text(
+                'Sunofa Map',
+                style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
               ),
-              child: const HeroIcon(
-                HeroIcons.bellAlert,
-                color: AppTheme.white,
-                size: 20,
+              leading: IconButton(
+                icon: const Icon(Icons.menu, color: AppTheme.white),
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
               ),
-            ),
-          ),
-          SizedBox(
-            width: context.widthPercent(2),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.paramScreen);
-            },
-            child: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppTheme.white,
-                ),
-              ),
-              child: const HeroIcon(
-                HeroIcons.cog,
-                color: AppTheme.white,
-                size: 20,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: context.widthPercent(2),
-          ),
-        ],
-        backgroundColor: AppTheme.primaryColor,
-      ),
-      drawer: NavigationDrawer(
-        selectedLanguage: selectedLanguage,
-        onLanguageChanged: _onLanguageChanged,
-      ),
-      body: Stack(
-        children: [
-          SizedBox(
-            width: context.width,
-            height: context.height,
-            child: Opacity(
-              opacity: 0.1,
-              child: Image.asset(
-                'assets/dash.jpeg',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Container(
-                      width: context.widthPercent(30),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: AppTheme.primaryColor,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    if (state is UserSuccessState) {
+                      Navigator.pushNamed(
+                        context,
+                        Routes.notifScreen,
+                      );
+                    } else {
+                      Helpers().toast(
+                        color: mblack,
+                        message: "problème de connection internet!!",
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppTheme.white,
+                        width: 1,
                       ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/AddMapFormScreen');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.add, color: AppTheme.white),
-                              Text(
-                                'Address',
-                                style: AppTheme()
-                                    .stylish1(15, AppTheme.white, isBold: true),
-                              )
-                            ],
-                          ),
+                    ),
+                    child: const HeroIcon(
+                      HeroIcons.bellAlert,
+                      color: AppTheme.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: context.widthPercent(2),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (state is UserSuccessState) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ParamScreen(user: state.user),
                         ),
+                      );
+                    } else {
+                      Helpers().toast(
+                        color: mblack,
+                        message: "problème de connection internet!!",
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppTheme.white,
                       ),
                     ),
-                    SizedBox(width: context.widthPercent(2)),
-                    Expanded(
-                      child: SearchField(
-                        controller: controller,
+                    child: const HeroIcon(
+                      HeroIcons.cog,
+                      color: AppTheme.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: context.widthPercent(2),
+                ),
+              ],
+              backgroundColor: AppTheme.primaryColor,
+            ),
+            drawer: NavigationDrawer(
+              selectedLanguage: selectedLanguage,
+              onLanguageChanged: _onLanguageChanged,
+            ),
+            body: Stack(
+              children: [
+                SizedBox(
+                  width: context.width,
+                  height: context.height,
+                  child: Opacity(
+                    opacity: 0.1,
+                    child: Image.asset(
+                      'assets/dash.jpeg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: context.widthPercent(30),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppTheme.primaryColor,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                if (state is UserSuccessState) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => AddMapFormScreen(
+                                        user: state.user,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Helpers().toast(
+                                    color: mblack,
+                                    message: "problème de connection internet!!",
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.add,
+                                        color: AppTheme.white),
+                                    Text(
+                                      'Address',
+                                      style: AppTheme().stylish1(
+                                        15,
+                                        AppTheme.white,
+                                        isBold: true,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: context.widthPercent(2)),
+                          Expanded(
+                            child: SearchField(
+                              controller: controller,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const Expanded(child: SizedBox()),
                   ],
                 ),
-              ),
-              const Expanded(child: SizedBox()),
-            ],
-          ),
-          if(controller.text == "Maison IDAH")
-            Positioned(
-            left: 20,
-            right: 20,
-            bottom: context.height / 1.5,
-            child: const AddresseSearch(),
-          ),
-        ],
+                if (controller.text == "Maison IDAH")
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: context.height / 1.5,
+                    child: const AddresseSearch(),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
-
 
 // Drawer personnalisé
 class NavigationDrawer extends StatefulWidget {

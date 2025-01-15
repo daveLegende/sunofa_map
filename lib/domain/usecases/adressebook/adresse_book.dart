@@ -1,34 +1,14 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:tournoi_zemoz/core/usecases/usecase.dart';
-// import 'package:tournoi_zemoz/features/data/models/forgotpass/forgotpass.dto.dart';
-// import 'package:tournoi_zemoz/features/domain/repositories/forgotpass/forgotpass_repository.dart';
-// import 'package:tournoi_zemoz/service_locator.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sunofa_map/core/usecases/usecase.dart';
+import 'package:sunofa_map/data/models/adressebook/adresse_book.dto.dart';
+import 'package:sunofa_map/domain/repositories/adressebook/adresse_book_repo.dart';
+import 'package:sunofa_map/service_locator.dart';
 
-// class SendMailUseCase implements UseCase<Either, ForgotPassDTO> {
+class AdresseBookUseCase implements UseCase<Either, AdresseBookDTO> {
 
-//   @override
-//   Future<Either> call({ForgotPassDTO? params}) async {
-//     return sl<ForgotPassRepository>().sendEmail(params!);
-//   }
+  @override
+  Future<Either> call({AdresseBookDTO? params}) async {
+    return sl<AdresseBookRepository>().getAdresseBooks();
+  }
 
-// }
-
-
-// class VerifyCodeUseCase implements UseCase<Either, ForgotPassDTO> {
-
-//   @override
-//   Future<Either> call({ForgotPassDTO? params}) async {
-//     return sl<ForgotPassRepository>().verifyCode(params!);
-//   }
-
-// }
-
-
-// class ReinitialisePassUseCase implements UseCase<Either, ReinitialisePassDTO> {
-
-//   @override
-//   Future<Either> call({ReinitialisePassDTO? params}) async {
-//     return sl<ForgotPassRepository>().changePass(params!);
-//   }
-
-// }
+}

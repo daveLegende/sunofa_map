@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
-import 'package:sunofa_map/presentation/viewsmodels/notes/notes.dart';
+import 'package:sunofa_map/data/models/notes/notes.dto.dart';
+import 'package:sunofa_map/domain/entities/notes/notes.entity.dart';
+import 'package:sunofa_map/presentation/views/notes/bloc/edit/edit_note_cubit.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class DetailNoteScreen extends StatefulWidget {
@@ -9,7 +14,7 @@ class DetailNoteScreen extends StatefulWidget {
     super.key,
     this.note,
   });
-  final NoteModel? note;
+  final NoteEntity? note;
 
   @override
   State<DetailNoteScreen> createState() => _DetailNoteScreenState();
@@ -17,10 +22,11 @@ class DetailNoteScreen extends StatefulWidget {
 
 class _DetailNoteScreenState extends State<DetailNoteScreen> {
   final formKey = GlobalKey<FormState>();
+  bool showSubmitButton = false;
   @override
   Widget build(BuildContext context) {
     final title = TextEditingController(text: widget.note!.title);
-    final desc = TextEditingController(text: widget.note!.desc);
+    final desc = TextEditingController(text: widget.note!.contenu);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mwhite,
@@ -31,6 +37,40 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
           "Note",
           style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
         ),
+        actions: [
+          showSubmitButton ? IconButton(
+              color: AppTheme.primaryColor,
+              onPressed: () async {
+                if (desc.text.trim().isEmpty) {
+                  Navigator.pop(context);
+                } else {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const LoadingCircle(),
+                  );
+
+                  try {
+                    context.read<EditNoteCubit>().editNote(
+                          NoteDTO(
+                            title: title.text.trim(),
+                            contenu: desc.text.trim(),
+                            user_id: widget.note!.user.id!.toString(),
+                          ),
+                        );
+                  } finally {
+                    Navigator.pop(context);
+                  }
+                }
+              },
+              icon: const HeroIcon(
+                HeroIcons.check,
+                size: 30,
+                color: AppTheme.primaryColor,
+                style: HeroIconStyle.micro,
+              ),
+            ) : const Center(),
+        ],
       ),
       body: Container(
         height: context.height,
@@ -48,7 +88,7 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
                   minLines: 1,
                   style: AppTheme().stylish1(18, mblack, isBold: true),
                   decoration: InputDecoration(
-                    hintText: "Titre",
+                    // hintText: "Titre",
                     hintStyle: AppTheme().stylish1(18, mgrey),
                     focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide.none,
@@ -60,6 +100,12 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      showSubmitButton =
+                          isValidName(value) && value != widget.note!.title;
+                    });
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -81,6 +127,12 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      showSubmitButton =
+                          isValidName(value) && value != widget.note!.contenu;
+                    });
+                  },
                 ),
               ],
             ),
@@ -88,5 +140,10 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
         ),
       ),
     );
+  }
+
+  // Fonction de validation du nom
+  bool isValidName(String name) {
+    return name.isNotEmpty && name.length > 2;
   }
 }

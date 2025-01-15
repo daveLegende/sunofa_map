@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
@@ -9,10 +10,17 @@ import '../widgets/preference_widget.dart';
 import '../widgets/profil_card.dart';
 
 class ParamScreen extends StatelessWidget {
-  const ParamScreen({super.key});
+  const ParamScreen({
+    super.key,
+    this.user,
+  });
+  final UserEntity? user;
 
   @override
   Widget build(BuildContext context) {
+    // final user = ModalRoute.of(context)!.settings.arguments as UserEntity;
+    final user = this.user!;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mwhite,
@@ -30,19 +38,21 @@ class ParamScreen extends StatelessWidget {
         width: context.width,
         height: context.height,
         color: AppTheme.lightGray,
-        child: const SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
             horizontal: 15,
             vertical: 15,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SettingProfilCard(),
-              SizedBox(height: 15),
-              SettingPreference(),
-              SizedBox(height: 15),
-              SettingOthers(),
+              SettingProfilCard(
+                user: user,
+              ),
+              const SizedBox(height: 15),
+              const SettingPreference(),
+              const SizedBox(height: 15),
+              const SettingOthers(),
             ],
           ),
         ),
@@ -50,4 +60,3 @@ class ParamScreen extends StatelessWidget {
     );
   }
 }
-

@@ -42,6 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccessState) {
+              setState(() {
+                isLoading = false;
+              });
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 Routes.home2,
@@ -49,6 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             } else if (state is LoginFailedState) {
               Helpers().mySnackbar(context: context, message: state.message);
+              setState(() {
+                isLoading = false;
+              });
             }
           },
           child: SafeArea(
@@ -160,9 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                               passwordController.text.trim(),
                                         ),
                                       );
-                                  setState(() {
-                                    isLoading = true;
-                                  });
                                 },
                               ),
                         SizedBox(height: context.heightPercent(2)),

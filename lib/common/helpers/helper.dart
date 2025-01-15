@@ -137,7 +137,7 @@ class Helpers {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.SNACKBAR,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 3,
       backgroundColor: color,
       textColor: Colors.white,
@@ -160,5 +160,27 @@ class Helpers {
       backgroundColor: color,
     );
     return ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  //
+  String timeAgo(DateTime d) {
+    Duration diff = DateTime.now().difference(d);
+    if (diff.inDays > 365) return "Ajouté le $d";
+    if (diff.inDays > 30) {
+      return "Ajouté il y'a ${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() == 1 ? "mois" : "mois"}";
+    }
+    if (diff.inDays > 7) {
+      return "Ajouté il y'a ${(diff.inDays / 7).floor()} ${(diff.inDays / 7).floor() == 1 ? "sem" : "sem"}";
+    }
+    if (diff.inDays > 0) {
+      return "Ajouté il y'a ${diff.inDays} ${diff.inDays == 1 ? "jour" : "jours"}";
+    }
+    if (diff.inHours > 0) {
+      return "Ajouté il y'a ${diff.inHours} ${diff.inHours == 1 ? "heure" : "heures"}";
+    }
+    if (diff.inMinutes > 0) {
+      return "Ajouté il y'a ${diff.inMinutes} ${diff.inMinutes == 1 ? "min" : "min"}";
+    }
+    return "Ajouté à l'instant";
   }
 }

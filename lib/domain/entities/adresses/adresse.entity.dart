@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:sunofa_map/domain/entities/created_at.dart';
+import 'package:sunofa_map/domain/entities/medias/media_entity.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 
 class AdressesEntity {
   final String? id;
@@ -10,9 +12,12 @@ class AdressesEntity {
   final String info;
   final double longitude;
   final double latitude;
-  final int codePin;
+  final dynamic codePin;
+  // final String? googleAddress;
   final bool isFavorited;
   final CreatedAt createdAt;
+  final UserEntity user;
+  final MediaEntity? media;
 
   AdressesEntity({
     this.id,
@@ -23,8 +28,11 @@ class AdressesEntity {
     required this.longitude,
     required this.latitude,
     required this.codePin,
+    // required this.googleAddress,
     required this.isFavorited,
+    required this.user,
     required this.createdAt,
+    this.media,
   });
 
   // Convertir JSON en objet Dart
@@ -35,11 +43,16 @@ class AdressesEntity {
       adressName: json['adressName'] as String,
       city: json['city'] as String,
       info: json['info'] as String,
+      // googleAddress: json['googleAddress'] as String,
       longitude: double.parse(json['longitude']),
       latitude: double.parse(json['latitude']),
-      codePin: json['codePin'] as int,
+      codePin: json['codePin'],
+      user: UserEntity.fromJson(json['user'] as Map<String, dynamic>),
       isFavorited: json['isFavorited'] as bool,
       createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
+      media: json['media'] != null
+          ? MediaEntity.fromJson(json['media'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -55,11 +68,10 @@ class AdressesEntity {
       'codePin': codePin,
       'isFavorited': isFavorited,
       'createdAt': createdAt.toJson(),
+      'media': media!.toJson(),
     };
   }
 }
-
-
 
 // list des arbitres
 List<AdressesEntity> adressesListJson(String jsonString) {
@@ -72,4 +84,3 @@ List<AdressesEntity> adressesListJson(String jsonString) {
   // Transformer chaque élément en un objet AdressesEntity
   return dataList.map((item) => AdressesEntity.fromJson(item)).toList();
 }
-

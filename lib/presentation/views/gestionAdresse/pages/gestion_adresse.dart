@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:sunofa_map/chargement.dart';
 import 'package:sunofa_map/common/widgets/adresse/vocal_adresse.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/presentation/views/itineraire/pages/itineraire.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class GestionAdresseScreen extends StatelessWidget {
   const GestionAdresseScreen({
     super.key,
-    // this.adresse,
+    this.adresse,
   });
-  // final AdressesEntity? adresse;
+  final AdressesEntity? adresse;
 
   @override
   Widget build(BuildContext context) {
     // Récupération des arguments
-    final arguments = ModalRoute.of(context)?.settings.arguments;
-    debugPrint('Arguments reçus : $arguments');
+    // final arguments = ModalRoute.of(context)?.settings.arguments;
+    // debugPrint('Arguments reçus : $arguments');
 
-    final adresse = arguments is AdressesEntity ? arguments : null;
+    final address = adresse!;
 
-    if (adresse == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text("Gestion d'Adresse")),
-        body: Center(child: Text("Aucune adresse fournie.")),
-      );
-    }
-    
     return Scaffold(
       backgroundColor: mgrey[100],
       appBar: AppBar(
@@ -68,17 +63,17 @@ class GestionAdresseScreen extends StatelessWidget {
                 children: [
                   ListTileCustom(
                     title: "Pseudo/Identifiant",
-                    subtitle: adresse.pseudo,
+                    subtitle: address.pseudo,
                   ),
                   const SizedBox(height: 20),
                   ListTileCustom(
-                    title: "Nom de l'adresse",
-                    subtitle: adresse.adressName,
+                    title: "Nom de l'address",
+                    subtitle: address.adressName,
                   ),
                   const SizedBox(height: 20),
                   ListTileCustom(
                     title: "Pays, ville, quartier ou rue",
-                    subtitle: adresse.city,
+                    subtitle: address.city,
                   ),
                   const SizedBox(height: 20),
                   const ListTileCustom(
@@ -104,7 +99,7 @@ class GestionAdresseScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         color: mgrey[100],
                         child: Text(
-                          adresse.info,
+                          address.info,
                           maxLines: 4,
                           textAlign: TextAlign.justify,
                           style: AppTheme().stylish1(
@@ -196,9 +191,14 @@ class GestionAdresseScreen extends StatelessWidget {
                   SubmitButton(
                     text: "Faire une modification",
                     onTap: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        Routes.editAdresseScreen,
+                        MaterialPageRoute(
+                          builder: (_) {
+                            // return GoogleMapScreen(adresse: address);
+                            return ItineraireScreen(adresse: address);
+                          },
+                        ),
                       );
                     },
                   ),

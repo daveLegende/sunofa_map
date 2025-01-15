@@ -26,4 +26,13 @@ class CreatedAt {
       'human': human,
     };
   }
+
+  // Fournir une instance par défaut
+  factory CreatedAt.defaultValue() {
+    return CreatedAt(
+      datetime: DateTime.now().toIso8601String(),
+      humanDiff: "Just now",
+      human: "Now",
+    );
+  }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:sunofa_map/domain/entities/created_at.dart';
 
 class AdresseBookDTO {
@@ -8,6 +10,7 @@ class AdresseBookDTO {
   final bool hasGoogleAddress;
   final String googleAddress;
   final CreatedAt createdAt;
+  final int user_id;
 
   AdresseBookDTO({
     this.id,
@@ -17,6 +20,7 @@ class AdresseBookDTO {
     required this.hasGoogleAddress,
     required this.googleAddress,
     required this.createdAt,
+    required this.user_id,
   });
 
   // Convertir JSON en objet Dart
@@ -29,6 +33,7 @@ class AdresseBookDTO {
       hasGoogleAddress: json['hasGoogleAddress'] == 1,
       googleAddress: json['googleAddress'] as String,
       createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
+      user_id: json['user_id'] as int,
     );
   }
 
@@ -40,7 +45,22 @@ class AdresseBookDTO {
       'apartmentSuiteNote': apartmentSuiteNote,
       'hasGoogleAddress': hasGoogleAddress ? 1 : 0,
       'googleAddress': googleAddress,
-      'createdAt': createdAt.toJson(),
+      // 'createdAt': createdAt.toJson(),
+      'user_id': user_id,
+    };
+  }
+
+
+  Map<String, dynamic> toJsonWithId() {
+    return {
+      "id": id,
+      'personName': personName,
+      'addressLabel': addressLabel,
+      'apartmentSuiteNote': apartmentSuiteNote,
+      'hasGoogleAddress': hasGoogleAddress ? 1 : 0,
+      'googleAddress': googleAddress,
+      // 'createdAt': createdAt.toJson(),
+      'user_id': user_id,
     };
   }
 }

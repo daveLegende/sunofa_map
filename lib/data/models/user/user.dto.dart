@@ -4,7 +4,7 @@ import 'package:sunofa_map/domain/entities/created_at.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 
 class UserDTO {
-  final int? id;
+  final String? id;
   final String name;
   final String email;
   final String phoneNumber;
@@ -23,7 +23,7 @@ class UserDTO {
   // Méthode pour convertir un JSON en objet User
   factory UserDTO.fromJson(Map<String, dynamic> json) {
     return UserDTO(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
       phoneNumber: json['phoneNumber'] as String,
@@ -35,11 +35,12 @@ class UserDTO {
   // Méthode pour convertir un objet User en JSON
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       'name': name,
       'email': email,
       'phoneNumber': phoneNumber,
       'password': password,
-      // 'createdAt': createdAt!.toJson(),
+      'createdAt': createdAt!.toJson(),
     };
   }
 }

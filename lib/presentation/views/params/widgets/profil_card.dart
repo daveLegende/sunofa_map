@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
 import 'package:sunofa_map/core/utils/index.dart';
-import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
+import 'package:sunofa_map/presentation/views/profil/pages/profil.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class SettingProfilCard extends StatelessWidget {
   const SettingProfilCard({
     super.key,
+    this.user,
   });
+  final UserEntity? user;
 
   @override
   Widget build(BuildContext context) {
+    final user = this.user!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -39,11 +43,11 @@ class SettingProfilCard extends StatelessWidget {
                   child: HeroIcon(HeroIcons.user),
                 ),
                 title: Text(
-                  "first name of user",
+                  user.name,
                   style: AppTheme().stylish1(14, mgrey),
                 ),
                 subtitle: Text(
-                  "monmailgmail.com",
+                  user.email,
                   style: AppTheme().stylish1(12, mgrey),
                 ),
               ),
@@ -54,7 +58,14 @@ class SettingProfilCard extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.profilScreen);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) {
+                        return ProfilScreen(user: user);
+                      },
+                    ),
+                  );
                 },
                 child: Container(
                   width: context.width,

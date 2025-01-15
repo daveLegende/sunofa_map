@@ -12,9 +12,8 @@ class AdresseRepositoryImpl extends AdresseRepository {
   }
 
   @override
-  Future<Either> createAdresse(AdresseDTO data) {
-    // TODO: implement createAdresse
-    throw UnimplementedError();
+  Future<Either> createAdresse(AdresseDTO data) async {
+    return await sl<AdresseService>().createAdresse(data);
   }
 
   @override
@@ -24,8 +23,12 @@ class AdresseRepositoryImpl extends AdresseRepository {
   }
 
   @override
-  Future<Either> updateAdresse(AdresseDTO data) {
-    // TODO: implement updateAdresse
-    throw UnimplementedError();
+  Future<Either> updateAdresse(AdresseDTO data) async {
+    return await sl<AdresseService>().updateAdresse(data);
+  }
+
+  @override
+  Future<Either> deleteAdresse(IdParms data) async {
+    return await sl<AdresseService>().deleteAdresse(data);
   }
 }

@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 import 'package:sunofa_map/domain/entities/created_at.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
+
 class AdresseBookEntity {
-  final int? id;
+  final String? id;
   final String personName;
   final String addressLabel;
   final String apartmentSuiteNote;
   final bool hasGoogleAddress;
   final String googleAddress;
   final CreatedAt createdAt;
+  final UserEntity user;
 
   AdresseBookEntity({
     this.id,
@@ -18,17 +21,19 @@ class AdresseBookEntity {
     required this.hasGoogleAddress,
     required this.googleAddress,
     required this.createdAt,
+    required this.user,
   });
 
   // Convertir JSON en objet Dart
   factory AdresseBookEntity.fromJson(Map<String, dynamic> json) {
     return AdresseBookEntity(
-      id: json['id'] as int,
+      id: json['id'] as String,
       personName: json['personName'] as String,
       addressLabel: json['addressLabel'] as String,
       apartmentSuiteNote: json['apartmentSuiteNote'] as String,
       hasGoogleAddress: json['hasGoogleAddress'] == 1,
       googleAddress: json['googleAddress'] as String,
+      user: UserEntity.fromJson(json['user'] as Map<String, dynamic>),
       createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
     );
   }
@@ -47,10 +52,13 @@ class AdresseBookEntity {
 }
 
 // list des equipes
-List<AdresseBookEntity> betListFromJson(String jsonString) {
-  var data = json.decode(jsonString);
+List<AdresseBookEntity> adresseBookListFromJson(String jsonString) {
+  // Décoder la chaîne JSON en un objet Dart
+  final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+  final List<dynamic> dataList = jsonData['data'];
   return List<AdresseBookEntity>.from(
-    data.map(
+    dataList.map(
       (items) => AdresseBookEntity.fromJson(items),
     ),
   );

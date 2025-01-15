@@ -7,4 +7,5 @@ abstract class AdresseRepository {
   Future<Either> getAdresse(IdParms data);
   Future<Either> createAdresse(AdresseDTO data);
   Future<Either> updateAdresse(AdresseDTO data);
+  Future<Either> deleteAdresse(IdParms data);
 }

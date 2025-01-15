@@ -1,11 +1,34 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:tournoi_zemoz/features/data/sources/infos/info_service.dart';
-// import 'package:tournoi_zemoz/features/domain/repositories/infos/info_repository.dart';
-// import 'package:tournoi_zemoz/service_locator.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sunofa_map/data/models/id.dto.dart';
+import 'package:sunofa_map/data/models/notes/notes.dto.dart';
+import 'package:sunofa_map/data/sources/notes/notes_service.dart';
+import 'package:sunofa_map/domain/repositories/notes/notes_repository.dart';
+import 'package:sunofa_map/service_locator.dart';
 
-// class InfoRepositoryImpl extends InfoRepository {
-//   @override
-//   Future<Either> getInfos() async {
-//     return await sl<InfoService>().getInfos();
-//   }
-// }
+class NoteRepositoryImpl extends NotesRepository {
+  @override
+  Future<Either> getNotes() async {
+    return await sl<NoteService>().getNotes();
+  }
+
+  @override
+  Future<Either> createNote(NoteDTO data) async {
+    return await sl<NoteService>().createNote(data);
+  }
+
+  @override
+  Future<Either> getNote(IdParms data) {
+    // TODO: implement getNote
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either> updateNote(NoteDTO data) async {
+    return await sl<NoteService>().updateNote(data);
+  }
+  
+  @override
+  Future<Either> deleteNote(IdParms data) async {
+    return await sl<NoteService>().deleteNote(data);
+  }
+}

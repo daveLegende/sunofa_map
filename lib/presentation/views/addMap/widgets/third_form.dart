@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class ThirdForm extends StatefulWidget {
-  const ThirdForm({super.key});
+  const ThirdForm({
+    super.key,
+    this.onTap,
+    required this.pin,
+    required this.protegerPin,
+    required this.onSelectionChanged,
+    required this.isLoading,
+    required this.formKey,
+  });
+  final int protegerPin;
+  final bool isLoading;
+  final VoidCallback? onTap;
+  final TextEditingController pin;
+  final GlobalKey<FormState> formKey;
+  final ValueChanged<int?> onSelectionChanged;
 
   @override
   State<ThirdForm> createState() => _ThirdFormState();
 }
 
 class _ThirdFormState extends State<ThirdForm> {
-  int? protegerPin = 2;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,37 +41,32 @@ class _ThirdFormState extends State<ThirdForm> {
           ),
         ),
         const SizedBox(height: 8),
-        Column(
-          children: [
-            RadioListTile<int>(
-              value: 1,
-              groupValue: protegerPin,
-              onChanged: (value) {
-                setState(() {
-                  protegerPin = value;
-                });
-              },
-              title: Text(
-                'Public',
-                style: AppTheme().stylish1(15, AppTheme.black),
+        Form(
+          key: widget.formKey,
+          child: Column(
+            children: [
+              RadioListTile<int>(
+                value: 1,
+                groupValue: widget.protegerPin,
+                onChanged: widget.onSelectionChanged,
+                title: Text(
+                  'Public',
+                  style: AppTheme().stylish1(15, AppTheme.black),
+                ),
               ),
-            ),
-            RadioListTile<int>(
-              value: 2,
-              groupValue: protegerPin,
-              onChanged: (value) {
-                setState(() {
-                  protegerPin = value;
-                });
-              },
-              title: Text(
-                'Privée',
-                style: AppTheme().stylish1(15, AppTheme.black),
+              RadioListTile<int>(
+                value: 2,
+                groupValue: widget.protegerPin,
+                onChanged: widget.onSelectionChanged,
+                title: Text(
+                  'Privée',
+                  style: AppTheme().stylish1(15, AppTheme.black),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        protegerPin == 2
+        widget.protegerPin == 2
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -72,16 +82,29 @@ class _ThirdFormState extends State<ThirdForm> {
                   ),
                   const SizedBox(height: 8),
                   AppHelpers.buildTextFormField(
+                    controller: widget.pin,
+                    inputFormatters: inputFormaters,
+                    keyboardType: TextInputType.number,
                     hint: 'Code PIN',
+                    validator: (value) {
+                      if (value!.length < 5) {
+                        return "Le code pin doit comporté 5 chiffres";
+                      } else if (value.isEmpty) {
+                        return "Veuillez un code pin";
+                      }
+                      return null;
+                    },
                   ),
                 ],
               )
             : const SizedBox(),
         SizedBox(height: context.heightPercent(5)),
-        SubmitButton(
-          text: protegerPin == 2 ? "Proteger mon adresse" : "Continuer",
-          onTap: () {},
-        ),
+        widget.isLoading
+            ? const LoadingCircle()
+            : SubmitButton(
+                text: "Créer l'adresse",
+                onTap: widget.onTap,
+              ),
       ],
     );
   }

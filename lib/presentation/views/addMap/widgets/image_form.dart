@@ -283,18 +283,20 @@ class ImageForm extends StatefulWidget {
   const ImageForm({
     super.key,
     this.onContinue,
+    required this.selectedImages,
+    required this.selectedVideos,
+    required this.selectedAudios,
   });
   final VoidCallback? onContinue;
+  final List<File> selectedImages;
+  final List<File> selectedVideos;
+  final List<File> selectedAudios;
 
   @override
   State<ImageForm> createState() => _ImageFormState();
 }
 
 class _ImageFormState extends State<ImageForm> {
-  // Listes pour stocker les fichiers sélectionnés
-  List<File> selectedImages = [];
-  List<File> selectedVideos = [];
-  List<File> selectedAudios = [];
 
   @override
   Widget build(BuildContext context) {
@@ -317,12 +319,12 @@ class _ImageFormState extends State<ImageForm> {
               spacing: 10,
               runSpacing: 10,
               children: [
-                ...selectedImages.map(
+                ...widget.selectedImages.map(
                   (image) => ImagePreview(
                     file: image,
                     onDelete: () {
                       setState(() {
-                        selectedImages.remove(image);
+                        widget.selectedImages.remove(image);
                       });
                     },
                   ),
@@ -343,7 +345,7 @@ class _ImageFormState extends State<ImageForm> {
             SizedBox(height: context.heightPercent(2)),
             Column(
               children: [
-                ...selectedAudios.map((audio) {
+                ...widget.selectedAudios.map((audio) {
                   return Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.only(bottom: 10),
@@ -369,7 +371,7 @@ class _ImageFormState extends State<ImageForm> {
                           ),
                           onPressed: () {
                             setState(() {
-                              selectedAudios.remove(audio);
+                              widget.selectedAudios.remove(audio);
                             });
                           },
                         ),
@@ -395,12 +397,12 @@ class _ImageFormState extends State<ImageForm> {
               spacing: 10,
               runSpacing: 10,
               children: [
-                ...selectedVideos.map(
+                ...widget.selectedVideos.map(
                   (video) => VideoPreview(
                     file: video,
                     onDelete: () {
                       setState(() {
-                        selectedVideos.remove(video);
+                        widget.selectedVideos.remove(video);
                       });
                     },
                   ),
@@ -446,11 +448,11 @@ class _ImageFormState extends State<ImageForm> {
       setState(() {
         File file = File(result.files.single.path!);
         if (type == 'image') {
-          selectedImages.add(file);
+          widget.selectedImages.add(file);
         } else if (type == 'audio') {
-          selectedAudios.add(file);
+          widget.selectedAudios.add(file);
         } else if (type == 'video') {
-          selectedVideos.add(file);
+          widget.selectedVideos.add(file);
         }
       });
     } else {

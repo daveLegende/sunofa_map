@@ -12,9 +12,11 @@ class NotFoundText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: AppTheme().stylish1(15, mgrey),
+    return Center(
+      child: Text(
+        text,
+        style: AppTheme().stylish1(15, mgrey),
+      ),
     );
   }
 }

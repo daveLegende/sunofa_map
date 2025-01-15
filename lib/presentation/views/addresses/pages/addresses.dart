@@ -1,16 +1,30 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
+import 'package:sunofa_map/common/widgets/shimmers/adresse_shimmer.dart';
 import 'package:sunofa_map/common/widgets/text/notfound_text.dart';
 import 'package:sunofa_map/core/utils/index.dart';
-import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/data/models/id.dto.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_state.dart';
+import 'package:sunofa_map/presentation/views/addresses/bloc/delete/delete_adresse_cubit.dart';
+import 'package:sunofa_map/presentation/views/addresses/bloc/delete/delete_adresse_state.dart';
+import 'package:sunofa_map/presentation/views/addresses/widgets/show_delete.dart';
+import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
+import 'package:sunofa_map/presentation/views/gestionAdresse/pages/gestion_adresse.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class AddresseScreen extends StatefulWidget {
-  const AddresseScreen({super.key});
+  const AddresseScreen({
+    super.key,
+    this.user,
+  });
+  final UserEntity? user;
 
   @override
   State<AddresseScreen> createState() => _AddresseScreenState();
@@ -35,7 +49,7 @@ class _AddresseScreenState extends State<AddresseScreen> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   TabBarItem(
@@ -71,123 +85,207 @@ class _AddresseScreenState extends State<AddresseScreen> {
                         text: "Aucune adresse disponible",
                       );
                     }
-                    return ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 0,
-                      ),
-                      itemCount: state.adresses.length,
-                      itemBuilder: (context, index) {
-                        final adresse = state.adresses[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.gestionAdresseScreen,
-                              arguments: adresse,
-                            );
-                          },
-                          child: Container(
-                            height: context.width / 3,
-                            margin: EdgeInsets.only(
-                              bottom: 20,
-                              top: index == 0 ? 20 : 0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: mgrey[100],
-                              border: Border.all(color: AppTheme.primaryColor),
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: SizedBox(
-                                    height: double.infinity,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                        index == 0
-                                            ? "assets/villa.jpg"
-                                            : index == 1
-                                                ? "assets/villa4.jpg"
-                                                : "assets/villa5.jpg",
-                                        fit: BoxFit.cover,
+                    // final userAdresses = state.adresses.where(
+                    //                 (ad) => ad.user.id == user!.id,
+                    //               )
+                    //               .toList();
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        context.read<AdresseCubit>().getAdresses();
+                        setState(() {});
+                      },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 0,
+                        ),
+                        itemCount: state.adresses.length,
+                        itemBuilder: (context, index) {
+                          final adresse = state.adresses[index];
+                          return BlocListener<DeleteAdresseCubit,
+                              DeleteAdresseState>(
+                            listener: (context, stat) {
+                              if (stat is DeleteAdresseFailedState) {
+                                Helpers().toast(message: stat.message);
+                              } else if (stat is DeleteAdresseSuccessState) {
+                                // state.adresses.removeAt(index);
+                                context
+                                    .read<AdresseCubit>()
+                                    .getAdresses()
+                                    .then((value) => setState(() {}));
+                              }
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return GestionAdresseScreen(
+                                        adresse: adresse,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: context.width / 3,
+                                margin: EdgeInsets.only(
+                                  bottom: 20,
+                                  top: index == 0 ? 20 : 0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: mgrey[100],
+                                  border:
+                                      Border.all(color: AppTheme.primaryColor),
+                                  borderRadius:
+                                      BorderRadiusDirectional.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: SizedBox(
+                                        height: double.infinity,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            index == 0
+                                                ? "assets/villa.jpg"
+                                                : index == 1
+                                                    ? "assets/villa4.jpg"
+                                                    : "assets/villa5.jpg",
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          adresse.adressName,
-                                          style:
-                                              AppTheme().stylish1(20, mblack),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 5,
                                         ),
-                                        Text(
-                                          adresse.city,
-                                          style: AppTheme().stylish1(16, mgrey),
-                                        ),
-                                        Text(
-                                          index == 2
-                                              ? "Ajouté depuis 02/07/2024"
-                                              : "Ajouté à l'instant",
-                                          style: AppTheme().stylish1(16, mgrey),
-                                        ),
-                                        Row(
+                                        child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            ShareDeleteEditCircle(
-                                              size: 30,
-                                              color: mwhite,
-                                              iconColor: !adresse.isFavorited
-                                                  ? AppTheme.complementaryColor
-                                                  : mblack,
-                                              icon: HeroIcons.heart,
-                                              onTap: () {},
+                                            Text(
+                                              adresse.adressName,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppTheme()
+                                                  .stylish1(20, mblack),
                                             ),
-                                            const SizedBox(width: 10),
-                                            // ShareDeleteEditCircle(
-                                            //   size: 30,
-                                            //   color: mwhite,
-                                            //   icon: HeroIcons.share,
-                                            //   iconColor: mblack,
-                                            //   onTap: () {},
-                                            // ),
-                                            // const SizedBox(width: 10),
-                                            ShareDeleteEditCircle(
-                                              size: 30,
-                                              color: mwhite,
-                                              iconColor: mblack,
-                                              icon: HeroIcons.trash,
-                                              onTap: () {},
+                                            Text(
+                                              adresse.city,
+                                              style: AppTheme()
+                                                  .stylish1(16, mgrey),
+                                            ),
+                                            Text(
+                                              Helpers().timeAgo(
+                                                DateTime.parse(
+                                                  adresse.createdAt.datetime,
+                                                ),
+                                              ),
+                                              style: AppTheme().stylish1(
+                                                13,
+                                                mgrey,
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                ShareDeleteEditCircle(
+                                                  size: 30,
+                                                  color: mwhite,
+                                                  iconColor: !adresse
+                                                          .isFavorited
+                                                      ? AppTheme
+                                                          .complementaryColor
+                                                      : mblack,
+                                                  icon: HeroIcons.heart,
+                                                  onTap: () {},
+                                                ),
+                                                const SizedBox(width: 10),
+                                                // ShareDeleteEditCircle(
+                                                //   size: 30,
+                                                //   color: mwhite,
+                                                //   icon: HeroIcons.share,
+                                                //   iconColor: mblack,
+                                                //   onTap: () {},
+                                                // ),
+                                                // const SizedBox(width: 10),
+                                                ShareDeleteEditCircle(
+                                                  size: 30,
+                                                  color: mwhite,
+                                                  iconColor: mblack,
+                                                  icon: HeroIcons.trash,
+                                                  onTap: () {
+                                                    showModalBottomSheet(
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return DeleteAdresseWidget(
+                                                          size: MediaQuery.of(
+                                                                  context)
+                                                              .size,
+                                                          onDel: () async {
+                                                            Navigator.pop(
+                                                                context);
+                                                            // Afficher un indicateur de progression
+                                                            showDialog(
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  false,
+                                                              builder: (context) =>
+                                                                  const LoadingCircle(),
+                                                            );
+
+                                                            try {
+                                                              // Exécuter la suppression
+                                                              await context
+                                                                  .read<
+                                                                      DeleteAdresseCubit>()
+                                                                  .deleteAdresse(
+                                                                    IdParms(
+                                                                      id: adresse
+                                                                          .id!,
+                                                                    ),
+                                                                  );
+                                                            } finally {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }
+                                                          },
+                                                          onCancel: () {
+                                                            Navigator.pop(_);
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     );
                   } else {
-                    return const LoadingCircle();
+                    return const AdresseShimmer();
                   }
                 },
               ),

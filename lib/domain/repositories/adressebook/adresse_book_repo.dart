@@ -6,5 +6,7 @@ abstract class AdresseBookRepository {
   Future<Either> getAdresseBooks();
   Future<Either> getAdresseBook(IdParms data);
   Future<Either> createAdresseBook(AdresseBookDTO data);
-  Future<Either> updateAdresse(AdresseBookDTO data);
+  Future<Either> updateAdresseBook(AdresseBookDTO data);
+  Future<Either> deleteAdresseBook(IdParms data);
+
 }
