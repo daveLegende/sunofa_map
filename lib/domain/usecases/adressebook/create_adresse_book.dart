@@ -4,11 +4,11 @@ import 'package:sunofa_map/data/models/adressebook/adresse_book.dto.dart';
 import 'package:sunofa_map/domain/repositories/adressebook/adresse_book_repo.dart';
 import 'package:sunofa_map/service_locator.dart';
 
-class EditAdresseBookUseCase implements UseCase<Either, AdresseBookDTO> {
+class CreateAdresseBookUseCase implements UseCase<Either, AdresseBookDTO> {
 
   @override
   Future<Either> call({AdresseBookDTO? params}) async {
-    return sl<AdresseBookRepository>().updateAdresseBook(params!);
+    return sl<AdresseBookRepository>().createAdresseBook(params!);
   }
 
 }

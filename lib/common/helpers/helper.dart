@@ -183,4 +183,11 @@ class Helpers {
     }
     return "Ajouté à l'instant";
   }
+
+  String formatAudioDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String minutes = duration.inMinutes.toString();
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$minutes:$seconds";
+  }
 }

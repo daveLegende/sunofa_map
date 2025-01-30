@@ -24,6 +24,7 @@ class AuthServiceImpl extends AuthService {
         Uri.parse(APIURL.login),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: jsonEncode({
           'password': data.password,
@@ -65,44 +66,35 @@ class AuthServiceImpl extends AuthService {
   @override
   Future<Either> register(UserDTO data) async {
     try {
+      print(data);
       final response = await http.post(
         Uri.parse(APIURL.users),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: jsonEncode(data.toJson()),
+        body: jsonEncode(data.toRegisterJson()),
       );
       String message = "";
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // final Map<String, dynamic> data = json.decode(response.body);
         print(response.body);
-        return const Right("User register successful");
-      } else if (response.statusCode == 409) {
-        print(response.body);
-        message = "Cet email existe déjâ";
-        return Left(message);
-      } else if (response.statusCode == 302) {
-        print(response.body);
-        final redirectUrl = response.headers['location'];
-        print('Redirigé vers : $redirectUrl');
-
-        // Faites une nouvelle requête vers l'URL redirigée
-        final redirectedResponse = await http.get(Uri.parse(redirectUrl!));
-        print('Contenu : ${redirectedResponse.body}');
         login(
           LoginDTO(
             email: data.email,
             password: data.password,
           ),
         );
-        return Right(message);
+        return const Right("User register successful");
       } else {
-        print(response.body);
+        // Convertir la réponse en un objet Map
+        final Map<String, dynamic> responseJson = json.decode(response.body);
 
-        message = "Une erreur s'est produite";
+        // Extraire le message
+        final String message = responseJson['message'] ?? 'Erreur inconnue';
         return Left(message);
       }
     } catch (e) {
+      print(e.toString());
       return const Left(
         "Erreur lors de la création de compte, veuillez réessayer",
       );

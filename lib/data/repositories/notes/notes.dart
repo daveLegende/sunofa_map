@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:sunofa_map/data/models/id.dto.dart';
 import 'package:sunofa_map/data/models/notes/notes.dto.dart';
-import 'package:sunofa_map/data/sources/notes/notes_service.dart';
+import 'package:sunofa_map/data/sources/notes/notes.service.dart';
 import 'package:sunofa_map/domain/repositories/notes/notes_repository.dart';
 import 'package:sunofa_map/service_locator.dart';
 

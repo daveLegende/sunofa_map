@@ -33,6 +33,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String initialCountry = 'US';
   PhoneNumber phoneNumber = PhoneNumber(isoCode: 'US');
 
+  final formKey = GlobalKey<FormState>();
+
   bool isObscure = true;
   bool isLoading = false;
 
@@ -79,6 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       vertical: 10,
                     ),
                     child: Form(
+                      key: formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -128,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: AppTheme().stylish1(15, AppTheme.black),
                           ),
                           SizedBox(
-                            height: 55,
+                            // height: 55,
                             child: InternationalPhoneNumberInput(
                               textStyle: AppTheme().stylish1(16, mblack),
                               onInputChanged: (PhoneNumber number) {
@@ -231,29 +234,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                           SizedBox(height: context.heightPercent(5)),
-                          isLoading ? const LoadingCircle() : SubmitButton(
-                            text: 'Register',
-                            onTap: () {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              context
-                                  .read<RegisterCubit>()
-                                  .register(
-                                    UserDTO(
-                                      name: nameController.text.trim(),
-                                      email: emailController.text.trim(),
-                                      phoneNumber: phoneController.text.trim(),
-                                      password: passwordController.text.trim(),
-                                    ),
-                                  )
-                                  .then(
-                                    (value) => setState(() {
-                                      isLoading = false;
-                                    }),
-                                  );
-                            },
-                          ),
+                          isLoading
+                              ? const LoadingCircle()
+                              : SubmitButton(
+                                  text: 'Register',
+                                  onTap: () {
+                                    print(passwordController.text.trim());
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    if (formKey.currentState!.validate()) {
+                                      context
+                                          .read<RegisterCubit>()
+                                          .register(
+                                            UserDTO(
+                                              name: nameController.text.trim(),
+                                              email:
+                                                  emailController.text.trim(),
+                                              phoneNumber:
+                                                  phoneController.text.trim(),
+                                              password: passwordController.text
+                                                  .trim(),
+                                            ),
+                                          )
+                                          .then(
+                                            (value) => setState(() {
+                                              isLoading = false;
+                                            }),
+                                          );
+                                    }
+                                  },
+                                ),
                         ],
                       ),
                     ),

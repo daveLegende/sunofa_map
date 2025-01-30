@@ -35,12 +35,20 @@ class UserDTO {
   // Méthode pour convertir un objet User en JSON
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
       'name': name,
       'email': email,
-      'phoneNumber': phoneNumber,
+      'phone_number': phoneNumber,
       'password': password,
-      'createdAt': createdAt!.toJson(),
+    };
+  }
+
+  Map<String, dynamic> toRegisterJson() {
+    return {
+      // "id": id,
+      'name': name,
+      'email': email,
+      'phone_number': phoneNumber,
+      'password': password,
     };
   }
 }

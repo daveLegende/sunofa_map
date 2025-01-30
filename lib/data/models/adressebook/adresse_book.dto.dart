@@ -1,6 +1,6 @@
-// ignore_for_file: non_constant_identifier_names
 
-import 'package:sunofa_map/domain/entities/created_at.dart';
+
+// ignore_for_file: non_constant_identifier_names
 
 class AdresseBookDTO {
   final String? id;
@@ -9,8 +9,7 @@ class AdresseBookDTO {
   final String apartmentSuiteNote;
   final bool hasGoogleAddress;
   final String googleAddress;
-  final CreatedAt createdAt;
-  final int user_id;
+  final String user_id;
 
   AdresseBookDTO({
     this.id,
@@ -19,7 +18,6 @@ class AdresseBookDTO {
     required this.apartmentSuiteNote,
     required this.hasGoogleAddress,
     required this.googleAddress,
-    required this.createdAt,
     required this.user_id,
   });
 
@@ -27,24 +25,23 @@ class AdresseBookDTO {
   factory AdresseBookDTO.fromJson(Map<String, dynamic> json) {
     return AdresseBookDTO(
       id: json['id'] as String,
-      personName: json['personName'] as String,
-      addressLabel: json['addressLabel'] as String,
-      apartmentSuiteNote: json['apartmentSuiteNote'] as String,
-      hasGoogleAddress: json['hasGoogleAddress'] == 1,
-      googleAddress: json['googleAddress'] as String,
-      createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
-      user_id: json['user_id'] as int,
+      personName: json['person_name'] as String,
+      addressLabel: json['address_label'] as String,
+      apartmentSuiteNote: json['apartment_suite_note'] as String,
+      hasGoogleAddress: json['has_google_address'] == 1,
+      googleAddress: json['google_address'] as String,
+      user_id: json['user_id'] as String,
     );
   }
 
   // Convertir un objet Dart en JSON
   Map<String, dynamic> toJson() {
     return {
-      'personName': personName,
-      'addressLabel': addressLabel,
-      'apartmentSuiteNote': apartmentSuiteNote,
-      'hasGoogleAddress': hasGoogleAddress ? 1 : 0,
-      'googleAddress': googleAddress,
+      'person_name': personName,
+      'address_label': addressLabel,
+      'apartment_suite_note': apartmentSuiteNote,
+      'has_google_address': hasGoogleAddress ? 1 : 0,
+      'google_address': googleAddress,
       // 'createdAt': createdAt.toJson(),
       'user_id': user_id,
     };

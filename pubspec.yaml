@@ -54,6 +54,14 @@ dependencies:
   location: ^7.0.1
   google_maps_flutter: ^2.10.0
   flutter_polyline_points: ^2.1.0
+  # 
+
+  path_provider: ^2.0.11
+  flutter_sound: ^9.2.13
+  image_picker: ^1.0.7
+  permission_handler: ^11.0.1
+  audioplayers: ^6.1.1
+  record: ^5.2.0
 
 
 dev_dependencies:

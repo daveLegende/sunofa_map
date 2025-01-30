@@ -4,20 +4,20 @@ import 'package:sunofa_map/data/repositories/adresses/adresses.dart';
 import 'package:sunofa_map/data/repositories/auth/auth.repository.dart';
 import 'package:sunofa_map/data/repositories/notes/notes.dart';
 import 'package:sunofa_map/data/repositories/user/user.dart';
-import 'package:sunofa_map/data/sources/adressebook/adresse_book_service.dart';
-import 'package:sunofa_map/data/sources/adresses/adresses_service.dart';
-import 'package:sunofa_map/data/sources/auth/auth_service.dart';
-import 'package:sunofa_map/data/sources/notes/notes_service.dart';
-import 'package:sunofa_map/data/sources/user/user_service.dart';
+import 'package:sunofa_map/data/sources/adressebook/adresse_book.service.dart';
+import 'package:sunofa_map/data/sources/adresses/adresses.service.dart';
+import 'package:sunofa_map/data/sources/auth/auth.service.dart';
+import 'package:sunofa_map/data/sources/notes/notes.service.dart';
+import 'package:sunofa_map/data/sources/user/user.service.dart';
 import 'package:sunofa_map/domain/repositories/adressebook/adresse_book_repo.dart';
 import 'package:sunofa_map/domain/repositories/adresses/adresse_repo.dart';
 import 'package:sunofa_map/domain/repositories/auth/auth_repository.dart';
 import 'package:sunofa_map/domain/repositories/notes/notes_repository.dart';
 import 'package:sunofa_map/domain/repositories/user/user_repository.dart';
-import 'package:sunofa_map/domain/usecases/adressebook/adresse_book.dart';
-import 'package:sunofa_map/domain/usecases/adressebook/create_adbook.dart';
-import 'package:sunofa_map/domain/usecases/adressebook/delete_adbook.dart';
-import 'package:sunofa_map/domain/usecases/adressebook/edit_adbook.dart';
+import 'package:sunofa_map/domain/usecases/adresseBook/adresse_book.dart';
+import 'package:sunofa_map/domain/usecases/adresseBook/create_adresse_book.dart';
+import 'package:sunofa_map/domain/usecases/adresseBook/delete_adresse_book.dart';
+import 'package:sunofa_map/domain/usecases/adresseBook/edit_adresse_book.dart';
 import 'package:sunofa_map/domain/usecases/adresses/adresses.dart';
 import 'package:sunofa_map/domain/usecases/adresses/create_adresse.dart';
 import 'package:sunofa_map/domain/usecases/adresses/delete_adresse.dart';
@@ -28,6 +28,7 @@ import 'package:sunofa_map/domain/usecases/notes/create_note.dart';
 import 'package:sunofa_map/domain/usecases/notes/delete_note.dart';
 import 'package:sunofa_map/domain/usecases/notes/edit_note.dart';
 import 'package:sunofa_map/domain/usecases/notes/notes.dart';
+import 'package:sunofa_map/domain/usecases/user/edit_user.dart';
 import 'package:sunofa_map/domain/usecases/user/user.dart';
 
 final sl = GetIt.instance;
@@ -48,6 +49,10 @@ Future<void> initializeDependencies() async {
   );
   sl.registerSingleton<RegisterUserUseCase>(
     RegisterUserUseCase(),
+  );
+  
+  sl.registerSingleton<UpdateUserUseCase>(
+    UpdateUserUseCase(),
   );
 
   /***

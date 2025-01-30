@@ -67,11 +67,11 @@ class AdresseDTO {
   // Convertir un objet Dart en JSON
   Map<String, dynamic> toJsonWithId() {
     return {
-      "id": id!,
-      // 'pseudo': pseudo,
+      "id": id!.toString(),
+      'pseudo': pseudo.toString(),
       'adressName': adressName,
-      'city': city,
-      'info': info,
+      'city': city.toString(),
+      'info': info.toString(),
       'user_id': user_id,
       // 'createdAt': createdAt!.toJson(),
     };

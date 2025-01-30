@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:sunofa_map/data/models/adresses/adresse.dto.dart';
 import 'package:sunofa_map/data/models/id.dto.dart';
-import 'package:sunofa_map/data/sources/adresses/adresses_service.dart';
+import 'package:sunofa_map/data/sources/adresses/adresses.service.dart';
 import 'package:sunofa_map/domain/repositories/adresses/adresse_repo.dart';
 import 'package:sunofa_map/service_locator.dart';
 

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:sunofa_map/data/models/user/user.dto.dart';
-import 'package:sunofa_map/data/sources/user/user_service.dart';
+import 'package:sunofa_map/data/sources/user/user.service.dart';
 import 'package:sunofa_map/domain/repositories/user/user_repository.dart';
 import 'package:sunofa_map/service_locator.dart';
 

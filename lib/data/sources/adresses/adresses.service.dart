@@ -27,10 +27,12 @@ class AdresseServiceImpl extends AdresseService {
         Uri.parse(APIURL.adresses),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           'Authorization': "Bearer $token",
         },
       );
       String message = "";
+        print("************************${response.body}");
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("************************${response.body}");
         List<AdressesEntity> adresses = adressesListJson(response.body);
@@ -42,7 +44,7 @@ class AdresseServiceImpl extends AdresseService {
         return Right(add);
       } else {
         message = "Une erreur s'est produite";
-        print("message ${response.statusCode}");
+        print("message ${response.body}");
         return Left(message);
       }
     } catch (e) {
@@ -59,6 +61,7 @@ class AdresseServiceImpl extends AdresseService {
         Uri.parse(APIURL.adresses),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           "Authorization": "Bearer $token",
         },
         body: jsonEncode(data.toJson()),
@@ -138,6 +141,7 @@ class AdresseServiceImpl extends AdresseService {
         Uri.parse("${APIURL.adresses}/${data.id}"),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
           "Authorization": "Bearer $token",
         },
         body: jsonEncode(data.toJson()),

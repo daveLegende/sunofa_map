@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
@@ -8,7 +9,10 @@ import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/addresses/widgets/show_delete.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_cubit.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
+import 'package:sunofa_map/presentation/views/home/pages/home.dart';
 import 'package:sunofa_map/presentation/views/onboarding/onboarding_screen.dart';
+import 'package:sunofa_map/presentation/views/profil/pages/modifier_user.dart';
+import 'package:sunofa_map/presentation/views/profil/widgets/custom_tile.dart';
 import 'package:sunofa_map/services/preferences.dart';
 // import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
@@ -162,34 +166,43 @@ class _ProfilScreenState extends State<ProfilScreen> {
                         ),
                         Column(
                           children: [
-                            GestionPinAdresse(
-                              leading: HeroIcons.mapPin,
-                              title: "Gestion de code PIN",
+                            ProfileCustomListTile(
+                              icon: HeroIcons.pencil,
+                              label: "Modifier mes informations",
                               onTap: () {
-                                Navigator.pushNamed(context, Routes.pinScreen);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return ModifierUserInfoScreen(user: user);
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                            const SizedBox(height: 20),
-                            GestionPinAdresse(
-                              leading: HeroIcons.bookmark,
-                              title: "Gestion d'adresse",
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.gestionAdresseScreen);
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            GestionPinAdresse(
-                              leading: HeroIcons.document,
-                              title: "Mes Notes",
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.notesScreen);
-                              },
-                            ),
-                            const SizedBox(height: 30),
-                            LogoutButton(
+                            ProfileCustomListTile(
+                              icon: HeroIcons.codeBracket,
+                              label: "Gestion de code PIN",
                               onTap: () {},
+                            ),
+                            ProfileCustomListTile(
+                              icon: HeroIcons.power,
+                              label: "Se Déconnecter",
+                              iconColor: AppTheme.complementaryColor,
+                              labelColor: AppTheme.complementaryColor,
+                              onTap: () async {
+                                await PreferenceServices().removeToken();
+                                await PreferenceServices().removeUser();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const Home();
+                                    },
+                                  ),
+                                  (r) => false,
+                                );
+                              },
                             ),
                             const SizedBox(height: 20),
                           ],

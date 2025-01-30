@@ -39,7 +39,7 @@ class SimpleTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 55,
+        // height: 55,
         child: TextFormField(
           controller: controller,
           readOnly: readOnly!,
@@ -73,6 +73,10 @@ class SimpleTextField extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
             errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),

@@ -145,7 +145,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: context.widthPercent(2),
+                  width: context.widthPercent(3),
                 ),
               ],
               backgroundColor: AppTheme.primaryColor,

@@ -10,8 +10,8 @@ class AdresseBookEntity {
   final String apartmentSuiteNote;
   final bool hasGoogleAddress;
   final String googleAddress;
-  final CreatedAt createdAt;
-  final UserEntity user;
+  final CreatedAt? createdAt;
+  final UserEntity? user;
 
   AdresseBookEntity({
     this.id,
@@ -20,7 +20,7 @@ class AdresseBookEntity {
     required this.apartmentSuiteNote,
     required this.hasGoogleAddress,
     required this.googleAddress,
-    required this.createdAt,
+    this.createdAt,
     required this.user,
   });
 
@@ -28,12 +28,12 @@ class AdresseBookEntity {
   factory AdresseBookEntity.fromJson(Map<String, dynamic> json) {
     return AdresseBookEntity(
       id: json['id'] as String,
-      personName: json['personName'] as String,
-      addressLabel: json['addressLabel'] as String,
-      apartmentSuiteNote: json['apartmentSuiteNote'] as String,
+      personName: json['personName'] != null ? json['personName'] as String : '',
+      addressLabel: json['addressLabel'] != null ? json['addressLabel'] as String : '',
+      apartmentSuiteNote: json['apartmentSuiteNote'] != null ? json['apartmentSuiteNote'] as String : '',
       hasGoogleAddress: json['hasGoogleAddress'] == 1,
-      googleAddress: json['googleAddress'] as String,
-      user: UserEntity.fromJson(json['user'] as Map<String, dynamic>),
+      googleAddress: json['googleAddress'] != null ? json['googleAddress'] as String : '',
+      user: json["user"] != null ? UserEntity.fromJson(json['user'] as Map<String, dynamic>) : null,
       createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
     );
   }
@@ -46,7 +46,7 @@ class AdresseBookEntity {
       'apartmentSuiteNote': apartmentSuiteNote,
       'hasGoogleAddress': hasGoogleAddress ? 1 : 0,
       'googleAddress': googleAddress,
-      'createdAt': createdAt.toJson(),
+      'createdAt': createdAt!.toJson(),
     };
   }
 }

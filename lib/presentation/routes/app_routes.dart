@@ -3,6 +3,7 @@ import 'package:sunofa_map/chargement.dart';
 import 'package:sunofa_map/presentation/views/about/about.dart';
 import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
 import 'package:sunofa_map/presentation/views/addresses/pages/addresses.dart';
+import 'package:sunofa_map/presentation/views/books/pages/add_adresse_book.dart';
 import 'package:sunofa_map/presentation/views/books/pages/books.dart';
 import 'package:sunofa_map/presentation/views/dashboard/pages/dashboard_screen.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
@@ -40,6 +41,7 @@ class Routes {
   static const String notesScreen = '/NotesScreen';
   static const String addNotesScreen = '/AddNotesScreen';
   static const String addressBookScreen = '/AddressBookScreen';
+  static const String addBookScreen = '/AddBookScreen';
   static const String favScreen = '/FavScreen';
   static const String myaddressesScreen = '/MyAddressesScreen';
   static const String profilScreen = '/ProfilScreen';
@@ -87,6 +89,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const FavoriteScreen());
       case myaddressesScreen:
         return MaterialPageRoute(builder: (context) => const AddresseScreen());
+      case addBookScreen:
+        return MaterialPageRoute(builder: (context) => const AddAdresseBook());
       case profilScreen:
         return MaterialPageRoute(
             builder: (context) => const ProfilScreen());

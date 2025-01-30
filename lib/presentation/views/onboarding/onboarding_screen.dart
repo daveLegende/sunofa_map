@@ -13,9 +13,9 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-  Timer? _timer;
+  // final PageController _pageController = PageController();
+  // int _currentPage = 0;
+  // Timer? _timer;
 
   @override
   void initState() {
@@ -25,8 +25,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel();
-    _pageController.dispose();
+    // _timer?.cancel();
+    // _pageController.dispose();
     super.dispose();
   }
 
@@ -45,103 +45,66 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 209, 240, 248),
-      body: Stack(
-        children: [
-          PageView(
-            controller: _pageController,
-            onPageChanged: (int page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
+      body: Container(
+        color: AppTheme.primaryColor.withOpacity(0.6),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/back1.jpeg', fit: BoxFit.cover),
-              Image.asset('assets/back2.jpeg', fit: BoxFit.cover),
-              Image.asset('assets/back3.jpeg', fit: BoxFit.cover),
-            ],
-          ),
-          Container(
-            color: AppTheme.primaryColor.withOpacity(0.6),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Text(
+                "Welcome to",
+                style: AppTheme().stylish1(30, AppTheme.white),
+              ),
+              Text(
+                "Sunofa Map",
+                style:
+                    AppTheme().stylish1(50, AppTheme.white, isBold: true),
+              ),
+              SizedBox(height: context.heightPercent(10)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    "Welcome to",
-                    style: AppTheme().stylish1(30, AppTheme.white),
+                  _buildOption(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/AddMapFormScreen');
+                    },
+                    text: 'Add\n address',
+                    icon: HeroIcons.mapPin,
                   ),
-                  Text(
-                    "Sunofa Map",
-                    style:
-                        AppTheme().stylish1(50, AppTheme.white, isBold: true),
-                  ),
-                  SizedBox(height: context.heightPercent(10)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildOption(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/AddMapFormScreen');
-                        },
-                        text: 'Add\n address',
-                        icon: HeroIcons.mapPin,
-                      ),
-                      _buildOption(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/AddMapFormScreen');
-                        },
-                        text: 'Join\n address',
-                        icon: HeroIcons.map,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: context.heightPercent(5)),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppTheme.white,
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/Loginscreen');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 12,
-                        ),
-                        child: Text(
-                          'Connexion',
-                          style: AppTheme().stylish1(15, AppTheme.black),
-                        ),
-                      ),
-                    ),
+                  _buildOption(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/AddMapFormScreen');
+                    },
+                    text: 'Join\n address',
+                    icon: HeroIcons.map,
                   ),
                 ],
               ),
-            ),
-          ),
-          Positioned(
-            bottom: 30,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(3, (index) {
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  height: 8,
-                  width: _currentPage == index ? 24 : 8,
-                  decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.white : Colors.grey,
-                    borderRadius: BorderRadius.circular(4),
+              SizedBox(height: context.heightPercent(5)),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: AppTheme.white,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/Loginscreen');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 12,
+                    ),
+                    child: Text(
+                      'Connexion',
+                      style: AppTheme().stylish1(15, AppTheme.black),
+                    ),
                   ),
-                );
-              }),
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

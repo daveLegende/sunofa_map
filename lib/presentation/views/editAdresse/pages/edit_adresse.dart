@@ -14,6 +14,8 @@ import 'package:sunofa_map/presentation/views/editAdresse/bloc/edit_adresse_cubi
 import 'package:sunofa_map/presentation/views/editAdresse/bloc/edit_adresse_state.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
+import '../widgets/edit_adresse_sheet.dart';
+
 class EditAdresseScreen extends StatefulWidget {
   const EditAdresseScreen({
     super.key,
@@ -61,6 +63,7 @@ class _EditAdresseScreenState extends State<EditAdresseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     final adresse = widget.adresse!;
     return Scaffold(
       backgroundColor: mgrey[100],
@@ -78,216 +81,222 @@ class _EditAdresseScreenState extends State<EditAdresseScreen> {
       ),
       body: Container(
         color: AppTheme.lightGray,
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
-        ),
-        child: Container(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(
             vertical: 20,
-            horizontal: 10,
+            horizontal: 20,
           ),
-          decoration: BoxDecoration(
-            color: mwhite,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: SingleChildScrollView(
-            child: BlocListener<EditAdresseCubit, EditAdresseState>(
-              listener: (context, state) {
-                if (state is EditAdresseSuccessState) {
-                  Helpers().mySnackbar(
-                    context: context,
-                    message: state.message,
-                  );
-                  context.read<AdresseCubit>().getAdresses();
-                } else if (state is EditAdresseFailedState) {
-                  Helpers().mySnackbar(
-                    context: context,
-                    color: mred,
-                    message: state.message,
-                  );
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTileCustom(
-                    title: "Pseudo/Identifiant",
-                    subtitle: "Sadath01",
-                    controller: pseudo,
-                  ),
-                  const SizedBox(height: 20),
-                  ListTileCustom(
-                    title: "Nom de l'adresse",
-                    subtitle: "Maison IDAH",
-                    controller: adressName,
-                  ),
-                  const SizedBox(height: 20),
-                  ListTileCustom(
-                    title: "Pays, ville, quartier ou rue",
-                    subtitle: "Togo, Lomé, E,treprise de l'union",
-                    controller: ville,
-                  ),
-                  const SizedBox(height: 20),
-                  ListTileCustom(
-                    title: "E-mail",
-                    subtitle: "monmail@gmail.com",
-                    controller: email,
-                  ),
-                  const SizedBox(height: 20),
-                  ListTileCustom(
-                    title: "Téléphone",
-                    subtitle: "+228 98623547",
-                    controller: telephone,
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
+                  horizontal: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: mwhite,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: BlocListener<EditAdresseCubit, EditAdresseState>(
+                  listener: (context, state) {
+                    if (state is EditAdresseSuccessState) {
+                      Helpers().mySnackbar(
+                        context: context,
+                        message: state.message,
+                      );
+                      context.read<AdresseCubit>().getAdresses();
+                    } else if (state is EditAdresseFailedState) {
+                      Helpers().mySnackbar(
+                        context: context,
+                        color: mred,
+                        message: state.message,
+                      );
+                    }
+                  },
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Info adresse",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      ListTileCustom(
+                        title: "Pseudo/Identifiant",
+                        subtitle: "Sadath01",
+                        controller: pseudo,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        color: AppTheme.primaryColor.withOpacity(.1),
-                        child: TextField(
-                          controller: info,
-                          maxLines: 4,
-                          textAlign: TextAlign.justify,
-                          style: AppTheme().stylish1(
-                            13,
-                            mgrey[400]!,
-                          ),
-                          decoration: const InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
+                      const SizedBox(height: 20),
+                      ListTileCustom(
+                        title: "Nom de l'adresse",
+                        subtitle: "Maison IDAH",
+                        controller: adressName,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Images",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
+                      const SizedBox(height: 20),
+                      ListTileCustom(
+                        title: "Pays, ville, quartier ou rue",
+                        subtitle: "Togo, Lomé, E,treprise de l'union",
+                        controller: ville,
                       ),
-                      Row(
+                      const SizedBox(height: 20),
+                      ListTileCustom(
+                        title: "E-mail",
+                        subtitle: "monmail@gmail.com",
+                        controller: email,
+                      ),
+                      const SizedBox(height: 20),
+                      ListTileCustom(
+                        title: "Téléphone",
+                        subtitle: "+228 98623547",
+                        controller: telephone,
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: AdresseImage(
-                              image: "assets/villa.jpg",
+                          const Text(
+                            "Info adresse",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: AdresseImage(
-                              image: "assets/villa5.jpg",
+                          Container(
+                            padding: const EdgeInsets.all(2),
+                            color: AppTheme.primaryColor.withOpacity(.1),
+                            child: TextField(
+                              controller: info,
+                              maxLines: 4,
+                              textAlign: TextAlign.justify,
+                              style: AppTheme().stylish1(
+                                13,
+                                mgrey[400]!,
+                              ),
+                              decoration: const InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
                             ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Images",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AdresseImage(
+                                  image: "assets/villa.jpg",
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: AdresseImage(
+                                  image: "assets/villa5.jpg",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Audios",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: VocalAdresse(),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: VocalAdresse(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Vidéos",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: AdresseImage(
+                                  image: "assets/villa.jpg",
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: AdresseImage(
+                                  image: "assets/villa5.jpg",
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Audios",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: VocalAdresse(),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: VocalAdresse(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Vidéos",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: AdresseImage(
-                              image: "assets/villa.jpg",
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: AdresseImage(
-                              image: "assets/villa5.jpg",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  isLoading
-                      ? const LoadingCircle()
-                      : SubmitButton(
-                          text: "Enregistrer",
-                          onTap: () {
-                            print(
-                                "---------------------------${adressName.text}");
-                            print(
-                                "---------------------------${adresse.user.id}");
-                            setState(() {
-                              isLoading = true;
-                            });
-                            context
-                                .read<EditAdresseCubit>()
-                                .editAdresse(
-                                  AdresseDTO(
-                                    id: adresse.id,
-                                    pseudo: "pseudo",
-                                    adressName: "MAISON IDAH",
-                                    city: ville.text.trim(),
-                                    info: info.text.trim(),
-                                    user_id: adresse.user.id!,
-                                  ),
-                                )
-                                .then((value) {
-                              setState(() {
-                                isLoading = false;
-                              });
-                            });
-                          },
-                        ),
-                ],
+                ),
               ),
-            ),
+              isKeyboardVisible ? const SizedBox(height: 0) : const SizedBox(height: 90),
+            ],
           ),
         ),
       ),
+      bottomSheet: isKeyboardVisible
+          ? const SizedBox()
+          : EditAdresseSheet(
+              button: isLoading
+                  ? const LoadingCircle()
+                  : SubmitButton(
+                      text: "Enregistrer la modification",
+                      onTap: () {
+                        print("---------------------------${adressName.text}");
+                        print("---------------------------${adresse.user.id}");
+                        setState(() {
+                          isLoading = true;
+                        });
+                        context
+                            .read<EditAdresseCubit>()
+                            .editAdresse(
+                              AdresseDTO(
+                                id: adresse.id,
+                                pseudo: pseudo.text.trim(),
+                                adressName: adressName.text.trim(),
+                                city: ville.text.trim(),
+                                info: info.text.trim(),
+                                user_id: adresse.user.id!,
+                              ),
+                            )
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      },
+                    ),
+            ),
     );
   }
 }

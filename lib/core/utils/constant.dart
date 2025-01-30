@@ -111,6 +111,7 @@ const mred = Color.fromARGB(255, 245, 20, 4);
 const mBotomColor = Color(0xFF1C162E);
 const mTextColor = Color(0xFF757575);
 const mBeige = Color.fromARGB(255, 252, 245, 232);
+const mtransparent = Colors.transparent;
 
 const mcardColor = Color(0xFFBEC2CE);
 const mcardbtnColor = Color(0xFF242A37);

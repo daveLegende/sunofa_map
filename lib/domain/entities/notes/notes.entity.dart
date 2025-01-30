@@ -8,7 +8,7 @@ class NoteEntity {
   final String title;
   final String contenu;
   final CreatedAt? createdAt;
-  final UserEntity user;
+  final UserEntity? user;
 
   NoteEntity({
     this.id,
@@ -25,7 +25,7 @@ class NoteEntity {
       title: json['title'] != null ? json['title'] as String : '',
       contenu: json['contenu'] != null ? json['contenu'] as String : '',
       createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
-      user: UserEntity.fromJson(json['user'] as Map<String, dynamic>),
+      user: json["user"] != null ? UserEntity.fromJson(json['user'] as Map<String, dynamic>) : null,
     );
   }
 
