@@ -10,12 +10,14 @@ import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/data/models/adresses/adresse.dto.dart';
+import 'package:sunofa_map/domain/entities/medias/media_entity.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/views/addMap/bloc/create_adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/addMap/bloc/create_adresse_state.dart';
 import 'package:sunofa_map/presentation/views/addMap/widgets/Image_form.dart';
 import 'package:sunofa_map/presentation/views/addMap/widgets/first_form.dart';
 import 'package:sunofa_map/presentation/views/addMap/widgets/third_form.dart';
+import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_cubit.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -40,8 +42,11 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
   final pin = TextEditingController();
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
+  TextEditingController gaController = TextEditingController();
   int? selectedLocationOption;
   bool isLoading = false;
+  bool isGoogleAddressSelected = false;
+  bool isCurrentLocationSelected = false;
   int? protegerPin = 2;
   int current = 1;
   double? latitude, longitude;
@@ -81,6 +86,7 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
               setState(() {
                 isLoading = false;
               });
+              context.read<AdresseCubit>().getAdresses();
             } else if (state is CreateAdresseFailedState) {
               Helpers().mySnackbar(
                 context: context,
@@ -219,6 +225,7 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                           adressName: adressName,
                           city: city,
                           info: info,
+                          gaController: gaController,
                           selectedLocationOption: selectedLocationOption,
                           onSelectionChanged: (value) async {
                             setState(() {
@@ -237,14 +244,33 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                               );
                             }
                           },
+                          isGoogleAddressSelected: isGoogleAddressSelected,
+                          isCurrentLocationSelected: isCurrentLocationSelected,
+                          onGoogleAddressChanged: (value) {
+                            setState(() {
+                              isGoogleAddressSelected = value;
+                            });
+                          },
+                          onCurrentLocationChanged: (value) {
+                            setState(() {
+                              isCurrentLocationSelected = value;
+                            });
+                          },
                           onTap: () {
                             if (formKey1.currentState!.validate() &&
-                                (selectedLocationOption == 1 ||
-                                    selectedLocationOption == 2)) {
+                                (isGoogleAddressSelected ||
+                                    isCurrentLocationSelected)) {
                               setState(() {
                                 currentStep = StepByStep.STEP_2;
                                 openSection = OpenSection.OPEN_1;
                               });
+                            } else {
+                              Helpers().mySnackbar(
+                                context: context,
+                                message:
+                                    "Veuillez cocher une des cases de position",
+                                color: AppTheme.complementaryColor,
+                              );
                             }
                           },
                         )
@@ -274,6 +300,12 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                                 });
                               },
                               onTap: () {
+                                print(
+                                    "------------------${selectedAudios.first.path}");
+                                print(
+                                    "------------------${selectedImages.first.path}");
+                                print(
+                                    "------------------${selectedVideos.first.path}");
                                 if (formKey2.currentState!.validate()) {
                                   setState(() {
                                     isLoading = true;
@@ -287,12 +319,30 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                                           pseudo: pseudo.text.trim(),
                                           adressName: adressName.text.trim(),
                                           city: city.text.trim(),
-                                          info: info.text.trim(),
-                                          longitude: longitude!,
-                                          latitude: latitude!,
-                                          codePin: pin.text.trim().isEmpty ? 0 : int.parse(pin.text.trim()),
+                                          info: Helpers().removeEmojis(
+                                            info.text.trim(),
+                                          ),
+                                          longitude: longitude ?? 0,
+                                          latitude: latitude ?? 0,
+                                          codePin: pin.text.trim().isEmpty
+                                              ? 0
+                                              : int.parse(pin.text.trim()),
                                           isFavorited: false,
                                           user_id: widget.user!.id!.toString(),
+                                          media: MediaEntity(
+                                            photo1: selectedImages.first.path,
+                                            photo2: selectedImages.last.path,
+                                            video1: selectedVideos.isEmpty
+                                                ? ""
+                                                : selectedVideos.first.path,
+                                            video2: selectedVideos.isEmpty
+                                                ? ""
+                                                : selectedVideos.last.path,
+                                            audio1: selectedAudios.isEmpty
+                                                ? ""
+                                                : selectedAudios.first.path,
+                                            audio2: "",
+                                          ),
                                         ),
                                       );
                                   //       setState(() {

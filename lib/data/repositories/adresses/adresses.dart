@@ -31,4 +31,9 @@ class AdresseRepositoryImpl extends AdresseRepository {
   Future<Either> deleteAdresse(IdParms data) async {
     return await sl<AdresseService>().deleteAdresse(data);
   }
+
+  @override
+  Future<Either> getAllAdresses() async {
+    return await sl<AdresseService>().getAllAdresses();
+  }
 }

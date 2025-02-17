@@ -3,14 +3,17 @@ import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
+import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
 
 import '../pages/profil.dart';
 
 class UserInfos extends StatelessWidget {
   const UserInfos({
-    super.key, required this.user,
+    super.key,
+    required this.user,
   });
   final UserEntity user;
+  // final UserState state;
 
   @override
   Widget build(BuildContext context) {

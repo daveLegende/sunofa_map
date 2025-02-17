@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';

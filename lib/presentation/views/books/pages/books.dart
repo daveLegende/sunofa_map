@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/common/widgets/shimmers/adresse_shimmer.dart';
 import 'package:sunofa_map/common/widgets/text/notfound_text.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/data/models/id.dto.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
+import 'package:sunofa_map/presentation/views/addresses/widgets/show_delete.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/book_cubit.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/book_state.dart';
+import 'package:sunofa_map/presentation/views/books/bloc/delete/delete_book_cubit.dart';
+import 'package:sunofa_map/presentation/views/books/bloc/delete/delete_book_state.dart';
 import 'package:sunofa_map/presentation/views/books/pages/add_adresse_book.dart';
+import 'package:sunofa_map/presentation/views/books/pages/edit_book.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class BooksScreen extends StatefulWidget {
@@ -40,95 +46,91 @@ class _BooksScreenState extends State<BooksScreen> {
         ],
       ),
       body: SizedBox(
-        child: BlocBuilder<BookCubit, BookState>(
-          builder: (context, state) {
-            if (state is BookSuccessState) {
-              if (state.books.isEmpty) {
-                return const NotFoundText(
-                  text: "Aucune adresse disponible",
-                );
-              }
-              // final userAdresses = state.adresses.where(
-              //                 (ad) => ad.user.id == user!.id,
-              //               )
-              //               .toList();
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<BookCubit>().getBooks();
-                  setState(() {});
-                },
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 0,
-                  ),
-                  itemCount: state.books.length,
-                  itemBuilder: (context, index) {
-                    final adresse = state.books[index];
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) {
-                        //       return EditAdresseScreen(
-                        //         adresse: adresse,
-                        //       );
-                        //     },
-                        //   ),
-                        // );
-                      },
-                      child: Container(
-                        height: context.width / 3,
-                        margin: EdgeInsets.only(
-                          bottom: 20,
-                          top: index == 0 ? 20 : 0,
-                        ),
-                        decoration: BoxDecoration(
-                          color: mgrey[100],
-                          border: Border.all(color: AppTheme.primaryColor),
-                          borderRadius: BorderRadiusDirectional.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: SizedBox(
-                                height: double.infinity,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    index == 0
-                                        ? "assets/villa.jpg"
-                                        : index == 1
-                                            ? "assets/villa4.jpg"
-                                            : "assets/villa5.jpg",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                ),
+        child: BlocListener<DeleteBookCubit, DeleteBookState>(
+          listener: (context, stat) {
+            if (stat is DeleteBookFailedState) {
+              Helpers().toast(message: stat.message);
+            } else if (stat is DeleteBookSuccessState) {
+              context.read<BookCubit>().getBooks();
+            }
+          },
+          child: BlocBuilder<BookCubit, BookState>(
+            builder: (context, state) {
+              if (state is BookSuccessState) {
+                if (state.books.isEmpty) {
+                  return const NotFoundText(
+                    text: "Aucun carnet d'adresse disponible",
+                  );
+                }
+                // final userAdresses = state.adresses.where(
+                //                 (ad) => ad.user.id == user!.id,
+                //               )
+                //               .toList();
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<BookCubit>().getBooks();
+                    setState(() {});
+                  },
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 0,
+                    ),
+                    itemCount: state.books.length,
+                    itemBuilder: (context, index) {
+                      final adresse = state.books[index];
+                      return GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) {
+                          //       return EditAdresseScreen(
+                          //         adresse: adresse,
+                          //       );
+                          //     },
+                          //   ),
+                          // );
+                        },
+                        child: Container(
+                          height: context.width / 3,
+                          margin: EdgeInsets.only(
+                            bottom: 20,
+                            top: index == 0 ? 20 : 0,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            color: mwhite,
+                            // border: Border.all(color: AppTheme.primaryColor),
+                            borderRadius: BorderRadiusDirectional.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      adresse.addressLabel,
+                                      adresse.personName,
                                       style: AppTheme().stylish1(20, mblack),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
-                                      adresse.personName,
+                                      adresse.addressLabel,
                                       style: AppTheme().stylish1(16, mgrey),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
                                       adresse.apartmentSuiteNote,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: AppTheme().stylish1(
                                         13,
                                         mgrey,
@@ -148,18 +150,104 @@ class _BooksScreenState extends State<BooksScreen> {
                                   ],
                                 ),
                               ),
-                            ),
-                          ],
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return EditBookScreen(
+                                              book: adresse,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: mgrey[200],
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: AppTheme.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (_) {
+                                          return DeleteAdresseWidget(
+                                            size: MediaQuery.of(context).size,
+                                            onDel: () async {
+                                              Navigator.pop(context);
+                                              // Afficher un indicateur de progression
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (context) =>
+                                                    const LoadingCircle(),
+                                              );
+
+                                              try {
+                                                // Exécuter la suppression
+                                                await context
+                                                    .read<DeleteBookCubit>()
+                                                    .deleteBook(
+                                                      IdParms(
+                                                        id: adresse.id!,
+                                                      ),
+                                                    );
+                                              } finally {
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                            onCancel: () {
+                                              Navigator.pop(_);
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: mgrey[200],
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: const Center(
+                                        child: HeroIcon(
+                                          HeroIcons.trash,
+                                          color: mred,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            } else {
-              return const AdresseShimmer();
-            }
-          },
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return const AdresseShimmer();
+              }
+            },
+          ),
         ),
       ),
     );

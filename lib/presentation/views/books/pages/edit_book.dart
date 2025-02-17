@@ -6,73 +6,92 @@ import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/data/models/adressebook/adresse_book.dto.dart';
+import 'package:sunofa_map/domain/entities/adressebook/adresse_book.entity.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/book_cubit.dart';
-import 'package:sunofa_map/presentation/views/books/bloc/create/create_cubit.dart';
-import 'package:sunofa_map/presentation/views/books/bloc/create/create_state.dart';
+import 'package:sunofa_map/presentation/views/books/bloc/edit/edit_cubit.dart';
+import 'package:sunofa_map/presentation/views/books/bloc/edit/edit_state.dart';
+import 'package:sunofa_map/presentation/views/editAdresse/widgets/edit_adresse_sheet.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_cubit.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
-class AddAdresseBook extends StatefulWidget {
-  const AddAdresseBook({super.key});
+class EditBookScreen extends StatefulWidget {
+  const EditBookScreen({
+    super.key,
+    required this.book,
+  });
+  final AdresseBookEntity book;
 
   @override
-  State<AddAdresseBook> createState() => _AddAdresseBookState();
+  State<EditBookScreen> createState() => _EditBookScreenState();
 }
 
-class _AddAdresseBookState extends State<AddAdresseBook> {
+class _EditBookScreenState extends State<EditBookScreen> {
   final formKey = GlobalKey<FormState>();
-  final fullName = TextEditingController();
-  final locality = TextEditingController();
-  final appart = TextEditingController();
-  final googleAdress = TextEditingController();
-  bool hasGoogleAddress = false;
+  late TextEditingController fullName;
+  late TextEditingController locality;
+  late TextEditingController appart;
+  late TextEditingController googleAdress;
+  late bool hasGoogleAddress;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialisation des contrôleurs avec les données existantes
+    fullName = TextEditingController(text: widget.book.personName);
+    locality = TextEditingController(text: widget.book.addressLabel);
+    appart = TextEditingController(text: widget.book.apartmentSuiteNote);
+    googleAdress = TextEditingController(text: widget.book.googleAddress);
+    hasGoogleAddress = widget.book.hasGoogleAddress;
+  }
+
+  @override
+  void dispose() {
+    // Nettoyer les contrôleurs pour éviter les fuites de mémoire
+    fullName.dispose();
+    locality.dispose();
+    appart.dispose();
+    googleAdress.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppTheme.primaryColor,
-          iconTheme: const IconThemeData(color: mwhite),
-          title: Text(
-            "Ajout d'adresse book",
-            style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
-          ),
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppTheme.primaryColor,
+        iconTheme: const IconThemeData(color: mwhite),
+        title: Text(
+          "Modifier un carnet",
+          style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            vertical: 40,
-            horizontal: 20,
-          ),
-          child: BlocListener<CreateBookCubit, CreateBookState>(
-            listener: (context, state) {
-              if (state is CreateBookSuccessState) {
-                Helpers().mySnackbar(
-                  context: context,
-                  message: state.message,
-                );
-                context.read<BookCubit>().getBooks();
-                setState(() {
-                  isLoading = false;
-                  // Réinitialisation des champs
-                    fullName.clear();
-                    locality.clear();
-                    appart.clear();
-                    googleAdress.clear();
-                    hasGoogleAddress = false;
-                });
-              } else if (state is CreateBookFailedState) {
-                Helpers().mySnackbar(
-                  context: context,
-                  message: state.message,
-                  color: mred,
-                );
-                setState(() {
-                  isLoading = false;
-                });
-              }
-            },
+      ),
+      body: SizedBox(
+        height: context.height,
+        child: BlocListener<EditBookCubit, EditBookState>(
+          listener: (context, state) {
+            if (state is EditBookSuccessState) {
+              Helpers().mySnackbar(
+                context: context,
+                message: state.message,
+              );
+              context.read<BookCubit>().getBooks();
+            } else if (state is EditBookFailedState) {
+              Helpers().mySnackbar(
+                context: context,
+                color: mred,
+                message: state.message,
+              );
+            }
+          },
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 20,
+            ),
             child: Form(
               key: formKey,
               child: Column(
@@ -168,43 +187,43 @@ class _AddAdresseBookState extends State<AddAdresseBook> {
                         )
                       : const SizedBox(),
                   const SizedBox(height: 40),
-                  isLoading
-                      ? const LoadingCircle()
-                      : SubmitButton(
-                          text: "Save address book",
-                          onTap: () {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            print(fullName.text);
-                            if (formKey.currentState!.validate()) {
-                              if (state is UserSuccessState) {
-                                context.read<CreateBookCubit>().createBooks(
-                                      AdresseBookDTO(
-                                        personName: fullName.text.trim(),
-                                        addressLabel: locality.text.trim(),
-                                        apartmentSuiteNote: appart.text.trim(),
-                                        hasGoogleAddress: hasGoogleAddress,
-                                        googleAddress: hasGoogleAddress
-                                            ? googleAdress.text.trim()
-                                            : "",
-                                        user_id: state.user.id!.toString(),
-                                      ),
-                                    );
-                              } else {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                              }
-                            }
-                          },
-                        ),
                 ],
               ),
             ),
           ),
         ),
-      );
-    });
+      ),
+      bottomSheet: isKeyboardVisible
+          ? const SizedBox()
+          : EditAdresseSheet(
+              button: isLoading
+                  ? const LoadingCircle()
+                  : SubmitButton(
+                      text: "Enregistrer la modification",
+                      onTap: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        context
+                            .read<EditBookCubit>()
+                            .editBook(
+                              AdresseBookDTO(
+                                personName: fullName.text.trim(),
+                                addressLabel: locality.text.trim(),
+                                apartmentSuiteNote: appart.text.trim(),
+                                hasGoogleAddress: hasGoogleAddress,
+                                googleAddress: googleAdress.text.trim(),
+                                user_id: widget.book.user!.id!,
+                              ),
+                            )
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                      },
+                    ),
+            ),
+    );
   }
 }

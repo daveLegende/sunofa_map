@@ -34,6 +34,9 @@
 		<string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<!--  -->
+		<key>NSCameraUsageDescription</key>
+		<string>Nous avons besoin d'accéder à votre caméra pour capturer des images/vidéos.</string>
+
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Nous avons besoin d'accéder au micro pour enregistrer votre voix.</string>
 		<!--  -->

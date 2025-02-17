@@ -190,4 +190,16 @@ class Helpers {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+
+  String removeEmojis(String text) {
+    return text.replaceAll(RegExp(r'[\u{1F600}-\u{1F64F}]', unicode: true), '');
+  }
+
+  ImageProvider getImageProvider(String imagePath) {
+  if (imagePath.startsWith('http')) {
+    return NetworkImage(imagePath);
+  } else {
+    return FileImage(File(imagePath));
+  }
+}
 }

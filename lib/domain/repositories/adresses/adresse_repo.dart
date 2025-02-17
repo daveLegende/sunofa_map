@@ -4,6 +4,7 @@ import 'package:sunofa_map/data/models/id.dto.dart';
 
 abstract class AdresseRepository {
   Future<Either> getAdresses();
+  Future<Either> getAllAdresses();
   Future<Either> getAdresse(IdParms data);
   Future<Either> createAdresse(AdresseDTO data);
   Future<Either> updateAdresse(AdresseDTO data);

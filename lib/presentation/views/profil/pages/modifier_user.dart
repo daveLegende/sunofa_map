@@ -4,6 +4,7 @@ import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
+import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/data/models/user/user.dto.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
@@ -57,34 +58,40 @@ class _ModifierUserInfoScreenState extends State<ModifierUserInfoScreen> {
           ),
         ),
       ),
-      bottomSheet: isKeyboardVisible || isLoading
+      bottomSheet: isKeyboardVisible
           ? const SizedBox()
-          : ModiferUserInfoSheet(
-              onTap: () {
-                print(widget.user.id);
-                setState(() {
-                  isLoading = true;
-                });
-                if (formKey.currentState!.validate()) {
-                  context
-                      .read<UpdateUserCubit>()
-                      .updateUser(
-                        UserDTO(
-                          id: widget.user.id,
-                          name: username.text.trim(),
-                          email: email.text.trim(),
-                          phoneNumber: phone.text.trim(),
-                          password: widget.user.password,
-                        ),
-                      )
-                      .then((value) {
+          : isLoading
+              ? Container(
+                  height: 80,
+                  color: mwhite,
+                  child: const LoadingCircle(),
+                )
+              : ModiferUserInfoSheet(
+                  onTap: () {
+                    // print(widget.user.id);
                     setState(() {
-                      isLoading = false;
+                      isLoading = true;
                     });
-                  });
-                }
-              },
-            ),
+                    if (formKey.currentState!.validate()) {
+                      context
+                          .read<UpdateUserCubit>()
+                          .updateUser(
+                            UserDTO(
+                              id: widget.user.id,
+                              name: username.text.trim(),
+                              email: email.text.trim(),
+                              phoneNumber: phone.text.trim(),
+                              password: widget.user.password,
+                            ),
+                          )
+                          .then((value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                    }
+                  },
+                ),
       body: BlocListener<UpdateUserCubit, UpdateUserState>(
         listener: (context, state) {
           if (state is UpdateUserSuccessState) {

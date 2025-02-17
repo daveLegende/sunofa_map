@@ -55,6 +55,7 @@ class AuthServiceImpl extends AuthService {
       } else {
         message = "Une erreur s'est produite";
         print(message);
+        print(message);
         return Left(message);
       }
     } catch (e) {

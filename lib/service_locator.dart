@@ -67,6 +67,9 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AdresseUseCase>(
     AdresseUseCase(),
   );
+  sl.registerSingleton<AllAdresseUseCase>(
+    AllAdresseUseCase(),
+  );
   sl.registerSingleton<CreateAdresseUseCase>(
     CreateAdresseUseCase(),
   );

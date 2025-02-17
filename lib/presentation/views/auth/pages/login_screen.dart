@@ -79,7 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: AppTheme().stylish1(
                             15,
                             AppTheme.black,
-                            // isBold: true,
                           ),
                         ),
                         SimpleTextField(

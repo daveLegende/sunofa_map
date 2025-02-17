@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       body: Stack(
         children: [
@@ -42,7 +43,7 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          Positioned(
+          isKeyboardVisible ? const SizedBox() : Positioned(
             bottom: 20,
             right: 40,
             left: 40,

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:sunofa_map/domain/entities/created_at.dart';
+import 'package:sunofa_map/domain/entities/medias/media_entity.dart';
 
 class AdresseDTO {
   final String? id;
@@ -15,6 +16,7 @@ class AdresseDTO {
   final bool isFavorited;
   final CreatedAt? createdAt;
   final String user_id;
+  final MediaEntity? media;
 
   AdresseDTO({
     this.id,
@@ -29,6 +31,7 @@ class AdresseDTO {
     this.isFavorited = false,
     required this.user_id,
     this.createdAt,
+    this.media,
   });
 
   // Convertir JSON en objet Dart
@@ -60,6 +63,7 @@ class AdresseDTO {
       'codePin': codePin,
       'isFavorited': isFavorited,
       'user_id': user_id,
+      'media': media!.toJson(),
       // 'createdAt': createdAt!.toJson(),
     };
   }

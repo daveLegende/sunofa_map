@@ -22,13 +22,22 @@ class FirstForm extends StatefulWidget {
     this.selectedLocationOption,
     required this.onSelectionChanged,
     required this.formKey,
+    required this.gaController,
+    required this.isGoogleAddressSelected,
+    required this.isCurrentLocationSelected,
+    required this.onGoogleAddressChanged,
+    required this.onCurrentLocationChanged,
   });
   final UserEntity user;
   final VoidCallback? onTap;
   final int? selectedLocationOption;
   final GlobalKey<FormState> formKey;
   final ValueChanged<int?> onSelectionChanged;
-  final TextEditingController pseudo, info, city, adressName;
+  final bool isGoogleAddressSelected;
+  final bool isCurrentLocationSelected;
+  final ValueChanged<bool> onGoogleAddressChanged;
+  final ValueChanged<bool> onCurrentLocationChanged;
+  final TextEditingController pseudo, gaController, info, city, adressName;
 
   @override
   State<FirstForm> createState() => _FirstFormState();
@@ -117,25 +126,43 @@ class _FirstFormState extends State<FirstForm> {
             ),
             const SizedBox(height: 8),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RadioListTile<int>(
-                  value: 1,
-                  groupValue: widget.selectedLocationOption,
-                  onChanged: widget.onSelectionChanged,
+                CheckboxListTile(
+                  value: widget.isGoogleAddressSelected,
+                  onChanged: (value) => widget.onGoogleAddressChanged(value!),
                   title: Text(
-                    'Mon adresse google',
-                    style: AppTheme().stylish1(15, AppTheme.black),
+                    'Mon adresse Google',
+                    style: AppTheme().stylish1(
+                      15,
+                      mblack,
+                    ),
                   ),
                 ),
-                RadioListTile<int>(
-                  value: 2,
-                  groupValue: widget.selectedLocationOption,
-                  onChanged: (value) {
-                    widget.onSelectionChanged(value);
-                  },
+                // Affichage du champ de texte si "Mon adresse Google" est sélectionné
+                if (widget.isGoogleAddressSelected)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: AppHelpers.buildTextFormField(
+                      controller: widget.gaController,
+                      hint: 'Quartier, Ville, Etat/Région, Code zip, Pays',
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Ce champ ne peut être vide";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                CheckboxListTile(
+                  value: widget.isCurrentLocationSelected,
+                  onChanged: (value) => widget.onCurrentLocationChanged(value!),
                   title: Text(
                     'Ma position actuelle',
-                    style: AppTheme().stylish1(15, AppTheme.black),
+                    style: AppTheme().stylish1(
+                      15,
+                      mblack,
+                    ),
                   ),
                 ),
               ],

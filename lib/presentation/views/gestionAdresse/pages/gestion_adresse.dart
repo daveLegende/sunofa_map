@@ -4,6 +4,7 @@ import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
 import 'package:sunofa_map/presentation/views/itineraire/pages/itineraire.dart';
@@ -13,7 +14,9 @@ class GestionAdresseScreen extends StatelessWidget {
   const GestionAdresseScreen({
     super.key,
     this.adresse,
+    this.user,
   });
+  final UserEntity? user;
   final AdressesEntity? adresse;
 
   @override
@@ -38,7 +41,10 @@ class GestionAdresseScreen extends StatelessWidget {
           style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
         ),
       ),
-      bottomSheet: GestionAdresseSheet(adresse: adresse!),
+      bottomSheet: GestionAdresseSheet(
+        user: user!,
+        adresse: adresse!,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           vertical: 20,
@@ -204,7 +210,9 @@ class GestionAdresseSheet extends StatelessWidget {
   const GestionAdresseSheet({
     super.key,
     required this.adresse,
+    required this.user,
   });
+  final UserEntity user;
   final AdressesEntity adresse;
 
   @override
@@ -217,28 +225,47 @@ class GestionAdresseSheet extends StatelessWidget {
       color: mwhite,
       child: SizedBox(
         height: 60,
-        child: Row(
-          children: [
-            Expanded(
-              child: SubmitButton(
-                text: "Modifier",
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) {
-                        return EditAdresseScreen(
-                          adresse: adresse,
+        child: adresse.user.id == user.id
+            ? Row(
+                children: [
+                  Expanded(
+                    child: SubmitButton(
+                      text: "Modifier",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return EditAdresseScreen(
+                                adresse: adresse,
+                              );
+                            },
+                          ),
                         );
                       },
                     ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: SubmitButton(
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: SubmitButton(
+                      text: "Itinéraire",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return ItineraireScreen(
+                                adresse: adresse,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : SubmitButton(
                 text: "Itinéraire",
                 onTap: () {
                   Navigator.push(
@@ -253,9 +280,6 @@ class GestionAdresseSheet extends StatelessWidget {
                   );
                 },
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

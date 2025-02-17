@@ -12,3 +12,12 @@ class AdresseUseCase implements UseCase<Either, AdresseDTO> {
   }
 
 }
+
+class AllAdresseUseCase implements UseCase<Either, AdresseDTO> {
+
+  @override
+  Future<Either> call({AdresseDTO? params}) async {
+    return sl<AdresseRepository>().getAllAdresses();
+  }
+
+}

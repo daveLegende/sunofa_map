@@ -4,9 +4,12 @@ import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
+import 'package:sunofa_map/presentation/views/dashboard/bloc/all_adresse_cubit.dart';
+import 'package:sunofa_map/presentation/views/dashboard/bloc/all_adresse_state.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_cubit.dart';
 import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
 import 'package:sunofa_map/presentation/views/params/pages/params.dart';
@@ -28,8 +31,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final controller = TextEditingController(text: "Maison IDAH");
+  // final controller = TextEditingController(text: "Maison IDAH");
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final searchController = TextEditingController();
+  bool isSearch = false;
+  List<AdressesEntity> filteredAdresses = [];
+  final FocusNode _focusNode = FocusNode();
 
   String selectedLanguage = 'French';
   void _onLanguageChanged(String newLanguage) {
@@ -42,24 +49,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     // getPermissions();
-    controller.addListener(() {
+    searchController.addListener(() {
       setState(() {});
     });
   }
 
-  // getPermissions() async {
-  //   await Geolocator.openAppSettings();
-  //   await Geolocator.openLocationSettings();
-  // }
-
   @override
   void dispose() {
-    controller.dispose();
+    searchController.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _clearSearch() {
+    searchController.clear();
+    _focusNode.unfocus();
+  }
+
+  void searchPlat(List<AdressesEntity> adresses, String query) {
+    setState(
+      () {
+        if (query.isEmpty) {
+          isSearch = false;
+          filteredAdresses = [];
+        } else {
+          isSearch = true;
+          filteredAdresses = adresses
+              .where(
+                (add) =>
+                    add.adressName.toLowerCase().contains(
+                          query.toLowerCase(),
+                        ) ||
+                    add.pseudo.toLowerCase().contains(query.toLowerCase()) ||
+                    add.city.toLowerCase().contains(query.toLowerCase()),
+              )
+              .toList();
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return PopScope(
       onPopInvoked: (didPop) {},
       child: BlocBuilder<UserCubit, UserState>(
@@ -154,91 +186,127 @@ class _DashboardScreenState extends State<DashboardScreen> {
               selectedLanguage: selectedLanguage,
               onLanguageChanged: _onLanguageChanged,
             ),
-            body: Stack(
-              children: [
-                SizedBox(
-                  width: context.width,
-                  height: context.height,
-                  child: Opacity(
-                    opacity: 0.1,
-                    child: Image.asset(
-                      'assets/dash.jpeg',
-                      fit: BoxFit.cover,
+            body: BlocBuilder<AllAdresseCubit, AllAdresseState>(
+                builder: (context, adState) {
+              return Stack(
+                children: [
+                  SizedBox(
+                    width: context.width,
+                    height: context.height,
+                    child: Opacity(
+                      opacity: 0.1,
+                      child: Image.asset(
+                        'assets/dash.jpeg',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: context.widthPercent(30),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: AppTheme.primaryColor,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                if (state is UserSuccessState) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => AddMapFormScreen(
-                                        user: state.user,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: context.widthPercent(30),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: AppTheme.primaryColor,
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  if (state is UserSuccessState) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => AddMapFormScreen(
+                                          user: state.user,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                } else {
-                                  Helpers().toast(
-                                    color: mblack,
-                                    message: "problème de connection internet!!",
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.add,
-                                        color: AppTheme.white),
-                                    Text(
-                                      'Address',
-                                      style: AppTheme().stylish1(
-                                        15,
-                                        AppTheme.white,
-                                        isBold: true,
-                                      ),
-                                    )
-                                  ],
+                                    );
+                                  } else {
+                                    Helpers().toast(
+                                      color: mblack,
+                                      message:
+                                          "problème de connection internet!!",
+                                    );
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.add,
+                                          color: AppTheme.white),
+                                      Text(
+                                        'Address',
+                                        style: AppTheme().stylish1(
+                                          15,
+                                          AppTheme.white,
+                                          isBold: true,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: context.widthPercent(2)),
-                          Expanded(
-                            child: SearchField(
-                              controller: controller,
+                            SizedBox(width: context.widthPercent(2)),
+                            Expanded(
+                              child: SearchField(
+                                controller: searchController,
+                                onChanged: (value) {
+                                  if (adState is AllAdresseSuccessState) {
+                                    searchPlat(adState.adresses, value);
+                                  }
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    const Expanded(child: SizedBox()),
-                  ],
-                ),
-                if (controller.text == "Maison IDAH")
-                  Positioned(
-                    left: 20,
-                    right: 20,
-                    bottom: context.height / 1.5,
-                    child: const AddresseSearch(),
+                      const Expanded(child: SizedBox()),
+                    ],
                   ),
-              ],
-            ),
+                  if (adState is AllAdresseSuccessState)
+                    Positioned(
+                      left: 20,
+                      right: 20,
+                      top: context.height * .1,
+                      child: (searchController.text.isNotEmpty &&
+                                  filteredAdresses.isEmpty) ||
+                              adState.adresses.isEmpty
+                          ? Container(
+                              color: mtransparent,
+                              height: context.height * .7,
+                              child: Center(
+                                child: Text(
+                                  "Aucune adresse trouvée",
+                                  style: AppTheme().stylish1(15, mblack),
+                                ),
+                              ),
+                            )
+                          : filteredAdresses.isEmpty
+                              ? Container(
+                                  color: mtransparent,
+                                  height: context.height * .7,
+                                  child: Center(
+                                    child: Text(
+                                      "Here the searched addresses are displayed",
+                                      style: AppTheme().stylish1(15, mblack),
+                                    ),
+                                  ),
+                                )
+                              : AddresseSearch(
+                                user: state is UserSuccessState ? state.user : null,
+                                  adresses: filteredAdresses,
+                                ),
+                    ),
+                ],
+              );
+            }),
           );
         },
       ),

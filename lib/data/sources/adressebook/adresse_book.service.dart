@@ -84,7 +84,8 @@ class AdresseBookServiceImpl extends AdresseBookService {
       }
     } catch (e) {
       print("--------------------$e");
-      return const Left("Impossible de créer une adresse book, veuillez réessayer");
+      return const Left(
+          "Impossible de créer une adresse book, veuillez réessayer");
     }
   }
 
@@ -109,11 +110,7 @@ class AdresseBookServiceImpl extends AdresseBookService {
         body: jsonEncode(data.toJsonWithId()),
       );
       String message = "";
-      if (response.statusCode == 200 ||
-          response.statusCode == 201 ||
-          response.statusCode == 302) {
-        // final Map<String, dynamic> data = json.decode(response.body);
-        // CouponEntity coupon = CouponEntity.fromJson(data);
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return const Right("Adresse book modifiée avec succès");
       } else if (response.statusCode == 404) {
         message = "Une erreur s''est produite";
@@ -126,7 +123,9 @@ class AdresseBookServiceImpl extends AdresseBookService {
       }
     } catch (e) {
       print("--------------------$e");
-      return const Left("Impossible de modifer l'adresse book, veuillez réessayer");
+      return const Left(
+        "Impossible de modifer l'adresse book, veuillez réessayer",
+      );
     }
   }
 

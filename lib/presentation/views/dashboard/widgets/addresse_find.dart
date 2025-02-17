@@ -2,143 +2,179 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/buttons/button_border_container.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
+import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
+import 'package:sunofa_map/presentation/views/gestionAdresse/pages/gestion_adresse.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class AddresseSearch extends StatelessWidget {
   const AddresseSearch({
     super.key,
+    required this.adresses, this.user,
   });
+
+  final UserEntity? user;
+
+  final List<AdressesEntity> adresses;
 
   @override
   Widget build(BuildContext context) {
     final pinController = TextEditingController();
     int content = 1;
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) {
-            return Center(
-              child: StatefulBuilder(builder: (context, setState) {
-                return Container(
-                  width: context.width * .7,
-                  height: context.width * .5,
-                  padding: const EdgeInsetsDirectional.all(10),
-                  decoration: BoxDecoration(
-                    color: mwhite,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: content == 1
-                      ? FirstDialogContent(
-                          onPin: () {
-                            setState(() {
-                              content = 2;
-                            });
+    return Container(
+      color: mtransparent,
+      height: context.height * .8,
+      child: ListView.builder(
+        itemCount: adresses.length,
+        itemBuilder: (context, index) {
+          final ad = adresses[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: GestureDetector(
+              onTap: ad.codePin == null || ad.codePin.toString().length < 4
+                  ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return GestionAdresseScreen(
+                              user: user,
+                              adresse: ad,
+                            );
                           },
-                          onTell: () {
-                            setState(() {
-                              content = 3;
-                            });
-                          },
-                        )
-                      : content == 2
-                          ? SecondDialogContent(
-                              controller: pinController,
-                              onTap: () {
-                                setState(() {
-                                  content = 1;
-                                });
-                                Navigator.popAndPushNamed(
-                                  context,
-                                  Routes.infoAdresseScreen,
-                                );
-                              },
-                            )
-                          : ThirdDialogContent(
-                              onTap: () {
-                                Navigator.pop(context);
-                                setState(() {
-                                  content = 1;
-                                });
-                              },
-                            ),
-                );
-              }),
-            );
-          },
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: AppTheme.primaryColor.withOpacity(.1),
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                const ClipOval(
-                  child: Image(
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/villa4.jpg"),
-                  ),
+                        ),
+                      );
+                    }
+                  : () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return Center(
+                            child:
+                                StatefulBuilder(builder: (context, setState) {
+                              return Container(
+                                width: context.width * .8,
+                                height: context.width * .6,
+                                padding: const EdgeInsetsDirectional.all(10),
+                                decoration: BoxDecoration(
+                                  color: mwhite,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: content == 1
+                                    ? FirstDialogContent(
+                                        onPin: () {
+                                          setState(() {
+                                            content = 2;
+                                          });
+                                        },
+                                        onTell: () {
+                                          setState(() {
+                                            content = 3;
+                                          });
+                                        },
+                                      )
+                                    : content == 2
+                                        ? SecondDialogContent(
+                                            controller: pinController,
+                                            onTap: () {
+                                              setState(() {
+                                                content = 1;
+                                              });
+                                              Navigator.popAndPushNamed(
+                                                context,
+                                                Routes.infoAdresseScreen,
+                                              );
+                                            },
+                                          )
+                                        : ThirdDialogContent(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                content = 1;
+                                              });
+                                            },
+                                          ),
+                              );
+                            }),
+                          );
+                        },
+                      );
+                    },
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryColor.withOpacity(.1),
+                  borderRadius: BorderRadius.circular(50),
                 ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Maison IDAH",
-                      style: AppTheme().stylish1(
-                        18,
-                        mblack,
-                        isBold: true,
-                      ),
+                    Row(
+                      children: [
+                        const ClipOval(
+                          child: Image(
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/villa4.jpg"),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              ad.adressName,
+                              style: AppTheme().stylish1(
+                                18,
+                                mblack,
+                                isBold: true,
+                              ),
+                            ),
+                            Text(
+                              ad.city,
+                              style: AppTheme().stylish1(12, mgrey),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Togo, Lomé, Casanblaca ca",
-                      style: AppTheme().stylish1(12, mgrey),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryColor,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Afficher",
+                            style: AppTheme().stylish1(
+                              13,
+                              mwhite,
+                              isBold: true,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          const HeroIcon(
+                            HeroIcons.map,
+                            color: mwhite,
+                            size: 14,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              decoration: BoxDecoration(
-                color: AppTheme.primaryColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Afficher",
-                    style: AppTheme().stylish1(
-                      13,
-                      mwhite,
-                      isBold: true,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  const HeroIcon(
-                    HeroIcons.map,
-                    color: mwhite,
-                    size: 14,
-                  ),
-                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

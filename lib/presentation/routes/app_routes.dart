@@ -3,6 +3,8 @@ import 'package:sunofa_map/chargement.dart';
 import 'package:sunofa_map/presentation/views/about/about.dart';
 import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
 import 'package:sunofa_map/presentation/views/addresses/pages/addresses.dart';
+import 'package:sunofa_map/presentation/views/auth/pages/auth.dart';
+import 'package:sunofa_map/presentation/views/auth/pages/auth_register.dart';
 import 'package:sunofa_map/presentation/views/books/pages/add_adresse_book.dart';
 import 'package:sunofa_map/presentation/views/books/pages/books.dart';
 import 'package:sunofa_map/presentation/views/dashboard/pages/dashboard_screen.dart';
@@ -11,7 +13,7 @@ import 'package:sunofa_map/presentation/views/favoris/pages/favorites.dart';
 import 'package:sunofa_map/presentation/views/gestionAdresse/pages/gestion_adresse.dart';
 import 'package:sunofa_map/presentation/views/home/pages/home.dart';
 import 'package:sunofa_map/presentation/views/auth/pages/login_screen.dart';
-import 'package:sunofa_map/presentation/views/auth/pages/register_screen.dart';
+// import 'package:sunofa_map/presentation/views/auth/pages/register_screen.dart';
 import 'package:sunofa_map/presentation/views/infos/pages/infos.dart';
 import 'package:sunofa_map/presentation/views/itineraire/pages/itineraire.dart';
 import 'package:sunofa_map/presentation/views/notes/pages/add_notes.dart';
@@ -27,6 +29,7 @@ class Routes {
   static const String home2 = '/Home';
   static const String chargement = '/ChargementScreen';
   static const String loginScreen = '/Loginscreen';
+  static const String authScreen = '/Authscreen';
   static const String registerScreen = '/Registerscreen';
   static const String dashboardScreen = '/Dashboardscreen';
   static const String addMapFormScreen = '/AddMapFormScreen';
@@ -60,6 +63,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
       case loginScreen:
         return MaterialPageRoute(builder: (context) => const LoginScreen());
+      case authScreen:
+        return MaterialPageRoute(builder: (context) => const AuthenticateScreen());
       case dashboardScreen:
         return MaterialPageRoute(builder: (context) => const DashboardScreen());
       case addMapFormScreen:

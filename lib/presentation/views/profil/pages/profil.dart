@@ -61,57 +61,57 @@ class _ProfilScreenState extends State<ProfilScreen> {
                 isBold: true,
               ),
             ),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (_) {
-                      return DeleteAdresseWidget(
-                        size: MediaQuery.of(context).size,
-                        delOrLogoutText: "Deconnecter",
-                        text: "Voulez-vous vraiment vous déconnectez ?",
-                        onDel: () async {
-                          await PreferenceServices().removeToken();
-                          await PreferenceServices().removeUser();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (_) {
-                              return const OnboardingScreen();
-                            }),
-                            (route) => false,
-                          );
-                        },
-                        onCancel: () {
-                          Navigator.pop(_);
-                        },
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: BoxDecoration(
-                    color: AppTheme.complementaryColor,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppTheme.complementaryColor,
-                      width: 1,
-                    ),
-                  ),
-                  child: const HeroIcon(
-                    HeroIcons.power,
-                    color: mwhite,
-                    size: 20,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: context.widthPercent(2),
-              ),
-            ],
+            // actions: [
+            //   GestureDetector(
+            //     onTap: () {
+            //       showModalBottomSheet(
+            //         backgroundColor: Colors.transparent,
+            //         context: context,
+            //         builder: (_) {
+            //           return DeleteAdresseWidget(
+            //             size: MediaQuery.of(context).size,
+            //             delOrLogoutText: "Deconnecter",
+            //             text: "Voulez-vous vraiment vous déconnectez ?",
+            //             onDel: () async {
+            //               await PreferenceServices().removeToken();
+            //               await PreferenceServices().removeUser();
+            //               Navigator.pushAndRemoveUntil(
+            //                 context,
+            //                 MaterialPageRoute(builder: (_) {
+            //                   return const OnboardingScreen();
+            //                 }),
+            //                 (route) => false,
+            //               );
+            //             },
+            //             onCancel: () {
+            //               Navigator.pop(_);
+            //             },
+            //           );
+            //         },
+            //       );
+            //     },
+            //     child: Container(
+            //       height: 30,
+            //       width: 30,
+            //       decoration: BoxDecoration(
+            //         color: AppTheme.complementaryColor,
+            //         shape: BoxShape.circle,
+            //         border: Border.all(
+            //           color: AppTheme.complementaryColor,
+            //           width: 1,
+            //         ),
+            //       ),
+            //       child: const HeroIcon(
+            //         HeroIcons.power,
+            //         color: mwhite,
+            //         size: 20,
+            //       ),
+            //     ),
+            //   ),
+            //   SizedBox(
+            //     width: context.widthPercent(2),
+            //   ),
+            // ],
           ),
           body: Container(
             height: context.height,
@@ -120,94 +120,156 @@ class _ProfilScreenState extends State<ProfilScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: SizedBox(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    Center(
-                      child: Center(
-                        child: Stack(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
                           children: [
-                            CircleAvatar(
-                              radius: 80,
-                              child: Image.asset(
-                                "assets/logo.png",
-                                fit: BoxFit.cover,
+                            const CircleAvatar(
+                              radius: 40,
+                              child: Center(
+                                child: HeroIcon(HeroIcons.user, color: mblack,),
                               ),
                             ),
-                            const Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: AppTheme.primaryColor,
-                                child: HeroIcon(
-                                  HeroIcons.camera,
-                                  color: mwhite,
-                                  size: 30,
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state is UserSuccessState
+                                      ? state.user.phoneNumber
+                                      : user.phoneNumber,
+                                  style: AppTheme().stylish1(
+                                    12,
+                                    mgrey,
+                                  ),
                                 ),
-                              ),
+                                Text(
+                                  state is UserSuccessState
+                                      ? state.user.name
+                                      : user.name,
+                                  style: AppTheme().stylish1(
+                                    14,
+                                    mblack,
+                                    isBold: true,
+                                  ),
+                                ),
+                                Text(
+                                  state is UserSuccessState
+                                      ? state.user.email
+                                      : user.email,
+                                  style: AppTheme().stylish1(
+                                    12,
+                                    mgrey,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    UserInfos(user: user),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Gestions",
-                          style: TextStyle(
-                            color: mgrey,
-                            fontSize: 14,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ModifierUserInfoScreen(
+                                    user: state is UserSuccessState
+                                        ? state.user
+                                        : user,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: mwhite,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: const Center(
+                              child: HeroIcon(
+                                HeroIcons.pencil,
+                                color: AppTheme.complementaryColor,
+                              ),
+                            ),
                           ),
                         ),
-                        Column(
-                          children: [
-                            ProfileCustomListTile(
-                              icon: HeroIcons.pencil,
-                              label: "Modifier mes informations",
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) {
-                                      return ModifierUserInfoScreen(user: user);
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            ProfileCustomListTile(
-                              icon: HeroIcons.codeBracket,
-                              label: "Gestion de code PIN",
-                              onTap: () {},
-                            ),
-                            ProfileCustomListTile(
-                              icon: HeroIcons.power,
-                              label: "Se Déconnecter",
-                              iconColor: AppTheme.complementaryColor,
-                              labelColor: AppTheme.complementaryColor,
-                              onTap: () async {
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    UserInfos(
+                        user: state is UserSuccessState ? state.user : user),
+                    const SizedBox(height: 50),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (_) {
+                            return DeleteAdresseWidget(
+                              size: MediaQuery.of(context).size,
+                              delOrLogoutText: "Deconnecter",
+                              text: "Voulez-vous vraiment vous déconnectez ?",
+                              onDel: () async {
                                 await PreferenceServices().removeToken();
                                 await PreferenceServices().removeUser();
                                 Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const Home();
-                                    },
-                                  ),
-                                  (r) => false,
+                                  MaterialPageRoute(builder: (_) {
+                                    return const OnboardingScreen();
+                                  }),
+                                  (route) => false,
                                 );
                               },
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+                              onCancel: () {
+                                Navigator.pop(_);
+                              },
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ],
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ListTile(
+                          title: Text(
+                            "Log Out",
+                            style: AppTheme().stylish1(
+                              16,
+                              AppTheme.complementaryColor,
+                            ),
+                          ),
+                          leading: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 250, 238, 230),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Center(
+                              child: HeroIcon(
+                                HeroIcons.power,
+                                size: 25,
+                                color: AppTheme.complementaryColor,
+                              ),
+                            ),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 25,
+                            color: AppTheme.complementaryColor,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

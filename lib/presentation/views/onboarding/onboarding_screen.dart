@@ -88,7 +88,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/Loginscreen');
+                    Navigator.pushNamed(context, '/Authscreen');
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
