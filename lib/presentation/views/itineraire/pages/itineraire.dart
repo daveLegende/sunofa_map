@@ -7,8 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/common/widgets/arrow_back.dart';
-import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
-import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
@@ -160,6 +158,46 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
     }
   }
 
+  // Future<void> getPolyPoints() async {
+  //   if (_currentPosition == null)
+  //     return; // Évite d'exécuter si la position est inconnue
+
+  //   PolylinePoints polylinePoints = PolylinePoints();
+
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //     googleApiKey: APIURL.apiKey,
+  //     request: PolylineRequest(
+  //       origin: PointLatLng(
+  //         _currentPosition!.latitude,
+  //         _currentPosition!.longitude,
+  //       ),
+  //       destination: PointLatLng(destination.latitude, destination.longitude),
+  //       mode: TravelMode.driving,
+  //     ),
+  //   );
+
+  //   if (result.status == "OK") {
+  //     polylineCoordinates.clear();
+
+  //     for (PointLatLng point in result.points) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     }
+
+  //     setState(() {
+  //       polyline = {
+  //         Polyline(
+  //           polylineId: const PolylineId("route"),
+  //           points: polylineCoordinates,
+  //           color: Colors.blue,
+  //           width: 5,
+  //         ),
+  //       };
+  //     });
+  //   } else {
+  //     print("Erreur Polyline: ${result.errorMessage}");
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     final adresse = widget.adresse!;
@@ -192,7 +230,7 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
                         (_currentPosition!.longitude + destination.longitude) /
                             2,
                       ),
-                zoom: 15,
+                zoom: 17.5,
               ),
               polylines: {
                 Polyline(
@@ -224,7 +262,7 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
                       target: _currentPosition!,
-                      zoom: 13.5,
+                      zoom: 17.5,
                     ),
                   ),
                 );

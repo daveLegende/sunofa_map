@@ -118,10 +118,10 @@ class GestionAdresseScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Images",
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
@@ -131,13 +131,13 @@ class GestionAdresseScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AdresseImage(
-                                image: "assets/villa.jpg",
+                                image: address.media!.photo1!,
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: AdresseImage(
-                                image: "assets/villa5.jpg",
+                                image: address.media!.photo1!,
                               ),
                             ),
                           ],
@@ -168,10 +168,10 @@ class GestionAdresseScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Vidéos",
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
@@ -181,13 +181,13 @@ class GestionAdresseScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AdresseImage(
-                                image: "assets/villa.jpg",
+                                image: address.media!.photo1!,
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: AdresseImage(
-                                image: "assets/villa5.jpg",
+                                image: address.media!.photo1!,
                               ),
                             ),
                           ],

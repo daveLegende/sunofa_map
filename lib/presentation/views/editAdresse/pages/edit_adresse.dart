@@ -10,6 +10,7 @@ import 'package:sunofa_map/data/models/adresses/adresse.dto.dart';
 import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_cubit.dart';
+import 'package:sunofa_map/presentation/views/dashboard/bloc/all_adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/bloc/edit_adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/bloc/edit_adresse_state.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
@@ -105,6 +106,7 @@ class _EditAdresseScreenState extends State<EditAdresseScreen> {
                         message: state.message,
                       );
                       context.read<AdresseCubit>().getAdresses();
+                      context.read<AllAdresseCubit>().getAllAdresses();
                     } else if (state is EditAdresseFailedState) {
                       Helpers().mySnackbar(
                         context: context,

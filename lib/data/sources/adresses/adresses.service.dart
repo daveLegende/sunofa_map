@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:sunofa_map/common/api/api.dart';
+import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/data/models/adresses/adresse.dto.dart';
 import 'package:sunofa_map/data/models/id.dto.dart';
 
@@ -94,13 +95,15 @@ class AdresseServiceImpl extends AdresseService {
         }
       }
 
+      final audio1 = await Helpers().convertM4AToMP3(data.media!.audio1!);
+
       // ✅ Ajout sécurisé des fichiers
       await addFileIfExists(data.media!.photo1, 'photo1');
       await addFileIfExists(data.media!.photo2, 'photo2');
       await addFileIfExists(data.media!.video1, 'video1');
       await addFileIfExists(data.media!.video2, 'video2');
       await addFileIfExists(
-        data.media!.audio1,
+        audio1,
         'audio1',
         validExtensions: ['mp3', 'wav', 'ogg', 'm4a'],
       );

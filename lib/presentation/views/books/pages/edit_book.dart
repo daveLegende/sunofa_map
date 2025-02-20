@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
+import 'package:sunofa_map/common/widgets/arrow_back.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
@@ -62,11 +63,13 @@ class _EditBookScreenState extends State<EditBookScreen> {
     final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
-        iconTheme: const IconThemeData(color: mwhite),
+          backgroundColor: mwhite,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: const BackArrow(),
         title: Text(
           "Modifier un carnet",
-          style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
+          style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
         ),
       ),
       body: SizedBox(

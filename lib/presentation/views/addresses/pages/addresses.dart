@@ -124,9 +124,7 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                   Helpers().toast(message: stat.message);
                                 } else if (stat is DeleteAdresseSuccessState) {
                                   // state.adresses.removeAt(index);
-                                  context
-                                      .read<AdresseCubit>()
-                                      .getAdresses();
+                                  context.read<AdresseCubit>().getAdresses();
                                 }
                               },
                               child: GestureDetector(
@@ -138,7 +136,9 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                     MaterialPageRoute(
                                       builder: (_) {
                                         return GestionAdresseScreen(
-                                          user: uState is UserSuccessState ? uState.user : null,
+                                          user: uState is UserSuccessState
+                                              ? uState.user
+                                              : null,
                                           adresse: adresse,
                                         );
                                       },
@@ -202,6 +202,7 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                                 adresse.city,
                                                 style: AppTheme()
                                                     .stylish1(16, mgrey),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
                                                 Helpers().timeAgo(

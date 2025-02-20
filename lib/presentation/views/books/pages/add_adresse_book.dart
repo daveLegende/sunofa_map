@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
+import 'package:sunofa_map/common/widgets/arrow_back.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/fields/simple_textfield.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/data/models/adressebook/adresse_book.dto.dart';
+import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/book_cubit.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/create/create_cubit.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/create/create_state.dart';
@@ -33,11 +35,13 @@ class _AddAdresseBookState extends State<AddAdresseBook> {
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppTheme.primaryColor,
-          iconTheme: const IconThemeData(color: mwhite),
+          backgroundColor: mwhite,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: const BackArrow(),
           title: Text(
             "Ajout d'adresse book",
-            style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
+            style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
           ),
         ),
         body: SingleChildScrollView(
@@ -56,11 +60,11 @@ class _AddAdresseBookState extends State<AddAdresseBook> {
                 setState(() {
                   isLoading = false;
                   // Réinitialisation des champs
-                    fullName.clear();
-                    locality.clear();
-                    appart.clear();
-                    googleAdress.clear();
-                    hasGoogleAddress = false;
+                  fullName.clear();
+                  locality.clear();
+                  appart.clear();
+                  googleAdress.clear();
+                  hasGoogleAddress = false;
                 });
               } else if (state is CreateBookFailedState) {
                 Helpers().mySnackbar(

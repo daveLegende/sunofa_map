@@ -11,7 +11,8 @@ import 'package:sunofa_map/themes/app_themes.dart';
 class AddresseSearch extends StatelessWidget {
   const AddresseSearch({
     super.key,
-    required this.adresses, this.user,
+    required this.adresses,
+    this.user,
   });
 
   final UserEntity? user;
@@ -32,7 +33,8 @@ class AddresseSearch extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: GestureDetector(
-              onTap: ad.codePin == null || ad.codePin.toString().length < 4
+              onTap: (ad.codePin == null || ad.codePin.toString().length < 4) ||
+                      user!.id == ad.user.id
                   ? () {
                       Navigator.push(
                         context,
@@ -101,16 +103,15 @@ class AddresseSearch extends StatelessWidget {
                         },
                       );
                     },
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withOpacity(.1),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(.1),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Row(
                       children: [
                         const ClipOval(
                           child: Image(
@@ -121,56 +122,54 @@ class AddresseSearch extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              ad.adressName,
-                              style: AppTheme().stylish1(
-                                18,
-                                mblack,
-                                isBold: true,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                ad.adressName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTheme().stylish1(
+                                  18,
+                                  mblack,
+                                  isBold: true,
+                                ),
                               ),
-                            ),
-                            Text(
-                              ad.city,
-                              style: AppTheme().stylish1(12, mgrey),
-                            ),
-                          ],
+                              Text(
+                                ad.city,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTheme().stylish1(12, mgrey),
+                              ),
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 50),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 10,
+                    child: Container(
+                      width: 30,
+                      height: 30,
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Afficher",
-                            style: AppTheme().stylish1(
-                              13,
-                              mwhite,
-                              isBold: true,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          const HeroIcon(
-                            HeroIcons.map,
-                            color: mwhite,
-                            size: 14,
-                          ),
-                        ],
+                      child: const Center(
+                        child: Icon(
+                          Icons.arrow_forward_ios,
+                          color: mwhite,
+                          size: 15,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

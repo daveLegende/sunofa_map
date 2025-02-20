@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
@@ -49,7 +48,7 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
   bool isCurrentLocationSelected = false;
   int? protegerPin = 2;
   int current = 1;
-  double? latitude, longitude;
+  double? latitude = 0, longitude;
   //
   StepByStep currentStep = StepByStep.STEP_1;
   OpenSection openSection = OpenSection.OPEN_0;
@@ -58,6 +57,12 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
   List<File> selectedImages = [];
   List<File> selectedVideos = [];
   List<File> selectedAudios = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getPositionActuel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,37 +231,48 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                           city: city,
                           info: info,
                           gaController: gaController,
-                          selectedLocationOption: selectedLocationOption,
-                          onSelectionChanged: (value) async {
-                            setState(() {
-                              selectedLocationOption = value;
-                            });
-                            try {
-                              Position position = await getPositionActuel();
-
-                              latitude = position.latitude;
-                              longitude = position.longitude;
-                            } catch (e) {
-                              Helpers().mySnackbar(
-                                context: context,
-                                message: e.toString(),
-                                color: Colors.red,
-                              );
-                            }
-                          },
                           isGoogleAddressSelected: isGoogleAddressSelected,
                           isCurrentLocationSelected: isCurrentLocationSelected,
-                          onGoogleAddressChanged: (value) {
-                            setState(() {
-                              isGoogleAddressSelected = value;
-                            });
-                          },
+                          onGoogleAddressChanged: !isGoogleAddressSelected
+                              ? (value) {
+                                  print(value);
+                                  setState(() {
+                                    isGoogleAddressSelected = value;
+                                  });
+                                }
+                              : (value) async {
+                                  setState(() {
+                                    isGoogleAddressSelected = value;
+                                  });
+                                  try {
+                                    Position position =
+                                        await getPositionActuel();
+                                    print(
+                                        "-------------------position $position");
+
+                                    setState(() {
+                                      latitude = position.latitude;
+                                      longitude = position.longitude;
+                                    });
+                                    print(
+                                      "Longitude *************$longitude\n Latitude**************$latitude",
+                                    );
+                                  } catch (e) {
+                                    Helpers().mySnackbar(
+                                      context: context,
+                                      message: e.toString(),
+                                      color: Colors.red,
+                                    );
+                                  }
+                                },
                           onCurrentLocationChanged: (value) {
                             setState(() {
                               isCurrentLocationSelected = value;
                             });
                           },
                           onTap: () {
+                            print(
+                                "--------------------------- $longitude\n---------------$latitude");
                             if (formKey1.currentState!.validate() &&
                                 (isGoogleAddressSelected ||
                                     isCurrentLocationSelected)) {
@@ -391,6 +407,34 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
     );
   }
 
+  // Future<Position> getPositionActuel() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+
+  //   // Vérifier si les services de localisation sont activés
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     throw Exception('Les services de localisation sont désactivés.');
+  //   }
+
+  //   // Vérifier les permissions
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       throw Exception('Les permissions de localisation ont été refusées');
+  //     }
+  //   }
+
+  //   if (permission == LocationPermission.deniedForever) {
+  //     throw Exception(
+  //       'Les permissions de localisation sont définitivement refusées.',
+  //     );
+  //   }
+
+  //   // Obtenir la position actuelle
+  //   return await Geolocator.getCurrentPosition();
+  // }
   Future<Position> getPositionActuel() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -406,18 +450,31 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
+        print("Les permissions de localisation ont été refusées");
         throw Exception('Les permissions de localisation ont été refusées');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
+      print("Les permissions de localisation sont définitivement refusées.");
       throw Exception(
         'Les permissions de localisation sont définitivement refusées.',
       );
     }
 
     // Obtenir la position actuelle
-    return await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // setState(() {
+      latitude = position.latitude;
+      longitude = position.longitude;
+    // });
+
+    print("Latitude: ${position.latitude}, Longitude: ${position.longitude}\\n$longitude $latitude");
+
+    return position;
   }
 }
 

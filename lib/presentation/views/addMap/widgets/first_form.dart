@@ -20,7 +20,7 @@ class FirstForm extends StatefulWidget {
     required this.city,
     required this.adressName,
     this.selectedLocationOption,
-    required this.onSelectionChanged,
+    // required this.onSelectionChanged,
     required this.formKey,
     required this.gaController,
     required this.isGoogleAddressSelected,
@@ -32,7 +32,7 @@ class FirstForm extends StatefulWidget {
   final VoidCallback? onTap;
   final int? selectedLocationOption;
   final GlobalKey<FormState> formKey;
-  final ValueChanged<int?> onSelectionChanged;
+  // final ValueChanged<int?> onSelectionChanged;
   final bool isGoogleAddressSelected;
   final bool isCurrentLocationSelected;
   final ValueChanged<bool> onGoogleAddressChanged;

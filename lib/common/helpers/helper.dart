@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/core/utils/constant.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
+import 'package:nyx_converter/nyx_converter.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Helpers {
   // get color
@@ -196,10 +198,31 @@ class Helpers {
   }
 
   ImageProvider getImageProvider(String imagePath) {
-  if (imagePath.startsWith('http')) {
-    return NetworkImage(imagePath);
-  } else {
-    return FileImage(File(imagePath));
+    if (imagePath.startsWith('http')) {
+      return NetworkImage(imagePath);
+    } else {
+      return FileImage(File(imagePath));
+    }
   }
-}
+
+  Future<String?> convertM4AToMP3(String inputFilePath) async {
+    try {
+      // Obtenir le répertoire de stockage temporaire
+      Directory tempDir = await getTemporaryDirectory();
+      String outputFilePath = '${tempDir.path}/converted_audio.mp3';
+
+      // Effectuer la conversion
+      await NyxConverter.convertTo(
+        inputFilePath,
+        outputFilePath,
+        container: NyxContainer.mp3,
+      );
+
+      print("Conversion terminée : $outputFilePath");
+      return outputFilePath;
+    } catch (e) {
+      print("Erreur lors de la conversion : $e");
+      return null;
+    }
+  }
 }

@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:sunofa_map/common/api/api.dart';
+import 'package:sunofa_map/data/sources/files/files.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/addMap/bloc/create_adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/addresses/bloc/adresse_cubit.dart';
@@ -41,6 +43,9 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initializeDependencies();
   HttpOverrides.global = MyHttpOverrides();
+  // await FilePermission.getPermissionToImages();
+  // await FilePermission.getPermissionToVideos();
+  // await FilePermission.getPermissionToAudios();
   runApp(const MyApp());
 
   FlutterNativeSplash.remove();

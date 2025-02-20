@@ -66,7 +66,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _focusNode.unfocus();
   }
 
-  void searchPlat(List<AdressesEntity> adresses, String query) {
+  void searchAddress(List<AdressesEntity> adresses, String query) {
     setState(
       () {
         if (query.isEmpty) {
@@ -91,225 +91,239 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    return PopScope(
-      onPopInvoked: (didPop) {},
-      child: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          return Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text(
-                'Sunofa Map',
-                style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
-              ),
-              leading: IconButton(
-                icon: const Icon(Icons.menu, color: AppTheme.white),
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
+    // final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    return BlocBuilder<UserCubit, UserState>(
+      builder: (context, state) {
+        return Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+            title: Text(
+              'Sunofa Map',
+              style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.menu, color: AppTheme.white),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  if (state is UserSuccessState) {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.notifScreen,
+                    );
+                  } else {
+                    Helpers().toast(
+                      color: mblack,
+                      message: "problème de connection internet!!",
+                    );
+                  }
                 },
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppTheme.white,
+                      width: 1,
+                    ),
+                  ),
+                  child: const HeroIcon(
+                    HeroIcons.bellAlert,
+                    color: AppTheme.white,
+                    size: 20,
+                  ),
+                ),
               ),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    if (state is UserSuccessState) {
-                      Navigator.pushNamed(
-                        context,
-                        Routes.notifScreen,
-                      );
-                    } else {
-                      Helpers().toast(
-                        color: mblack,
-                        message: "problème de connection internet!!",
-                      );
-                    }
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppTheme.white,
-                        width: 1,
+              SizedBox(
+                width: context.widthPercent(2),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (state is UserSuccessState) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ParamScreen(user: state.user),
                       ),
-                    ),
-                    child: const HeroIcon(
-                      HeroIcons.bellAlert,
+                    );
+                  } else {
+                    Helpers().toast(
+                      color: mblack,
+                      message: "problème de connection internet!!",
+                    );
+                  }
+                },
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
                       color: AppTheme.white,
-                      size: 20,
                     ),
                   ),
+                  child: const HeroIcon(
+                    HeroIcons.cog,
+                    color: AppTheme.white,
+                    size: 20,
+                  ),
                 ),
+              ),
+              SizedBox(
+                width: context.widthPercent(3),
+              ),
+            ],
+            backgroundColor: AppTheme.primaryColor,
+          ),
+          drawer: NavigationDrawer(
+            selectedLanguage: selectedLanguage,
+            onLanguageChanged: _onLanguageChanged,
+          ),
+          body: BlocBuilder<AllAdresseCubit, AllAdresseState>(
+              builder: (context, adState) {
+            return Stack(
+              children: [
                 SizedBox(
-                  width: context.widthPercent(2),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (state is UserSuccessState) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ParamScreen(user: state.user),
-                        ),
-                      );
-                    } else {
-                      Helpers().toast(
-                        color: mblack,
-                        message: "problème de connection internet!!",
-                      );
-                    }
-                  },
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppTheme.white,
-                      ),
-                    ),
-                    child: const HeroIcon(
-                      HeroIcons.cog,
-                      color: AppTheme.white,
-                      size: 20,
+                  width: context.width,
+                  height: context.height,
+                  child: Opacity(
+                    opacity: 0.1,
+                    child: Image.asset(
+                      'assets/dash.jpeg',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: context.widthPercent(3),
-                ),
-              ],
-              backgroundColor: AppTheme.primaryColor,
-            ),
-            drawer: NavigationDrawer(
-              selectedLanguage: selectedLanguage,
-              onLanguageChanged: _onLanguageChanged,
-            ),
-            body: BlocBuilder<AllAdresseCubit, AllAdresseState>(
-                builder: (context, adState) {
-              return Stack(
-                children: [
-                  SizedBox(
-                    width: context.width,
-                    height: context.height,
-                    child: Opacity(
-                      opacity: 0.1,
-                      child: Image.asset(
-                        'assets/dash.jpeg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: context.widthPercent(30),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: AppTheme.primaryColor,
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  if (state is UserSuccessState) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => AddMapFormScreen(
-                                          user: state.user,
-                                        ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: context.widthPercent(30),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppTheme.primaryColor,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                if (state is UserSuccessState) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => AddMapFormScreen(
+                                        user: state.user,
                                       ),
-                                    );
-                                  } else {
-                                    Helpers().toast(
-                                      color: mblack,
-                                      message:
-                                          "problème de connection internet!!",
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(Icons.add,
-                                          color: AppTheme.white),
-                                      Text(
-                                        'Address',
-                                        style: AppTheme().stylish1(
-                                          15,
-                                          AppTheme.white,
-                                          isBold: true,
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                  );
+                                } else {
+                                  Helpers().toast(
+                                    color: mblack,
+                                    message:
+                                        "problème de connection internet!!",
+                                  );
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.add,
+                                        color: AppTheme.white),
+                                    Text(
+                                      'Address',
+                                      style: AppTheme().stylish1(
+                                        15,
+                                        AppTheme.white,
+                                        isBold: true,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                            SizedBox(width: context.widthPercent(2)),
-                            Expanded(
-                              child: SearchField(
-                                controller: searchController,
-                                onChanged: (value) {
-                                  if (adState is AllAdresseSuccessState) {
-                                    searchPlat(adState.adresses, value);
-                                  }
-                                },
-                              ),
+                          ),
+                          SizedBox(width: context.widthPercent(2)),
+                          Expanded(
+                            child: SearchField(
+                              controller: searchController,
+                              onChanged: (value) {
+                                if (adState is AllAdresseSuccessState) {
+                                  searchAddress(adState.adresses, value);
+                                }
+                              },
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Expanded(child: SizedBox()),
+                  ],
+                ),
+                adState is AllAdresseSuccessState
+                    ? Positioned(
+                        left: 20,
+                        right: 20,
+                        top: context.height * .1,
+                        child: (searchController.text.isNotEmpty &&
+                                    filteredAdresses.isEmpty) ||
+                                adState.adresses.isEmpty
+                            ? Container(
+                                color: mtransparent,
+                                height: context.height * .7,
+                                child: Center(
+                                  child: Text(
+                                    "Aucune adresse trouvée",
+                                    style: AppTheme().stylish1(15, mblack),
+                                  ),
+                                ),
+                              )
+                            : filteredAdresses.isEmpty
+                                ? Container(
+                                    color: mtransparent,
+                                    height: context.height * .7,
+                                    child: Center(
+                                      child: Text(
+                                        "Here the searched addresses are displayed",
+                                        style: AppTheme().stylish1(15, mblack),
+                                      ),
+                                    ),
+                                  )
+                                : AddresseSearch(
+                                    user: state is UserSuccessState
+                                        ? state.user
+                                        : null,
+                                    adresses: filteredAdresses,
+                                  ),
+                      )
+                    : Positioned(
+                        left: 20,
+                        right: 20,
+                        top: context.height * .1,
+                        child: Container(
+                          color: mtransparent,
+                          height: context.height * .7,
+                          child: Center(
+                            child: Text(
+                              "Displaying...",
+                              style: AppTheme().stylish1(15, mblack),
+                            ),
+                          ),
                         ),
                       ),
-                      const Expanded(child: SizedBox()),
-                    ],
-                  ),
-                  if (adState is AllAdresseSuccessState)
-                    Positioned(
-                      left: 20,
-                      right: 20,
-                      top: context.height * .1,
-                      child: (searchController.text.isNotEmpty &&
-                                  filteredAdresses.isEmpty) ||
-                              adState.adresses.isEmpty
-                          ? Container(
-                              color: mtransparent,
-                              height: context.height * .7,
-                              child: Center(
-                                child: Text(
-                                  "Aucune adresse trouvée",
-                                  style: AppTheme().stylish1(15, mblack),
-                                ),
-                              ),
-                            )
-                          : filteredAdresses.isEmpty
-                              ? Container(
-                                  color: mtransparent,
-                                  height: context.height * .7,
-                                  child: Center(
-                                    child: Text(
-                                      "Here the searched addresses are displayed",
-                                      style: AppTheme().stylish1(15, mblack),
-                                    ),
-                                  ),
-                                )
-                              : AddresseSearch(
-                                user: state is UserSuccessState ? state.user : null,
-                                  adresses: filteredAdresses,
-                                ),
-                    ),
-                ],
-              );
-            }),
-          );
-        },
-      ),
+              ],
+            );
+          }),
+        );
+      },
     );
   }
 }
