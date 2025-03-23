@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
@@ -19,8 +20,8 @@ class SettingProfilCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Mon Profil",
+        Text(
+          "param.profil_label".tr(),
           style: TextStyle(
             fontSize: 14,
             color: mgrey,
@@ -72,7 +73,7 @@ class SettingProfilCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Center(
                     child: Text(
-                      "Voir mon profil",
+                      "param.see_profil".tr(),
                       style: AppTheme().stylish1(
                         15,
                         AppTheme.primaryColor,

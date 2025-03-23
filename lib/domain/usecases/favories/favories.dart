@@ -1,14 +1,14 @@
-// import 'package:dartz/dartz.dart';
-// import 'package:tournoi_zemoz/core/usecases/usecase.dart';
-// import 'package:tournoi_zemoz/features/data/models/poule/poule.dto.dart';
-// import 'package:tournoi_zemoz/features/domain/repositories/poule/poule_repository.dart';
-// import 'package:tournoi_zemoz/service_locator.dart';
+import 'package:dartz/dartz.dart';
+import 'package:sunofa_map/core/usecases/usecase.dart';
+import 'package:sunofa_map/data/models/favories/favories.dto.dart';
+import 'package:sunofa_map/domain/repositories/favories/favories_repository.dart';
+import 'package:sunofa_map/service_locator.dart';
 
-// class PouleUseCase implements UseCase<Either, PouleDTO> {
+class FavorisUseCase implements UseCase<Either, FavoriesDTO> {
 
-//   @override
-//   Future<Either> call({PouleDTO? params}) async {
-//     return sl<PouleRepository>().getPoules();
-//   }
+  @override
+  Future<Either> call({FavoriesDTO? params}) async {
+    return sl<FavoriesRepository>().getFavories();
+  }
 
-// }
+}

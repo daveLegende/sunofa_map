@@ -23,14 +23,14 @@ class SubmitButton extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 50,
+            horizontal: 20,
             vertical: 15,
           ),
           child: Center(
             child: Text(
               text,
               style: AppTheme().stylish1(
-                16,
+                15,
                 AppTheme.white,
                 isBold: true,
               ),

@@ -53,7 +53,7 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
     super.initState();
     _initializeLocation();
     final adresse = widget.adresse!;
-    destination = LatLng(adresse.latitude, adresse.longitude);
+    destination = LatLng(adresse.latitude!, adresse.longitude!);
     // _currentPosition =
     //     LatLng(adresse.latitude + 0.002, adresse.longitude - 0.00002);
   }
@@ -120,21 +120,58 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
     }
   }
 
+  // getPolyPoints() async {
+  //   PolylinePoints polylinePoints = PolylinePoints();
+
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //     googleApiKey: APIURL.apiKey,
+  //     request: PolylineRequest(
+  //       origin: _currentPosition == null
+  //           ? PointLatLng(
+  //               destination.latitude + 0.002,
+  //               destination.longitude - 0.002,
+  //             )
+  //           : PointLatLng(
+  //               _currentPosition!.latitude,
+  //               _currentPosition!.longitude,
+  //             ),
+  //       destination: PointLatLng(destination.latitude, destination.longitude),
+  //       mode: TravelMode.driving,
+  //     ),
+  //   );
+
+  //   if (result.points.isNotEmpty) {
+  //     polylineCoordinates.clear();
+
+  //     // Ajouter le point de départ
+  //     polylineCoordinates.add(_currentPosition!);
+
+  //     // Ajouter les points intermédiaires
+  //     result.points.forEach((PointLatLng point) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     });
+
+  //     // Ajouter le point d'arrivée
+  //     polylineCoordinates.add(destination);
+
+  //     setState(() {});
+  //   }
+  // }
   getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
+
+    PointLatLng origin = _currentPosition == null
+        ? PointLatLng(
+            destination.latitude + 0.002, destination.longitude - 0.002)
+        : PointLatLng(_currentPosition!.latitude, _currentPosition!.longitude);
+
+    print("Départ: ${origin.latitude}, ${origin.longitude}");
+    print("Arrivée: ${destination.latitude}, ${destination.longitude}");
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleApiKey: APIURL.apiKey,
       request: PolylineRequest(
-        origin: _currentPosition == null
-            ? PointLatLng(
-                destination.latitude + 0.002,
-                destination.longitude - 0.002,
-              )
-            : PointLatLng(
-                _currentPosition!.latitude,
-                _currentPosition!.longitude,
-              ),
+        origin: origin,
         destination: PointLatLng(destination.latitude, destination.longitude),
         mode: TravelMode.driving,
       ),
@@ -143,18 +180,23 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
     if (result.points.isNotEmpty) {
       polylineCoordinates.clear();
 
-      // Ajouter le point de départ
-      polylineCoordinates.add(_currentPosition!!);
+      if (_currentPosition != null) {
+        polylineCoordinates.add(LatLng(
+          _currentPosition!.latitude,
+          _currentPosition!.longitude,
+        ));
+      }
 
-      // Ajouter les points intermédiaires
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
 
-      // Ajouter le point d'arrivée
-      polylineCoordinates.add(destination);
+      polylineCoordinates
+          .add(LatLng(destination.latitude, destination.longitude));
 
       setState(() {});
+    } else {
+      print("Aucun itinéraire trouvé ! Erreur: ${result.errorMessage}");
     }
   }
 
@@ -213,6 +255,8 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               zoomControlsEnabled: false,
+              // liteModeEnabled: true,
+              layoutDirection: TextDirection.ltr,
               markers: markers,
               initialCameraPosition: CameraPosition(
                 target: _currentPosition == null
@@ -238,6 +282,7 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
                   points: polylineCoordinates,
                   color: AppTheme.primaryColor,
                   width: 8,
+                  geodesic: true,
                 )
               },
               onMapCreated: (mapController) {
@@ -265,6 +310,7 @@ class _ItineraireScreenState extends State<ItineraireScreen> {
                       zoom: 17.5,
                     ),
                   ),
+                  // r
                 );
               },
               child: ClipOval(

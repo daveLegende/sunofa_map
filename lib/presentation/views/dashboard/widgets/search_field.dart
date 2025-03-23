@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
@@ -16,7 +17,7 @@ class SearchField extends StatelessWidget {
       controller: controller,
       cursorColor: AppTheme.primaryColor,
       decoration: InputDecoration(
-        hintText: "Recherche.....",
+        hintText: "dashboard.search_hint".tr(),
         hintStyle: AppTheme().stylish1(15, AppTheme.black),
         suffixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(

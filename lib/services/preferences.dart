@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 
@@ -63,5 +64,58 @@ class PreferenceServices {
   Future<void> removeUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(userString);
+  }
+
+  Future<void> saveNotificationPermission() async {
+    // Récupérer la permission des notifications
+    bool hasPermission = await OneSignal.Notifications.permission;
+
+    // Sauvegarder la valeur dans SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notification_permission', hasPermission);
+
+    print("Permission des notifications sauvegardée : $hasPermission");
+  }
+
+  Future<bool?> getNotificationPermission() async {
+    // Récupérer la valeur depuis SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? hasPermission = prefs.getBool('notification_permission');
+
+    print("Permission des notifications récupérée : $hasPermission");
+    return hasPermission;
+  }
+
+  Future<void> saveNotification(OSNotification notification) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Récupérer la liste actuelle des notifications
+    final List<String> notificationsJson =
+        prefs.getStringList('notifications') ?? [];
+
+    // Convertir la notification en JSON
+    final notificationJson = {
+      'title': notification.title,
+      'body': notification.body,
+      'subtitle': notification.subtitle,
+      // 'timestamp': DateTime.now().toIso8601String(),
+    };
+
+    // Ajouter la nouvelle notification à la liste
+    notificationsJson!.add(json.encode(notificationJson));
+
+    // Sauvegarder la liste mise à jour
+    await prefs.setStringList('notifications', notificationsJson);
+  }
+
+  Future<List<Map<String, dynamic>>> getSavedNotifications() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> notificationsJson =
+        prefs.getStringList('notifications') ?? [];
+
+    // Convertir les JSON en objets Map
+    return notificationsJson
+        .map((jsonString) => json.decode(jsonString) as Map<String, dynamic>)
+        .toList();
   }
 }

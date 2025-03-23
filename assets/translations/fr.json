@@ -1,0 +1,407 @@
+{
+    "onboarding": {
+        "add_address": "Ajouter\n adresse",
+        "join_address": "Joindre\n adresse",
+        "welcome": "Bienvenue à",
+        "sunofa": "Sunofa Map",
+        "connexion": "Connexion"
+    },
+    "login": {
+        "title": "Connexion",
+        "desc": "Veuillez entrer vos identifiants de connexion pour continuer",
+        "email_label": "Email",
+        "email_empty": "Veuillez entrer votre email",
+        "pass_label": "Password",
+        "pass_empty": "Veuillez entrer un numéro valide",
+        "pass_forget": "Mot de passe oublié ?",
+        "connexion": "Connexion",
+        "not_have_account": "Vous n'avez pas de compte ? ",
+        "create_account": "S'enrégistrer"
+    },
+    "register": {
+        "title": "Création de compte",
+        "desc": "Veuillez remplir ces champs pour créer votre compte.",
+        "name_label": "Nom d'utilisateur",
+        "username_empty": "Veuillez entrer votre nom d'utilisateur",
+        "phone_label": "Numéro de téléphone",
+        "confirm_pass": "Confirmer votre mot de passe",
+        "confirm_empty": "Veuillez confirmer votre mot de passe",
+        "pass_dont_match": "Les mots de passe ne correspondent pas",
+        "create_account": "Créer le compte",
+        "try_error": "Erreur lors de la création de compte, veuillez réessayer"
+    },
+    "dashboard": {
+        "address": "Adresse",
+        "ad_empty": "Aucune adresse trouvée",
+        "initial_text": "Ici s'affichent les adresses recherchées",
+        "chargement": "Chargement...",
+        "search_hint": "Recherche...",
+        "pin_hint": "Entrer le code",
+        "pin_length": "Minimum 4 chiffres",
+        "pin_not_match": "Le code PIN ne correspond pas.",
+        "first_title": "Cette adresse est privée, saisissez le code PIN ou envoyez une demande d'accès",
+        "first_write": "Saisir le code PIN",
+        "first_ask": "Demander code PIN",
+        "second_title": "Saisissez le code PIN de votre correspondant",
+        "valid": "Valider",
+        "third_title": "Demande de code PIN envoyée",
+        "third_desc": "Vous aurez le code PIN dans vos notifications lorsque votre correspondant aura approuvé votre demande",
+        "ok": "OK",
+        "network_error": "problème de connection internet!!"
+    },
+    "add_address": {
+        "appbar": "Ajouter une adresse",
+        "success_message": "Adresse ajoutée avec succès",
+        "failed_message": "Une erreur s'est produite",
+        "try_message": "Impossible de créer cette adresse, veuillez réessayer",
+        "first_error": "Veuillez cocher une des cases de position",
+        "first": {
+            "pseudo_label": "Créer un identifiant",
+            "pseudo_error": "Minimum 3 lettres",
+            "name_label": "Nom de l'adresse",
+            "name_error": "Minimum 3 lettres",
+            "city_label": "Pays, ville, quartier ou rue",
+            "city_error": "Ce champ ne peut être vide",
+            "position_label": "Position",
+            "google_address": "Utiliser une adresse Google",
+            "ga_hint": "Quartier, Ville, Etat/Région, Code zip, Pays",
+            "current_position": "Utiliser ma position actuelle",
+            "info_label": "Information concernant l'adresse",
+            "info_hint": "Longez tout droit vers ...",
+            "continue": "Continuer"
+        },
+        "second": {
+            "image_label": "Ajouter des images",
+            "import_image": "Importer une image",
+            "do_image": "Prendre une photo",
+            "video_label": "Référence vidéo",
+            "import_video": "Importer une vidéo",
+            "do_video": "Faire une vidéo",
+            "audio_label": "Référence audio",
+            "import_audio": "Importer une audio",
+            "do_audio": "Enrégistrer une audio",
+            "or": "Ou",
+            "continue": "Continuer"
+        },
+        "third": {
+            "secure_label": "Vous aimerez protéger votre adresse ?",
+            "public": "NON",
+            "private": "OUI",
+            "pin_label": "Créer un code PIN",
+            "pin_desc": "Ce code sera utilisé par votre correspondant afin de vous retrouver dans Sunofa Map",
+            "pin_hint": "Code PIN",
+            "pin_length": "Le code pin doit compotér 4 chiffres",
+            "pin_empty": "Veuillez un code pin",
+            "accept": "J'accepte",
+            "accept_desc": "En cliquant sur <<J'accepte>>, vous acceptez ",
+            "and": "et ",
+            "sunofa": "de Sunofa Map ",
+            "politic": "les Politiques de confidentialité  ",
+            "condition": "les Conditions d'utilisation ",
+            "create_ad": "Créer l'adresse"
+        }
+    },
+    "note": {
+        "appbar": "Mes Notes",
+        "note_empty": "Aucune note disponible pour le moment"
+    },
+    "details_note": {
+        "appbar": "Note",
+        "note_hint": "Note..."
+    },
+    "add_note": {
+        "appbar": "Ajout de note",
+        "title": "Titre",
+        "desc": "Note..."
+    },
+    "book": {
+        "appbar": "Mes Carnets d'adresse",
+        "book_empty": "Aucun carnet d'adresse disponible",
+        "add": "Ajout"
+    },
+    "add_book": {
+        "appbar": "Création de carnet d'adresse",
+        "full_name": "Nom complet",
+        "locality": "Localité (en mémoire)",
+        "appart": "Apartment, suite or notes",
+        "add_ga": "Ajouter une adresse google",
+        "ga": "Adresse google",
+        "save": "Créer carnet d'adresse"
+    },
+    "edit_book": {
+        "appbar": "Modifier un carnet",
+        "save": "Enregistrer la modification"
+    },
+    "navigation": {
+        "home": "Accueil",
+        "notes": "Notes",
+        "books": "Carnet d'adresse",
+        "address": "adresses",
+        "snack": "Appuyez encore pour quitter"
+    },
+    "address": {
+        "appbar": "Mes Adresses",
+        "all": "Toutes",
+        "favoris": "Favoris",
+        "no_favoris": "Aucune adresse ajoutée aux favoris pour l'instant",
+        "ad_empty": "Aucune adresse disponible",
+        "img_not_fetch": "Image non trouvée",
+        "img_not_dispo": "Image non disponible",
+        "delete": "Supprimer",
+        "modal_text": "Voulez-vous supprimer l'élément selectionné ?",
+        "cancel": "Annuler"
+    },
+    "edit_ad": {
+        "appbar": "Modifier adresse",
+        "name_label": "Nom de l'adresse",
+        "city_label": "Pays, ville, quartier ou rue",
+        "ga_label": "Ajouter une adresse Google ?",
+        "click": "Cliquez pour ajouter",
+        "ga": "Adresse google",
+        "add_pin_label": "Ajouter un code PIN ?",
+        "pin_label": "Code Pin",
+        "info_label": "Info adresse",
+        "images": "Images",
+        "videos": "Vidéos",
+        "audios": "Audios",
+        "save": "Enregistrer la modification"
+    },
+    "gestion_ad": {
+        "appbar": "Gestion d'adresse",
+        "email": "Email",
+        "phone": "Téléphone",
+        "update": "Modifier",
+        "map": "Itinéraire"
+    },
+    "profil": {
+        "appbar": "Profil utilisateur",
+        "info": "Informations",
+        "logout": "Se Deconnecter",
+        "edit": {
+            "appbar": "Modification des informations",
+            "name_label": "Votre nom d'utilisateur",
+            "email_label": "Votre email",
+            "phone_label": "Votre numéro de téléphone",
+            "save": "Soumettre les modifications"
+        }
+    },
+    "pm": {
+        "appbar": "Methodes de paiement",
+        "sheet": "Methode de paiement",
+        "add_title": "Ajouter méthode de paiement",
+        "add_desc": "Ajouter votre nouveau numéro de téléphone pour effectuer les paiements de tickets",
+        "phone_hint": "Numéro de téléphone",
+        "confirm": "Confirmer",
+        "edit_title": "Changer de méthode de paiement",
+        "edit_desc": "Renseigner les champs à modifier pour valider la modification",
+        "phone_label": "Numéro de téléphone",
+        "delete_title": "Voulez-vous supprimer l'élément sélectionné ?",
+        "erreur_length": "Erreur de saisie du numero de téléphone : Nombre de caratère.",
+        "erreur_length_desc": "Le numéro de téléphone saisi est incorrect car il doit contenir 8 caractères. Veuillez entrer le numéro de téléphone correct.",
+        "erreur_empty": "Phone number error",
+        "erreur_empty_desc": "Le nouveau numero de telephone est obligatoire pour le changement du numero",
+        "annuler": "Annuler",
+        "fermer": "Fermer",
+        "supprimer": "Supprimer"
+    },
+    "info_perso": {
+        "appbar": "Infos Personnelles",
+        "nom_label": "Nom",
+        "prenom_label": "Prénom",
+        "date_label": "Date de naissance",
+        "email_label": "Email",
+        "update": "Mettre à jour"
+    },
+    "notification": {
+        "appbar": "Notifications",
+        "general": {
+            "title": "Notifications Générales",
+            "autoriser": "Offres spéciales et de réductions"
+        },
+        "activites": {
+            "title": "Notifications d'activités",
+            "offres": "Offres spéciales et de réductions",
+            "new_event": "Nouveaux évènements",
+            "event_update": "Mises à jour des évènements",
+            "event_comming": "Rappel des évènements à venir"
+        },
+        "billets": {
+            "title": "Notifications de Billets",
+            "achat_billet": "Confirmation d'achat de billet",
+            "annuler_billet": "Annulation de billet"
+        }
+    },
+    "activite_favoris": {
+        "appbar": "Activités favoris",
+        "my_favorites": "Ma liste des favories",
+        "add_favorites": "Ajoutez vos activités préférées pour ne rien rater et recevoir des notifications sur les événements qui vous passionnent !"
+    },
+    "change_phone": {
+        "appbar": "Changer de numéro",
+        "actuel_phone_label": "Actuel numéro de téléphone",
+        "new_phone_label": "Nouveau numéro de téléphone",
+        "canal_title": "Choisissez un canal",
+        "canal_desc": "Choisissez le canal par lequel recevoir votre code OTP",
+        "otp_title": "Vérification du code",
+        "otp_desc": "Entrez le code de vérification envoyé à votre nouveau numéro de téléphone pour finaliser le changement.",
+        "continue": "Continuer",
+        "enregistrer": "Enregistrer"
+    },
+    "langues": {
+        "title": "Paramètres de Langue",
+        "desc": "Changez la langue de l'application selon votre préférence.",
+        "french": "Français",
+        "english": "Anglais"
+    },
+    "about": {
+        "appbar": "A propos",
+        "credits": "Crédits",
+        "politic_confident": "Politique de confidentialité",
+        "terme_condition": "Termes et condition"
+    },
+    "support": {
+        "title": "Support et Aide",
+        "desc": "Veuillez choisir le canal par lequel vous voulez contacter le service client",
+        "appel": "Appel téléphonique"
+    },
+    "tickets": {
+        "appbar": "Mes Tickets",
+        "ticket_en_cours": "Ticket en cours",
+        "historique": "Historique",
+        "ticket_not_found": "Vous n'avez aucun ticket pour le moment",
+        "ticket_not_disponible": "Ticket non disponible",
+        "history_not_found": "Pas d'évènement cette semaine",
+        "weekly_title": "Cette Semaine",
+        "weekly_result": "Résultats",
+        "achat_success": "Achat Réussi !",
+        "achat_success_msg": "Votre billet a été acheté avec succès. Préparez-vous à vivre une expérience inoubliable !",
+        "achat_see_ticket": "Voir le ticket",
+        "ticket_details": "Détails du ticket",
+        "hour": "Heure",
+        "adresse": "Adresse",
+        "msg_qr": "Veuillez présenter ce QR code à l'entrée lors de votre arrivée.",
+        "travel_companie": "Nom de la compagnie",
+        "follow": "Suivre",
+        "ticket_dispo": "Tickets disponible",
+        "buy": "Acheter",
+        "read_moins": "Lire moins",
+        "read_plus": "Lire plus"
+        
+    },
+    "favoris": {
+        "appbar": "Mes Favoris",
+        "concert": "Concert",
+        "fast_food": "Fast Food",
+        "dessert": "Dessert",
+        "favoris_not_found": "Pas d'évènement cette semaine"
+    },
+    "scanner": {
+        "title": "Scanner le QR code",
+        "desc": "Placer la caméra sur le QR code pour scanner le code du restaurant"
+    },
+    "accueil": {
+        "welcome": "Salut",
+        "sheet": "Methode de paiement",
+        "add_title": "Ajouter méthode de paiement",
+        "add_desc": "Ajouter votre nouveau numéro de téléphone pour effectuer les paiements de tickets",
+        "search_hint": "Rechercher un ticket",
+        "confirm": "Confirmer",
+        "edit_title": "Changer de méthode de paiement",
+        "edit_desc": "Renseigner les champs à modifier pour valider la modification",
+        "phone_label": "Numéro de téléphone",
+        "delete_title": "Voulez-vous supprimer l'élément sélectionné ?",
+        "service_error": "Erreur de chargement des Services",
+        "service_empty": "Pas de service enregistre",
+        "category_error": "Erreur de chargement des categories de la semaine.",
+        "category_empty": "Pas d'événements cette semaine",
+        "pub_title": "Diner Gala des jeunes",
+        "karaoke": "Karaoke",
+        "free": "Gratuit",
+        "need": "Besoin de voyagez ou \nde prendre un bus?",
+        "ticket_voyage": "Trouver vos tickets de \nvoyage et de transport",
+        "obtenir": "Obtenir",
+        "for_you": "Rien que pour vous",
+        "seel_all": "Voir tout",
+        "annuler": "Annuler",
+        "supprimer": "Supprimer"
+    },
+
+    "resto": {
+        "navigation": {
+            "accueil": "Accueil",
+            "search": "Recherche",
+            "panier": "Panier"
+        },
+        "accueil": {
+            "category_not_dispo": " Aucune catégorie disponible pour le moment. ",
+            "category_food_not_dispo": "Aucun plat disponible pour le moment dans cette categorie. ",
+            "all_foods": "Les plats",
+            "see_all": "voir tout>>"
+        },
+        "search": {
+            "search_plat": "Rechercher un plat...",
+            "search_plat_with_category": "Rechercher un plat dans ",
+            "search_plat_empty": "Aucun plat trouvé",
+            "all_foods": "Les plats"
+        },
+        "panier": {
+            "panier_vide": "Votre panier est vide",
+            "commander": "Commander",
+            "montant": "Montant"
+        },
+        "order_payment": {
+            "order_success_title": "Commande",
+            "order_success_desc": "Votre commande a été crée avec succès, vous pouvez consulter la commande à tout moment",
+            "order_state": "Status",
+            "process": "Proceder",
+            "order_error": "Erreur d'enregistrement de la commande",
+            "order_miss": "Erreur: Données manquantes",
+            "pm_empty": "Vous avez ajouté aucune\n méthode de paiement",
+            "order_choose": "Veuillez sélectionner une méthode de paiement"
+        },
+        "welcome": "Salut",
+        "sheet": "Methode de paiement",
+        "add_title": "Ajouter méthode de paiement",
+        "add_desc": "Ajouter votre nouveau numéro de téléphone pour effectuer les paiements de tickets",
+        "search_hint": "Rechercher un ticket",
+        "confirm": "Confirmer",
+        "edit_title": "Changer de méthode de paiement",
+        "edit_desc": "Renseigner les champs à modifier pour valider la modification",
+        "phone_label": "Numéro de téléphone",
+        "delete_title": "Voulez-vous supprimer l'élément sélectionné ?",
+        "service_error": "Erreur de chargement des Services",
+        "service_empty": "Pas de service enregistre",
+        "category_error": "Erreur de chargement des categories de la semaine.",
+        "category_empty": "Pas d'événements cette semaine",
+        "pub_title": "Diner Gala des jeunes",
+        "karaoke": "Karaoke",
+        "free": "Gratuit",
+        "need": "Besoin de voyagez ou \nde prendre un bus?",
+        "ticket_voyage": "Trouver vos tickets de \nvoyage et de transport",
+        "obtenir": "Obtenir",
+        "for_you": "Rien que pour vous",
+        "seel_all": "Voir tout",
+        "annuler": "Annuler",
+        "supprimer": "Supprimer"
+    },
+    "param": {
+        "appbar": "Paramètres",
+        "profil_label": "Mon Profil",
+        "see_profil": "Voir mon profil",
+        "pref_label": "Préférences",
+        "langues": "Langues",
+        "notification": "Notifications",
+        "active_notif": "Activer",
+        "desactive_notif": "Désactiver",
+        "other": "Autres",
+        "condition": "Condition d'utilisation",
+        "politic": "Politique de confidentialité",
+        "directive": "Directives de la communauté",
+        "support": "A propos",
+        "logout": "Se deconnecter",
+        "logout_profil": "Deconnecter",
+        "enable": "Activer",
+        "disable": "Désactiver",
+        "modal_label": "Voulez-vous vraiment vous déconnectez ?"
+    }
+}

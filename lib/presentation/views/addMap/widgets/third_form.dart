@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
 import 'package:sunofa_map/core/utils/index.dart';
+import 'package:sunofa_map/presentation/views/politic/politic.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class ThirdForm extends StatefulWidget {
@@ -26,13 +28,14 @@ class ThirdForm extends StatefulWidget {
 }
 
 class _ThirdFormState extends State<ThirdForm> {
+  bool isAccept = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Vous aimerez protéger votre adresse ?',
+          "add_address.third.secure_label".tr(),
           style: AppTheme().stylish1(
             15,
             AppTheme.black,
@@ -49,7 +52,7 @@ class _ThirdFormState extends State<ThirdForm> {
                 groupValue: widget.protegerPin,
                 onChanged: widget.onSelectionChanged,
                 title: Text(
-                  'Public',
+                  "add_address.third.public".tr(),
                   style: AppTheme().stylish1(15, AppTheme.black),
                 ),
               ),
@@ -58,7 +61,7 @@ class _ThirdFormState extends State<ThirdForm> {
                 groupValue: widget.protegerPin,
                 onChanged: widget.onSelectionChanged,
                 title: Text(
-                  'Privée',
+                  "add_address.third.private".tr(),
                   style: AppTheme().stylish1(15, AppTheme.black),
                 ),
               ),
@@ -70,13 +73,13 @@ class _ThirdFormState extends State<ThirdForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Créer un code PIN',
+                    "add_address.third.pin_label".tr(),
                     style:
                         AppTheme().stylish1(15, AppTheme.black, isBold: true),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Ce code sera utilisé par votre correspondant afin de vous retrouver dans Sunofa Map",
+                    "add_address.third.pin_desc".tr(),
                     style: AppTheme().stylish1(13, mgrey),
                   ),
                   const SizedBox(height: 8),
@@ -84,26 +87,98 @@ class _ThirdFormState extends State<ThirdForm> {
                     controller: widget.pin,
                     inputFormatters: inputFormaters,
                     keyboardType: TextInputType.number,
-                    hint: 'Code PIN',
+                    hint: "add_address.third.pin_hint".tr(),
                     validator: (value) {
-                      if (value!.length < 5) {
-                        return "Le code pin doit comporté 5 chiffres";
-                      } else if (value.isEmpty) {
-                        return "Veuillez un code pin";
+                      if (widget.protegerPin == 2) {
+                        // Vérifier si l'option "private" est sélectionnée
+                        if (value!.isEmpty) {
+                          return "add_address.third.pin_empty"
+                              .tr(); // Message si le PIN est vide
+                        } else if (value.length < 4) {
+                          return "add_address.third.pin_length"
+                              .tr(); // Message si le PIN est trop court
+                        }
                       }
-                      return null;
+                      return null; // Valide si aucune des conditions ci-dessus n'est remplie
                     },
-                  ),
+                  )
                 ],
               )
             : const SizedBox(),
+        const SizedBox(height: 20),
+        Column(
+          children: [
+            CheckboxListTile(
+              value: isAccept,
+              activeColor: AppTheme.primaryColor,
+              onChanged: (value) {
+                setState(() {
+                  isAccept = !isAccept;
+                });
+              },
+              title: Text(
+                "add_address.third.accept".tr(),
+                style: AppTheme().stylish1(
+                  15,
+                  mblack,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            Wrap(
+              children: [
+                Text("add_address.third.accept_desc".tr()),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const PoliticScreen();
+                      }),
+                    );
+                  },
+                  child: Text(
+                    "add_address.third.politic".tr(),
+                    style: AppTheme().stylish1(
+                      15,
+                      mblack,
+                      isBold: true,
+                    ),
+                  ),
+                ),
+                Text(" ${"add_address.third.and".tr()}"),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const PoliticScreen();
+                      }),
+                    );
+                  },
+                  child: Text(
+                    "${"add_address.third.condition".tr()} ",
+                    style: AppTheme().stylish1(
+                      15,
+                      mblack,
+                      isBold: true,
+                    ),
+                  ),
+                ),
+                Text("add_address.third.sunofa".tr()),
+              ],
+            ),
+          ],
+        ),
         SizedBox(height: context.heightPercent(5)),
         widget.isLoading
             ? const LoadingCircle()
-            : SubmitButton(
-                text: "Créer l'adresse",
-                onTap: widget.onTap,
-              ),
+            : isAccept
+                ? SubmitButton(
+                    text: "add_address.third.create_ad".tr(),
+                    onTap: widget.onTap,
+                  )
+                : const SizedBox(),
       ],
     );
   }

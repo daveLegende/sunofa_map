@@ -9,3 +9,20 @@ class IdParms {
     };
   }
 }
+
+class FullPin {
+  final String id;
+  final int fullPin;
+
+  const FullPin({
+    required this.id,
+    required this.fullPin,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      // "id": id,
+      "full_pin": fullPin,
+    };
+  }
+}

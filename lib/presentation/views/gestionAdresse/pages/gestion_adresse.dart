@@ -1,4 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sunofa_map/blocs/langues/langue_choose_bloc.dart';
+import 'package:sunofa_map/common/api/api.dart';
+import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/adresse/vocal_adresse.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
@@ -7,10 +12,11 @@ import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
-import 'package:sunofa_map/presentation/views/itineraire/pages/itineraire.dart';
+import 'package:sunofa_map/presentation/views/viewImage/view_image.dart';
+import 'package:sunofa_map/presentation/views/viewImage/view_video.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
-class GestionAdresseScreen extends StatelessWidget {
+class GestionAdresseScreen extends StatefulWidget {
   const GestionAdresseScreen({
     super.key,
     this.adresse,
@@ -20,188 +26,221 @@ class GestionAdresseScreen extends StatelessWidget {
   final AdressesEntity? adresse;
 
   @override
+  State<GestionAdresseScreen> createState() => _GestionAdresseScreenState();
+}
+
+class _GestionAdresseScreenState extends State<GestionAdresseScreen> {
+  @override
   Widget build(BuildContext context) {
     // Récupération des arguments
     // final arguments = ModalRoute.of(context)?.settings.arguments;
     // debugPrint('Arguments reçus : $arguments');
 
-    final address = adresse!;
+    AdressesEntity address = widget.adresse!;
+    Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: mgrey[100],
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: mwhite,
-        scrolledUnderElevation: 0,
-        leading: const BackArrow(
-          routeNamed: Routes.home2,
-        ),
-        title: Text(
-          "Gestion adresse",
-          style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
-        ),
-      ),
-      bottomSheet: GestionAdresseSheet(
-        user: user!,
-        adresse: adresse!,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
-        ),
-        child: Column(
-          children: [
-            Container(
-              // height: context.height * .7,
-              width: context.width,
-              color: AppTheme.lightGray,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: mwhite,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTileCustom(
-                      title: "Pseudo/Identifiant",
-                      subtitle: address.pseudo,
-                    ),
-                    const SizedBox(height: 20),
-                    ListTileCustom(
-                      title: "Nom de l'address",
-                      subtitle: address.adressName,
-                    ),
-                    const SizedBox(height: 20),
-                    ListTileCustom(
-                      title: "Pays, ville, quartier ou rue",
-                      subtitle: address.city,
-                    ),
-                    const SizedBox(height: 20),
-                    const ListTileCustom(
-                      title: "E-mail",
-                      subtitle: "monmail@gmail.com",
-                    ),
-                    const SizedBox(height: 20),
-                    const ListTileCustom(
-                      title: "Téléphone",
-                      subtitle: "+228 98623547",
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Info adresse",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          color: mgrey[100],
-                          child: Text(
-                            address.info,
-                            maxLines: 4,
-                            textAlign: TextAlign.justify,
-                            style: AppTheme().stylish1(
-                              13,
-                              mgrey[400]!,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Images",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AdresseImage(
-                                image: address.media!.photo1!,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: AdresseImage(
-                                image: address.media!.photo1!,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Audios",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: VocalAdresse(),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: VocalAdresse(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Vidéos",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AdresseImage(
-                                image: address.media!.photo1!,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: AdresseImage(
-                                image: address.media!.photo1!,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+    return BlocConsumer<LangueChooseBloc, LangueChooseState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: mgrey[100],
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: mwhite,
+            scrolledUnderElevation: 0,
+            leading: const BackArrow(
+              routeNamed: Routes.home2,
             ),
-            const SizedBox(height: 80),
-          ],
-        ),
-      ),
+            title: Text(
+              "gestion_ad.appbar".tr(),
+              style:
+                  AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
+            ),
+          ),
+          bottomSheet: GestionAdresseSheet(
+            user: widget.user!,
+            adresse: widget.adresse!,
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 20,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  // height: context.height * .7,
+                  width: context.width,
+                  color: AppTheme.lightGray,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: mwhite,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTileCustom(
+                          title: "Pseudo/Identifiant",
+                          subtitle: address.pseudo,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "edit_ad.name_label".tr(),
+                          subtitle: address.adressName,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "edit_ad.city_label".tr(),
+                          subtitle: address.city,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "gestion_ad.email".tr(),
+                          subtitle: widget.adresse!.user.email,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "gestion_ad.phone".tr(),
+                          subtitle: widget.adresse!.user.phoneNumber,
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "edit_ad.info_label".tr(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              color: mgrey[100],
+                              child: Text(
+                                address.info,
+                                maxLines: 4,
+                                textAlign: TextAlign.justify,
+                                style: AppTheme().stylish1(
+                                  13,
+                                  mgrey[400]!,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        widget.adresse!.media!.photo1 == null ||
+                                widget.adresse!.media!.photo2 == null
+                            ? const SizedBox()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "edit_ad.images".tr(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: AdresseImage(
+                                          image:
+                                              "${APIURL.fileUrl}/${address.media!.photo1!}",
+                                          size: size,
+                                          isEdit: false,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: AdresseImage(
+                                          image:
+                                              "${APIURL.fileUrl}/${address.media!.photo2!}",
+                                          size: size,
+                                          isEdit: false,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                        SizedBox(
+                          height: widget.adresse!.media!.photo1 == null ||
+                                  widget.adresse!.media!.photo2 == null
+                              ? 0
+                              : 20,
+                        ),
+                        widget.adresse!.media!.audio1 == null &&
+                                widget.adresse!.media!.audio2 == null
+                            ? const SizedBox()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "edit_ad.audios".tr(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  AdresseAudio(
+                                    audio:
+                                        "${APIURL.fileUrl}/${widget.adresse!.media!.audio1!}",
+                                  )
+                                ],
+                              ),
+                        SizedBox(
+                            height: widget.adresse!.media!.photo1 == null ||
+                                    widget.adresse!.media!.photo2 == null
+                                ? 0
+                                : 20),
+                        widget.adresse!.media!.video1 == null ||
+                                widget.adresse!.media!.video2 == null
+                            ? const SizedBox()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "edit_ad.videos".tr(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: AdresseVideo(
+                                          video: address.media!.video1!,
+                                          size: size,
+                                          isEdit: false,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: AdresseVideo(
+                                          video: address.media!.video2!,
+                                          size: size,
+                                          isEdit: false,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 80),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -230,7 +269,7 @@ class GestionAdresseSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SubmitButton(
-                      text: "Modifier",
+                      text: "gestion_ad.update".tr(),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -248,36 +287,38 @@ class GestionAdresseSheet extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: SubmitButton(
-                      text: "Itinéraire",
+                      text: "gestion_ad.map".tr(),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) {
-                              return ItineraireScreen(
-                                adresse: adresse,
-                              );
-                            },
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (_) {
+                        //       return ItineraireScreen(
+                        //         adresse: adresse,
+                        //       );
+                        //     },
+                        //   ),
+                        // );
+                        Helpers().openGoogleMaps(adresse: adresse);
                       },
                     ),
                   ),
                 ],
               )
             : SubmitButton(
-                text: "Itinéraire",
+                text: "gestion_ad.map".tr(),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) {
-                        return ItineraireScreen(
-                          adresse: adresse,
-                        );
-                      },
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) {
+                  //       return ItineraireScreen(
+                  //         adresse: adresse,
+                  //       );
+                  //     },
+                  //   ),
+                  // );
+                  Helpers().openGoogleMaps(adresse: adresse);
                 },
               ),
       ),

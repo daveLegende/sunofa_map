@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
@@ -50,7 +51,7 @@ class _ModifierUserInfoScreenState extends State<ModifierUserInfoScreen> {
         scrolledUnderElevation: 0,
         leading: const BackArrow(),
         title: Text(
-          "Modification des informations",
+          "profil.edit.appbar".tr(),
           style: AppTheme().stylish1(
             20,
             AppTheme.primaryColor,
@@ -122,9 +123,9 @@ class _ModifierUserInfoScreenState extends State<ModifierUserInfoScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Your new name",
-                        style: TextStyle(color: mgrey),
+                       Text(
+                        "profil.edit.name_label".tr(),
+                        style: const TextStyle(color: mgrey),
                       ),
                       SimpleTextField(
                         hintText: username.text,
@@ -136,9 +137,9 @@ class _ModifierUserInfoScreenState extends State<ModifierUserInfoScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Your new mail",
-                        style: TextStyle(color: mgrey),
+                      Text(
+                        "profil.edit.email_label".tr(),
+                        style: const TextStyle(color: mgrey),
                       ),
                       SimpleTextField(
                         hintText: email.text,
@@ -150,9 +151,9 @@ class _ModifierUserInfoScreenState extends State<ModifierUserInfoScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Your new phone number",
-                        style: TextStyle(color: mgrey),
+                      Text(
+                        "profil.edit.phone_label".tr(),
+                        style: const TextStyle(color: mgrey),
                       ),
                       SimpleTextField(
                         hintText: phone.text,
@@ -187,7 +188,7 @@ class ModiferUserInfoSheet extends StatelessWidget {
         horizontal: 20,
       ),
       child: SubmitButton(
-        text: "Soumettre les modifications",
+        text: "profil.edit.save".tr(),
         onTap: onTap,
       ),
     );

@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
+import 'package:sunofa_map/common/widgets/divider.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 import 'package:image_picker/image_picker.dart';
@@ -97,7 +99,7 @@ class _ImageFormState extends State<ImageForm> {
   Future<void> stopRecording() async {
     try {
       final path = await _audioRecorder.stop();
-        await _audioRecorder.dispose();
+      await _audioRecorder.dispose();
       setState(() {
         _isRecording = false;
         _recordedFilePath = path ?? _recordedFilePath;
@@ -158,7 +160,7 @@ class _ImageFormState extends State<ImageForm> {
           children: [
             // Section pour les images
             Text(
-              'Ajouter des images',
+              "add_address.second.image_label".tr(),
               style: AppTheme().stylish1(
                 15,
                 AppTheme.black,
@@ -188,8 +190,9 @@ class _ImageFormState extends State<ImageForm> {
                             context: context,
                             builder: (context) {
                               return ImportOrDoingWidget(
-                                importText: "Importer une image",
-                                doingText: "Prendre une photo",
+                                importText:
+                                    "add_address.second.import_image".tr(),
+                                doingText: "add_address.second.do_image".tr(),
                                 onImport: () => selectFile("image"),
                                 onRecord: () => _takePhotoOrVideo("image"),
                               );
@@ -204,7 +207,7 @@ class _ImageFormState extends State<ImageForm> {
 
             // Section pour les vidéos
             Text(
-              'Référence vidéo',
+              "add_address.second.video_label".tr(),
               style: AppTheme().stylish1(15, AppTheme.black, isBold: true),
             ),
             SizedBox(height: context.heightPercent(2)),
@@ -230,8 +233,9 @@ class _ImageFormState extends State<ImageForm> {
                             context: context,
                             builder: (context) {
                               return ImportOrDoingWidget(
-                                importText: "Importer une vidéo",
-                                doingText: "Faire une vidéo",
+                                importText:
+                                    "add_address.second.import_video".tr(),
+                                doingText: "add_address.second.do_video".tr(),
                                 onImport: () => selectFile("video"),
                                 onRecord: () => _takePhotoOrVideo("video"),
                               );
@@ -246,147 +250,147 @@ class _ImageFormState extends State<ImageForm> {
 
             // Section pour les audios
             Text(
-              'Référence audio',
+              "add_address.second.audio_label".tr(),
               style: AppTheme().stylish1(15, AppTheme.black, isBold: true),
             ),
             SizedBox(height: context.heightPercent(2)),
-            // Column(
-            //   children: [
-            //     ...widget.selectedAudios.map((audio) {
-            //       return Container(
-            //         padding: const EdgeInsets.all(10),
-            //         margin: const EdgeInsets.only(bottom: 10),
-            //         decoration: BoxDecoration(
-            //           color: AppTheme.lightPrimary,
-            //           borderRadius: BorderRadius.circular(10),
-            //         ),
-            //         child: Row(
-            //           children: [
-            //             const Icon(Icons.audiotrack),
-            //             const SizedBox(width: 20),
-            //             Expanded(
-            //               child: Text(
-            //                 audio.path.split('/').last,
-            //                 maxLines: 1,
-            //                 overflow: TextOverflow.ellipsis,
-            //               ),
-            //             ),
-            //             IconButton(
-            //               icon: const Icon(
-            //                 Icons.delete,
-            //                 color: AppTheme.complementaryColor,
-            //               ),
-            //               onPressed: () {
-            //                 setState(() {
-            //                   widget.selectedAudios.remove(audio);
-            //                 });
-            //               },
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     }),
-            //     AddFileButton(
-            //       onTap: () {
-            //         selectFile("audio");
-            //       },
-            //       label: 'Audio',
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: context.heightPercent(2)),
-            // const Row(
-            //   children: [
-            //     Expanded(child: CustomDivider()),
-            //     Center(
-            //       child: Text(
-            //         "Ou",
-            //         style: TextStyle(color: mred),
-            //       ),
-            //     ),
-            //     Expanded(child: CustomDivider()),
-            //   ],
-            // ),
-            // SizedBox(height: context.heightPercent(2)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    if (_isRecording) {
-                      stopRecording();
-                      print("********************${_recordedFilePath}");
-                    } else {
-                      startRecording();
-                      print(
-                          "********************${_recordedDuration.inSeconds}");
-                    }
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
+                ...widget.selectedAudios.map((audio) {
+                  return Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
-                      color: _isPlaying ? mgrey[300] : mred,
-                      borderRadius: BorderRadius.circular(
-                        30,
-                      ),
+                      color: AppTheme.lightPrimary,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: HeroIcon(
-                      _isRecording ? HeroIcons.stop : HeroIcons.microphone,
-                      color: mwhite,
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: _isPlaying ? stopPlaying : playRecording,
-                      child: HeroIcon(
-                        _isPlaying ? HeroIcons.pause : HeroIcons.play,
-                        size: 35,
-                        color: _recordedDuration.inSeconds > 0
-                            ? AppTheme.primaryColor
-                            : mgrey[300],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      width: size.width * .35,
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: _recordedDuration.inSeconds > 0
-                            ? AppTheme.primaryColor
-                            : mgrey[300],
-                        borderRadius: BorderRadius.circular(
-                          30,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.audiotrack),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            audio.path.split('/').last,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppTheme.complementaryColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              widget.selectedAudios.remove(audio);
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 10),
-                    Text(
-                      Helpers().formatAudioDuration(_recordedDuration),
-                      style: AppTheme().stylish1(
-                        16,
-                        _recordedDuration.inSeconds > 0
-                            ? AppTheme.primaryColor
-                            : mgrey[300]!,
-                      ),
-                    ),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: deleteAudioRecord,
-                  child: HeroIcon(
-                    HeroIcons.trash,
-                    color: _recordedDuration.inSeconds > 0 ? mred : mgrey[300],
-                  ),
+                  );
+                }),
+                AddFileButton(
+                  onTap: () {
+                    selectFile("audio");
+                  },
+                  label: 'Audio',
                 ),
               ],
             ),
+            SizedBox(height: context.heightPercent(2)),
+            Row(
+              children: [
+                const Expanded(child: CustomDivider()),
+                Center(
+                  child: Text(
+                    "add_address.second.or".tr(),
+                    style: const TextStyle(color: mred),
+                  ),
+                ),
+                const Expanded(child: CustomDivider()),
+              ],
+            ),
+            SizedBox(height: context.heightPercent(2)),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     GestureDetector(
+            //       onTap: () {
+            //         if (_isRecording) {
+            //           stopRecording();
+            //           print("********************${_recordedFilePath}");
+            //         } else {
+            //           startRecording();
+            //           print(
+            //               "********************${_recordedDuration.inSeconds}");
+            //         }
+            //       },
+            //       child: Container(
+            //         width: 40,
+            //         height: 40,
+            //         decoration: BoxDecoration(
+            //           color: _isPlaying ? mgrey[300] : mred,
+            //           borderRadius: BorderRadius.circular(
+            //             30,
+            //           ),
+            //         ),
+            //         child: HeroIcon(
+            //           _isRecording ? HeroIcons.stop : HeroIcons.microphone,
+            //           color: mwhite,
+            //         ),
+            //       ),
+            //     ),
+            //     Row(
+            //       children: [
+            //         GestureDetector(
+            //           onTap: _isPlaying ? stopPlaying : playRecording,
+            //           child: HeroIcon(
+            //             _isPlaying ? HeroIcons.pause : HeroIcons.play,
+            //             size: 35,
+            //             color: _recordedDuration.inSeconds > 0
+            //                 ? AppTheme.primaryColor
+            //                 : mgrey[300],
+            //           ),
+            //         ),
+            //         const SizedBox(width: 10),
+            //         Container(
+            //           width: size.width * .35,
+            //           height: 2,
+            //           decoration: BoxDecoration(
+            //             color: _recordedDuration.inSeconds > 0
+            //                 ? AppTheme.primaryColor
+            //                 : mgrey[300],
+            //             borderRadius: BorderRadius.circular(
+            //               30,
+            //             ),
+            //           ),
+            //         ),
+            //         const SizedBox(width: 10),
+            //         Text(
+            //           Helpers().formatAudioDuration(_recordedDuration),
+            //           style: AppTheme().stylish1(
+            //             16,
+            //             _recordedDuration.inSeconds > 0
+            //                 ? AppTheme.primaryColor
+            //                 : mgrey[300]!,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //     GestureDetector(
+            //       onTap: deleteAudioRecord,
+            //       child: HeroIcon(
+            //         HeroIcons.trash,
+            //         color: _recordedDuration.inSeconds > 0 ? mred : mgrey[300],
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: context.heightPercent(5)),
             // Bouton pour soumettre
             SubmitButton(
-              text: "Continuer",
+              text: "add_address.second.continue".tr(),
               onTap: widget.onContinue,
             ),
             SizedBox(height: context.heightPercent(2)),
@@ -396,38 +400,89 @@ class _ImageFormState extends State<ImageForm> {
     );
   }
 
-  Future<void> selectFile(String type) async {
-    FileType fileType;
-    switch (type) {
-      case 'image':
-        fileType = FileType.image;
-        break;
-      case 'audio':
-        fileType = FileType.audio;
-        break;
-      case 'video':
-        fileType = FileType.video;
-        break;
-      default:
-        fileType = FileType.any;
-    }
+  // Future<void> selectFile(String type) async {
+  //   FileType fileType;
+  //   switch (type) {
+  //     case 'image':
+  //       fileType = FileType.image;
+  //       break;
+  //     case 'audio':
+  //       fileType = FileType.audio;
+  //       break;
+  //     case 'video':
+  //       fileType = FileType.video;
+  //       break;
+  //     default:
+  //       fileType = FileType.any;
+  //   }
 
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: fileType);
-    if (result != null) {
-      setState(() {
-        File file = File(result.files.single.path!);
-        print("path **********************" + file.path);
-        if (type == 'image') {
-          widget.selectedImages.add(file);
-        } else if (type == 'audio') {
-          widget.selectedAudios.add(file);
-        } else if (type == 'video') {
-          widget.selectedVideos.add(file);
-        }
-      });
-    } else {
-      print('Aucun fichier sélectionné.');
+  //   FilePickerResult? result =
+  //       await FilePicker.platform.pickFiles(type: fileType);
+  //   if (result != null) {
+  //     setState(() {
+  //       File file = File(result.files.single.path!);
+  //       print("path **********************" + file.path);
+  //       if (type == 'image') {
+  //         widget.selectedImages.add(file);
+  //       } else if (type == 'audio') {
+  //         widget.selectedAudios.add(file);
+  //       } else if (type == 'video') {
+  //         widget.selectedVideos.add(file);
+  //       }
+  //     });
+  //   } else {
+  //     print('Aucun fichier sélectionné.');
+  //   }
+  // }
+  Future<void> _requestPermissions() async {
+    if (Platform.isAndroid) {
+      await Permission.camera.request();
+      await Permission.photos.request();
+      await Permission.videos.request();
+      await Permission.storage.request();
+    }
+  }
+
+  Future<void> selectFile(String type) async {
+    try {
+      _requestPermissions();
+
+      FileType fileType;
+      switch (type) {
+        case 'image':
+          fileType = FileType.image;
+          break;
+        case 'audio':
+          fileType = FileType.audio;
+          break;
+        case 'video':
+          fileType = FileType.video;
+          break;
+        default:
+          fileType = FileType.any;
+      }
+
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: fileType);
+
+      if (result != null && result.files.single.path != null) {
+        setState(() {
+          File file = File(result.files.single.path!);
+          print("Path: ${file.path}");
+          if (type == 'image') {
+            widget.selectedImages.add(file);
+          } else if (type == 'audio') {
+            widget.selectedAudios.add(file);
+          } else if (type == 'video') {
+            widget.selectedVideos.add(file);
+          }
+        });
+      } else {
+        print('Aucun fichier sélectionné.');
+      }
+    } catch (e, stacktrace) {
+      print("Erreur lors de la sélection du fichier: $e");
+      print(stacktrace);
     }
   }
 
@@ -577,17 +632,22 @@ class _VideoPreviewState extends State<VideoPreview> {
                 : const Center(child: CircularProgressIndicator()),
           ),
         ),
-        if (!_isPlaying)
-          const Positioned(
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Icon(Icons.play_circle_outline,
-                  size: 50, color: Colors.white),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: GestureDetector(
+              onTap: _togglePlay,
+              child: HeroIcon(
+                _isPlaying ? HeroIcons.pause : HeroIcons.play,
+                size: 30,
+                color: Colors.white,
+              ),
             ),
           ),
+        ),
         Positioned(
           top: 10,
           right: 10,

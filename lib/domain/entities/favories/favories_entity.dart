@@ -1,27 +1,28 @@
 import 'dart:convert';
 
-import 'package:sunofa_map/domain/entities/created_at.dart';
+
 class FavoriesEntity {
-  final int? id;
-  final CreatedAt createdAt;
+  final String adresseId;
+  final String userId;
 
   FavoriesEntity({
-    this.id,
-    required this.createdAt,
+    required this.adresseId,
+    required this.userId,
   });
 
   // Convertir JSON en objet Dart
   factory FavoriesEntity.fromJson(Map<String, dynamic> json) {
     return FavoriesEntity(
-      id: json['id'] as int,
-      createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
+      adresseId: json['address_id'] as String,
+      userId: json['user_id'] as String,
     );
   }
 
   // Convertir un objet Dart en JSON
   Map<String, dynamic> toJson() {
     return {
-      'createdAt': createdAt.toJson(),
+      'address_id': adresseId,
+      'user_id': userId,
     };
   }
 }
@@ -34,4 +35,16 @@ List<FavoriesEntity> betListFromJson(String jsonString) {
       (items) => FavoriesEntity.fromJson(items),
     ),
   );
+}
+
+
+List<FavoriesEntity> favListJson(String jsonString) {
+  // Décoder la chaîne JSON en un objet Dart
+  final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+  // Extraire la liste des éléments de la clé "data"
+  final List<dynamic> dataList = jsonData['data'];
+
+  // Transformer chaque élément en un objet AdressesEntity
+  return dataList.map((item) => FavoriesEntity.fromJson(item)).toList();
 }

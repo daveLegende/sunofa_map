@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
@@ -56,7 +57,7 @@ class _FirstFormState extends State<FirstForm> {
         if (state is CreateAdresseSuccessState) {
           Helpers().mySnackbar(
             context: context,
-            message: "Adresse ajoutée avec succès",
+            message: state.message,
           );
         } else if (state is CreateAdresseFailedState) {
           Helpers().mySnackbar(
@@ -71,14 +72,14 @@ class _FirstFormState extends State<FirstForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildLabelWithAsterisk('Créer un identifiant'),
+            buildLabelWithAsterisk("add_address.first.pseudo_label".tr()),
             const SizedBox(height: 8),
             AppHelpers.buildTextFormField(
               controller: widget.pseudo,
               hint: 'ex: KGB2',
               validator: (value) {
                 if (value!.length < 3) {
-                  return "Minimum 3 lettres";
+                  return "add_address.first.pseudo_error".tr();
                 }
                 return null;
               },
@@ -86,14 +87,14 @@ class _FirstFormState extends State<FirstForm> {
             SizedBox(
               height: context.heightPercent(2),
             ),
-            buildLabelWithAsterisk("Nom de l'adresse"),
+            buildLabelWithAsterisk("add_address.first.name_label".tr()),
             const SizedBox(height: 8),
             AppHelpers.buildTextFormField(
               controller: widget.adressName,
               hint: 'Maison IDAH',
               validator: (value) {
                 if (value!.length < 3) {
-                  return "Minimum 3 lettres";
+                  return "add_address.first.pseudo_error".tr();
                 }
                 return null;
               },
@@ -101,14 +102,14 @@ class _FirstFormState extends State<FirstForm> {
             SizedBox(
               height: context.heightPercent(2),
             ),
-            buildLabelWithAsterisk('Pays, ville, quartier ou rue'),
+            buildLabelWithAsterisk("add_address.first.city_label".tr()),
             const SizedBox(height: 8),
             AppHelpers.buildTextFormField(
               controller: widget.city,
-              hint: 'Pays, ville...',
+              hint: 'USA, Los Angelos...',
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "Ce champ ne peut être vide";
+                  return "add_address.first.city_error".tr();
                 }
                 return null;
               },
@@ -117,7 +118,7 @@ class _FirstFormState extends State<FirstForm> {
               height: context.heightPercent(2),
             ),
             Text(
-              'Position',
+              "add_address.first.position_label".tr(),
               style: AppTheme().stylish1(
                 15,
                 AppTheme.black,
@@ -130,9 +131,10 @@ class _FirstFormState extends State<FirstForm> {
               children: [
                 CheckboxListTile(
                   value: widget.isGoogleAddressSelected,
+                  activeColor: AppTheme.primaryColor,
                   onChanged: (value) => widget.onGoogleAddressChanged(value!),
                   title: Text(
-                    'Mon adresse Google',
+                    "add_address.first.google_address".tr(),
                     style: AppTheme().stylish1(
                       15,
                       mblack,
@@ -145,10 +147,10 @@ class _FirstFormState extends State<FirstForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: AppHelpers.buildTextFormField(
                       controller: widget.gaController,
-                      hint: 'Quartier, Ville, Etat/Région, Code zip, Pays',
+                      hint: "add_address.first.ga_hint".tr(),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Ce champ ne peut être vide";
+                          return "add_address.first.city_error".tr();
                         }
                         return null;
                       },
@@ -156,9 +158,10 @@ class _FirstFormState extends State<FirstForm> {
                   ),
                 CheckboxListTile(
                   value: widget.isCurrentLocationSelected,
+                  activeColor: AppTheme.primaryColor,
                   onChanged: (value) => widget.onCurrentLocationChanged(value!),
                   title: Text(
-                    'Ma position actuelle',
+                    "add_address.first.current_position".tr(),
                     style: AppTheme().stylish1(
                       15,
                       mblack,
@@ -170,15 +173,15 @@ class _FirstFormState extends State<FirstForm> {
             SizedBox(
               height: context.heightPercent(2),
             ),
-            buildLabelWithAsterisk("Information concernant l'adresse"),
+            buildLabelWithAsterisk("add_address.first.info_label".tr()),
             const SizedBox(height: 8),
             AppHelpers.buildTextFormField(
               controller: widget.info,
-              hint: 'Longez tout droit vers ...',
+              hint: "add_address.first.info_hint".tr(),
               maxLines: 3,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return "Ce champ ne peut être vide";
+                  return "add_address.first.city_error".tr();
                 }
                 return null;
               },
@@ -187,7 +190,7 @@ class _FirstFormState extends State<FirstForm> {
               height: context.heightPercent(5),
             ),
             SubmitButton(
-              text: "Continuer",
+              text: "add_address.first.continue".tr(),
               onTap: widget.onTap,
             ),
             SizedBox(

@@ -40,7 +40,7 @@ class AdresseBookDTO {
       'person_name': personName,
       'address_label': addressLabel,
       'apartment_suite_note': apartmentSuiteNote,
-      'has_google_address': hasGoogleAddress ? 1 : 0,
+      'has_google_address': hasGoogleAddress ? true : false,
       'google_address': googleAddress,
       // 'createdAt': createdAt.toJson(),
       'user_id': user_id,
@@ -50,12 +50,11 @@ class AdresseBookDTO {
 
   Map<String, dynamic> toJsonWithId() {
     return {
-      "id": id,
-      'personName': personName,
-      'addressLabel': addressLabel,
-      'apartmentSuiteNote': apartmentSuiteNote,
-      'hasGoogleAddress': hasGoogleAddress ? 1 : 0,
-      'googleAddress': googleAddress,
+      'person_name': personName,
+      'address_label': addressLabel,
+      'apartment_suite_note': apartmentSuiteNote,
+      'has_google_address': hasGoogleAddress ? true : false,
+      'google_address': googleAddress,
       // 'createdAt': createdAt.toJson(),
       'user_id': user_id,
     };

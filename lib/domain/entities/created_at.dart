@@ -35,4 +35,16 @@ class CreatedAt {
       human: "Now",
     );
   }
+
+  DateTime get dateTimeObject {
+    return DateTime.parse(datetime); // Convertit la chaîne en DateTime
+  }
+}
+
+// Filtrer une liste d'objets en fonction de la date de création
+List<CreatedAt> filterByDate(List<CreatedAt> items, DateTime filterDate) {
+  return items.where((item) {
+    // Comparer la date de création de chaque objet avec la date de filtrage
+    return item.dateTimeObject.isAfter(filterDate);
+  }).toList();
 }

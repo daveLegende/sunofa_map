@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/core/utils/constant.dart';
+import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 import 'package:nyx_converter/nyx_converter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Helpers {
   // get color
@@ -223,6 +226,106 @@ class Helpers {
     } catch (e) {
       print("Erreur lors de la conversion : $e");
       return null;
+    }
+  }
+
+  // Future<void> openGoogleMaps(
+  //     {AdressesEntity? adresse}) async {
+  //   Uri googleMapsUrl;
+
+  //   if (adresse!.latitude != null && adresse.longitude != null) {
+  //     // Si latitude et longitude sont disponibles
+  //     googleMapsUrl = Uri.parse(
+  //         "https://www.google.com/maps/search/?api=1&query=${adresse.latitude},${adresse.longitude}");
+  //   } else if (adresse.googleAddress != null && adresse.googleAddress!.isNotEmpty) {
+  //     // Si l'adresse est disponible, mais pas les coordonnées
+  //     final String encodedAddress = Uri.encodeComponent(adresse.googleAddress!);
+  //     googleMapsUrl = Uri.parse(
+  //         "https://www.google.com/maps/search/?api=1&query=$encodedAddress");
+  //   } else {
+  //     throw 'Aucune donnée valide pour ouvrir Google Maps';
+  //   }
+
+  //   if (await canLaunchUrl(googleMapsUrl)) {
+  //     await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+  //   } else {
+  //     throw 'Impossible d\'ouvrir Google Maps';
+  //   }
+  // }
+
+  // Future<void> openGoogleMaps({required AdressesEntity adresse}) async {
+  //   // Récupérer la position actuelle de l'utilisateur
+  //   Position currentPosition = await Geolocator.getCurrentPosition(
+  //     desiredAccuracy: LocationAccuracy.high,
+  //   );
+
+  //   Uri googleMapsUrl;
+
+  //   // Si latitude et longitude de l'adresse sont disponibles
+  //   if (adresse.latitude != null && adresse.longitude != null) {
+  //     googleMapsUrl = Uri.parse(
+  //         "google.navigation:q=${adresse.latitude},${adresse.longitude}&origin=${currentPosition.latitude},${currentPosition.longitude}");
+  //   }
+  //   // Si une adresse sous forme de texte est fournie
+  //   else if (adresse.googleAddress != null &&
+  //       adresse.googleAddress!.isNotEmpty) {
+  //     final String encodedAddress = Uri.encodeComponent(adresse.googleAddress!);
+  //     googleMapsUrl = Uri.parse(
+  //         "google.navigation:q=$encodedAddress&origin=${currentPosition.latitude},${currentPosition.longitude}");
+  //   } else {
+  //     throw 'Aucune donnée valide pour ouvrir Google Maps';
+  //   }
+
+  //   // Vérifier si l'URL peut être lancée
+  //   if (await canLaunchUrl(googleMapsUrl)) {
+  //     await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+  //   } else {
+  //     throw 'Impossible d\'ouvrir Google Maps';
+  //   }
+  // }
+
+  Future<void> openGoogleMaps({required AdressesEntity adresse}) async {
+    // Vérifier et demander la permission de localisation
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw 'Permission de localisation refusée';
+      }
+    }
+
+    // Si la permission est définitivement refusée, demander à l'utilisateur d'aller dans les paramètres
+    if (permission == LocationPermission.deniedForever) {
+      throw 'La permission de localisation est refusée en permanence. Veuillez l\'activer dans les paramètres.';
+    }
+
+    // Récupérer la position actuelle de l'utilisateur
+    Position currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    Uri googleMapsUrl;
+
+    // Si latitude et longitude de l'adresse sont disponibles
+    if (adresse.latitude != null && adresse.longitude != null) {
+      googleMapsUrl = Uri.parse(
+          "google.navigation:q=${adresse.latitude},${adresse.longitude}&origin=${currentPosition.latitude},${currentPosition.longitude}");
+    }
+    // Si une adresse sous forme de texte est fournie
+    else if (adresse.googleAddress != null &&
+        adresse.googleAddress!.isNotEmpty) {
+      final String encodedAddress = Uri.encodeComponent(adresse.googleAddress!);
+      googleMapsUrl = Uri.parse(
+          "google.navigation:q=$encodedAddress&origin=${currentPosition.latitude},${currentPosition.longitude}");
+    } else {
+      throw 'Aucune donnée valide pour ouvrir Google Maps';
+    }
+
+    // Vérifier si l'URL peut être lancée
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Impossible d\'ouvrir Google Maps';
     }
   }
 }

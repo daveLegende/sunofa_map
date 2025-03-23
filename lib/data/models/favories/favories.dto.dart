@@ -1,25 +1,19 @@
-import 'package:sunofa_map/domain/entities/created_at.dart';
+// ignore_for_file: non_constant_identifier_names
+
 class FavoriesDTO {
-  final String? id;
-  final CreatedAt createdAt;
+  final String user_id;
+  final String address_id;
 
   FavoriesDTO({
-    this.id,
-    required this.createdAt,
+    required this.user_id,
+    required this.address_id,
   });
-
-  // Convertir JSON en objet Dart
-  factory FavoriesDTO.fromJson(Map<String, dynamic> json) {
-    return FavoriesDTO(
-      id: json['id'] as String,
-      createdAt: CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>),
-    );
-  }
 
   // Convertir un objet Dart en JSON
   Map<String, dynamic> toJson() {
     return {
-      'createdAt': createdAt.toJson(),
+      'user_id': user_id,
+      'address_id': address_id,
     };
   }
 }

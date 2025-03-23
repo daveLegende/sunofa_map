@@ -1,8 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
-import 'dart:async';
+import 'package:sunofa_map/blocs/langues/langue_choose_bloc.dart';
+// import 'dart:async';
 
 import 'package:sunofa_map/core/utils/screen_size.dart';
+import 'package:sunofa_map/presentation/views/addMap/pages/add_map_form_screen.dart';
+import 'package:sunofa_map/presentation/views/auth/pages/auth.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -43,69 +48,98 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 209, 240, 248),
-      body: Container(
-        color: AppTheme.primaryColor.withOpacity(0.6),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Welcome to",
-                style: AppTheme().stylish1(30, AppTheme.white),
-              ),
-              Text(
-                "Sunofa Map",
-                style:
-                    AppTheme().stylish1(50, AppTheme.white, isBold: true),
-              ),
-              SizedBox(height: context.heightPercent(10)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return BlocConsumer<LangueChooseBloc, LangueChooseState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: const Color.fromARGB(255, 209, 240, 248),
+          body: Container(
+            color: AppTheme.primaryColor.withOpacity(0.6),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildOption(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/AddMapFormScreen');
-                    },
-                    text: 'Add\n address',
-                    icon: HeroIcons.mapPin,
+                  Text(
+                    "onboarding.welcome".tr(),
+                    style: AppTheme().stylish1(30, AppTheme.white),
                   ),
-                  _buildOption(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/AddMapFormScreen');
-                    },
-                    text: 'Join\n address',
-                    icon: HeroIcons.map,
+                  Text(
+                    "onboarding.sunofa".tr(),
+                    style: AppTheme().stylish1(
+                      50,
+                      AppTheme.white,
+                      isBold: true,
+                    ),
+                  ),
+                  SizedBox(height: context.heightPercent(10)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildOption(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const AddMapFormScreen();
+                              },
+                            ),
+                          );
+                        },
+                        text: "onboarding.add_address".tr(),
+                        icon: HeroIcons.mapPin,
+                      ),
+                      _buildOption(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const AddMapFormScreen();
+                              },
+                            ),
+                          );
+                        },
+                        text: "onboarding.join_address".tr(),
+                        icon: HeroIcons.map,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: context.heightPercent(5)),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: AppTheme.white,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const AuthenticateScreen();
+                              },
+                            ),
+                          );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 12,
+                        ),
+                        child: Text(
+                          "onboarding.connexion".tr(),
+                          style: AppTheme().stylish1(15, AppTheme.black),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: context.heightPercent(5)),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: AppTheme.white,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/Authscreen');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
-                      vertical: 12,
-                    ),
-                    child: Text(
-                      'Connexion',
-                      style: AppTheme().stylish1(15, AppTheme.black),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

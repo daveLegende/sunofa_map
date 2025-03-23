@@ -62,7 +62,7 @@ class Routes {
       case registerScreen:
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
       case loginScreen:
-        return MaterialPageRoute(builder: (context) => const LoginScreen());
+        // return MaterialPageRoute(builder: (context) => const LoginScreen());
       case authScreen:
         return MaterialPageRoute(builder: (context) => const AuthenticateScreen());
       case dashboardScreen:
@@ -87,7 +87,7 @@ class Routes {
       case notesScreen:
         return MaterialPageRoute(builder: (context) => const NoteScreen());
       case editAdresseScreen:
-        return MaterialPageRoute(builder: (context) => const EditAdresseScreen());
+        return MaterialPageRoute(builder: (context) =>  EditAdresseScreen());
       case addressBookScreen:
         return MaterialPageRoute(builder: (context) => const BooksScreen());
       case favScreen:

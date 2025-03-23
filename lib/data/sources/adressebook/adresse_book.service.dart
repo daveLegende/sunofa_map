@@ -106,11 +106,17 @@ class AdresseBookServiceImpl extends AdresseBookService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           "Authorization": "Bearer $token",
+          // "_method": "PUT",
         },
-        body: jsonEncode(data.toJsonWithId()),
+        body: jsonEncode(data.toJson()),
       );
       String message = "";
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print("-------------------");
+        print("-------------------");
+        print("--------${response.body}-----------");
+        print("-------------------");
+        print("-------------------");
         return const Right("Adresse book modifiée avec succès");
       } else if (response.statusCode == 404) {
         message = "Une erreur s''est produite";

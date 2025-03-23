@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
@@ -20,9 +21,9 @@ class UserInfos extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Informations",
-          style: TextStyle(
+        Text(
+          "profil.info".tr(),
+          style: const TextStyle(
             color: mgrey,
             fontSize: 14,
           ),

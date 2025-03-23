@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/data/models/auth/login.dto.dart';
 
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:sunofa_map/data/models/user/user.dto.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/services/preferences.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 abstract class AuthService {
   Future<Either> login(LoginDTO data);
@@ -41,6 +43,7 @@ class AuthServiceImpl extends AuthService {
         await PreferenceServices().setToken(token);
 
         await PreferenceServices().saveUserInPreferences(user);
+        await OneSignal.login(user.id!);
         return Right(user);
       } else if (response.statusCode == 401) {
         message = "Mot de passe entré est incorrecte";
@@ -96,8 +99,8 @@ class AuthServiceImpl extends AuthService {
       }
     } catch (e) {
       print(e.toString());
-      return const Left(
-        "Erreur lors de la création de compte, veuillez réessayer",
+      return Left(
+        "register.try_error".tr(),
       );
     }
   }

@@ -1,0 +1,214 @@
+{
+    "onboarding": {
+        "add_address": "Add\n address",
+        "join_address": "Join\n address",
+        "welcome": "Welcome to",
+        "sunofa": "Sunofa Map",
+        "connexion": "Login"
+    },
+    "login": {
+        "title": "Login",
+        "desc": "Please enter your login credentials to continue",
+        "email_label": "Email",
+        "email_empty": "Please enter your email",
+        "pass_label": "Password",
+        "pass_empty": "Please enter a valid number",
+        "pass_forget": "Forgot password?",
+        "connexion": "Login",
+        "not_have_account": "Don't have an account? ",
+        "create_account": "Register"
+    },
+    "register": {
+        "title": "Account Creation",
+        "desc": "Please fill in these fields to create your account.",
+        "name_label": "Username",
+        "username_empty": "Please enter your username",
+        "phone_label": "Phone number",
+        "confirm_pass": "Confirm your password",
+        "confirm_empty": "Please confirm your password",
+        "pass_dont_match": "Passwords do not match",
+        "create_account": "Create account",
+        "try_error": "Error creating account, please try again"
+    },
+    "dashboard": {
+        "address": "Address",
+        "ad_empty": "No address found",
+        "initial_text": "Searched addresses will be displayed here",
+        "chargement": "Loading...",
+        "search_hint": "Search...",
+        "pin_hint": "Enter the code",
+        "pin_length": "Minimum of 4 digits",
+        "pin_not_match": "The PIN code does not match.",
+        "first_title": "This address is private, enter the PIN code or send an access request",
+        "first_write": "Enter the PIN code",
+        "first_ask": "Request PIN code",
+        "second_title": "Enter your contact's PIN code",
+        "valid": "Validate",
+        "third_title": "PIN code request sent",
+        "third_desc": "You will receive the PIN code in your notifications once your contact has approved your request",
+        "ok": "OK",
+        "network_error": "Internet connection problem!!"
+    },
+    "add_address": {
+        "appbar": "Add an address",
+        "success_message": "Address added successfully",
+        "failed_message": "An error occurred",
+        "try_message": "Unable to create this address, please try again",
+        "first_error": "Please check one of the position boxes",
+        "first": {
+            "pseudo_label": "Create an identifier",
+            "pseudo_error": "Minimum 3 letters",
+            "name_label": "Address name",
+            "name_error": "Minimum 3 letters",
+            "city_label": "Country, city, neighborhood, or street",
+            "city_error": "This field cannot be empty",
+            "position_label": "Position",
+            "google_address": "Use a Google address",
+            "ga_hint": "Neighborhood, City, State/Region, Zip code, Country",
+            "current_position": "Use my current location",
+            "info_label": "Information about the address",
+            "info_hint": "Go straight towards...",
+            "continue": "Continue"
+        },
+        "second": {
+            "image_label": "Add images",
+            "import_image": "Import an image",
+            "do_image": "Take a photo",
+            "video_label": "Video reference",
+            "import_video": "Import a video",
+            "do_video": "Record a video",
+            "audio_label": "Audio reference",
+            "import_audio": "Import an audio",
+            "do_audio": "Record an audio",
+            "or": "Or",
+            "continue": "Continue"
+        },
+        "third": {
+            "secure_label": "Would you like to protect your address?",
+            "public": "NO",
+            "private": "YES",
+            "pin_label": "Create a PIN code",
+            "pin_desc": "This code will be used by your correspondent to find you on Sunofa Map",
+            "pin_hint": "PIN code",
+            "pin_length": "The PIN code must be 4 digits",
+            "pin_empty": "Please enter a PIN code",
+            "accept": "I accept",
+            "and": "and ",
+            "sunofa": "of Sunofa Map. ",
+            "politic": "the Privacy Policies ",
+            "condition": "the Terms of Use ",
+            "accept_desc": "By clicking <<I accept>>, you agree to ",
+            "create_ad": "Create address"
+        }
+    },
+    "note": {
+        "appbar": "My Notes",
+        "note_empty": "No notes available at the moment"
+    },
+    "details_note": {
+        "appbar": "Note",
+        "note_hint": "Note..."
+    },
+    "add_note": {
+        "appbar": "Add Note",
+        "title": "Title",
+        "desc": "Note..."
+    },
+    "book": {
+        "appbar": "My Address Books",
+        "book_empty": "No address book available",
+        "add": "Add"
+    },
+    "add_book": {
+        "appbar": "Create Address Book",
+        "full_name": "Full name",
+        "locality": "Locality (in memory)",
+        "appart": "Apartment, suite, or notes",
+        "add_ga": "Add a Google address",
+        "ga": "Google address",
+        "save": "Create address book"
+    },
+    "edit_book": {
+        "appbar": "Edit Address Book",
+        "save": "Save changes"
+    },
+    "navigation": {
+        "home": "Home",
+        "notes": "Notes",
+        "books": "Address Book",
+        "address": "Addresses",
+        "snack": "Press again to quit app"
+    },
+    "address": {
+        "appbar": "My Addresses",
+        "all": "All",
+        "favoris": "Favorites",
+        "no_favoris": "No addresses added to favorites yet.",
+        "ad_empty": "No address available",
+        "img_not_fetch": "Image not found",
+        "img_not_dispo": "Image not available",
+        "delete": "Delete",
+        "modal_text": "Do you want to delete the selected item?",
+        "cancel": "Cancel"
+    },
+    "edit_ad": {
+        "appbar": "Edit Address",
+        "name_label": "Address name",
+        "city_label": "Country, city, neighborhood, or street",
+        "ga_label": "Add a Google address?",
+        "click": "Click to add",
+        "ga": "Google address",
+        "add_pin_label": "Add a PIN code?",
+        "pin_label": "PIN code",
+        "info_label": "Address info",
+        "images": "Images",
+        "videos": "Videos",
+        "audios": "Audios",
+        "save": "Save changes"
+    },
+    "gestion_ad": {
+        "appbar": "Address Management",
+        "email": "Email",
+        "phone": "Phone Number",
+        "update": "Edit",
+        "map": "Route"
+    },
+    "langues": {
+        "title": "Paramètres de Langue",
+        "desc": "Changez la langue de l'application selon votre préférence.",
+        "french": "French",
+        "english": "English"
+    },
+    "param": {
+        "appbar": "Settings",
+        "profil_label": "My Profile",
+        "see_profil": "View my profile",
+        "pref_label": "Preferences",
+        "langues": "Languages",
+        "notification": "Notifications",
+        "active_notif": "Enable",
+        "desactive_notif": "Disable",
+        "other": "Others",
+        "condition": "Terms of Use",
+        "politic": "Privacy Policy",
+        "directive": "Community Guidelines",
+        "support": "About",
+        "logout": "Log out",
+        "logout_profil": "Log out",
+        "enable": "Enable",
+        "disable": "Disable",
+        "modal_label": "Are you sure you want to log out?"
+    },
+    "profil": {
+        "appbar": "User Profile",
+        "info": "Information",
+        "logout": "Log Out",
+        "edit": {
+            "appbar": "Edit Information",
+            "name_label": "Your Username",
+            "email_label": "Your Email",
+            "phone_label": "Your Phone Number",
+            "save": "Submit Changes"
+        }
+    }
+}

@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sunofa_map/common/widgets/divider.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
@@ -50,7 +50,7 @@ class DeleteAdresseWidget extends StatelessWidget {
               Expanded(
                 child: DeleteOrCancel(
                   color: mred,
-                  text: "Annuler",
+                  text: "address.cancel".tr(),
                   onTap: onCancel,
                 ),
               ),

@@ -4,7 +4,7 @@ import 'package:sunofa_map/data/models/id.dto.dart';
 
 abstract class FavoriesRepository {
   Future<Either> getFavories();
-  Future<Either> getFavory(IdParms data);
+  Future<Either> deleteFavory(IdParms data);
   Future<Either> createFavory(FavoriesDTO data);
   Future<Either> updateFavory(FavoriesDTO data);
 }
