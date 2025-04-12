@@ -33,7 +33,7 @@ class AdresseBookServiceImpl extends AdresseBookService {
       );
       String message = "";
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("************************${response.body}");
+        // print("************************${response.body}");
         List<AdresseBookEntity> adb = adresseBookListFromJson(response.body);
         final add = adb
             .where(

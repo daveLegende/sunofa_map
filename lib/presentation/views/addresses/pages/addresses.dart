@@ -40,7 +40,9 @@ class AddresseScreen extends StatefulWidget {
   const AddresseScreen({
     super.key,
     this.user,
+    this.onTabSelected,
   });
+  final void Function(int)? onTabSelected;
   final UserEntity? user;
 
   @override
@@ -65,14 +67,69 @@ class _AddresseScreenState extends State<AddresseScreen> {
                   "address.appbar".tr(),
                   style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
                 ),
-                actions: [
-                  uState is UserSuccessState
-                      ? AppBarAddwidget(
-                          widget: AddMapFormScreen(user: uState.user),
-                        )
-                      : const LoadingCircle(),
-                ],
               ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              // floatingActionButton: uState is UserSuccessState
+              //     ? Padding(
+              //       padding: const EdgeInsets.only(bottom: 80),
+              //       child: FloatingActionButton(
+              //           clipBehavior: Clip.hardEdge,
+              //           backgroundColor: AppTheme.primaryColor,
+              //           onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => AddMapFormScreen(
+                          //       user: uState.user,
+                          //       onTabSelected: widget.onTabSelected,
+                          //     ),
+                          //   ),
+                          // );
+              //           },
+              //           child: const HeroIcon(
+              //             HeroIcons.plus,
+              //             color: mwhite,
+              //             size: 30,
+              //             style: HeroIconStyle.micro,
+              //           ),
+              //         ),
+              //     )
+              //     : const Center(),
+              floatingActionButton: uState is UserSuccessState
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      child: FloatingActionButton(
+                        clipBehavior: Clip.hardEdge,
+                        backgroundColor: AppTheme.primaryColor,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      AddMapFormScreen(
+                                user: uState.user,
+                                onTabSelected: widget.onTabSelected,
+                              ),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          color: mwhite,
+                          size: 30,
+                        ),
+                      ),
+                    )
+                  : const Center(),
               body: SizedBox(
                 width: context.width,
                 height: context.height,
@@ -131,15 +188,16 @@ class _AddresseScreenState extends State<AddresseScreen> {
                             });
 
                             return RefreshIndicator(
+                              color: AppTheme.primaryColor,
+                              backgroundColor: mwhite,
                               onRefresh: () async {
                                 context.read<AdresseCubit>().getAdresses();
-                                context.read<FavoriesCubit>().getFavories();
                               },
                               child: ListView.builder(
                                 padding: const EdgeInsets.only(
                                   right: 15,
                                   left: 15,
-                                  bottom: 80,
+                                  bottom: 150,
                                 ),
                                 itemCount: filteredAdresses.length,
                                 itemBuilder: (context, index) {
@@ -170,6 +228,7 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                                     ? uState.user
                                                     : null,
                                                 adresse: adresse,
+                                                onTabSelected: widget.onTabSelected,
                                               );
                                             },
                                           ),
@@ -263,14 +322,14 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                                       children: [
                                                         ShareDeleteEditCircle(
                                                           size: 30,
-                                                          color: !adresse
-                                                                  .favory
+                                                          color: !adresse.favory
                                                               ? mwhite
-                                                              : AppTheme.complementaryHover,
-                                                          iconColor: !adresse
-                                                                  .favory
-                                                              ? mred
-                                                              : AppTheme.complementaryColor,
+                                                              : AppTheme
+                                                                  .redHover,
+                                                          iconColor:
+                                                              !adresse.favory
+                                                                  ? mblack
+                                                                  : mred,
                                                           icon: HeroIcons.heart,
                                                           onTap: () {
                                                             context
@@ -299,23 +358,28 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                                                     longitude:
                                                                         adresse
                                                                             .longitude,
-                                                                    codePin: adresse
-                                                                        .codePin,
                                                                     googleAddress:
                                                                         adresse
                                                                             .googleAddress,
-                                                                    favory:
-                                                                        adresse.favory ? false : true,
+                                                                    favory: adresse
+                                                                            .favory
+                                                                        ? false
+                                                                        : true,
                                                                     media: adresse
                                                                         .media!,
                                                                   ),
                                                                 )
                                                                 .then((_) {
-                                                              context.read<AdresseCubit>().getAdresses();
+                                                              context
+                                                                  .read<
+                                                                      AdresseCubit>()
+                                                                  .getAdresses();
                                                               Helpers().toast(
-                                                                color: adresse.favory ? AppTheme.complementaryColor : mred,
-                                                                message:
-                                                                    !adresse.favory ? "Adresse ajoutée aux favoris" : "Adresse supprimée des favoris",
+                                                                color: mblack,
+                                                                message: !adresse
+                                                                        .favory
+                                                                    ? "Adresse ajoutée aux favoris"
+                                                                    : "Adresse supprimée des favoris",
                                                               );
                                                             });
                                                           },
@@ -334,8 +398,10 @@ class _AddresseScreenState extends State<AddresseScreen> {
                                                               MaterialPageRoute(
                                                                 builder: (_) {
                                                                   return EditAdresseScreen(
+                                                                    isAdresseHome: true,
                                                                     adresse:
                                                                         adresse,
+                                                                    onTabSelected: widget.onTabSelected,
                                                                   );
                                                                 },
                                                               ),

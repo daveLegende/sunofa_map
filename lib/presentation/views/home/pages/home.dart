@@ -261,7 +261,7 @@ class _HomeState extends State<Home> {
                     index: currentIndex,
                     children: [
                       DashboardScreen(onTabSelected: _onNavItemTapped),
-                      const AddresseScreen(),
+                      AddresseScreen(onTabSelected: _onNavItemTapped),
                       const BooksScreen(),
                       const NoteScreen(),
                     ],

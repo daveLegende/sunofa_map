@@ -38,7 +38,7 @@ class _BooksScreenState extends State<BooksScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: mgrey[100],
+          backgroundColor: mwhite,
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: AppTheme.primaryColor,
@@ -46,11 +46,34 @@ class _BooksScreenState extends State<BooksScreen> {
               "book.appbar".tr(),
               style: AppTheme().stylish1(20, AppTheme.white, isBold: true),
             ),
-            actions: const [
-              AppBarAddwidget(
-                widget: AddAdresseBook(),
+            // actions: const [
+            //   AppBarAddwidget(
+            //     widget: AddAdresseBook(),
+            //   ),
+            // ],
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: FloatingActionButton(
+              clipBehavior: Clip.hardEdge,
+              backgroundColor: AppTheme.primaryColor,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddAdresseBook(),
+                  ),
+                );
+              },
+              child: const HeroIcon(
+                HeroIcons.plus,
+                color: mwhite,
+                size: 30,
+                style: HeroIconStyle.micro,
               ),
-            ],
+            ),
           ),
           body: SizedBox(
             child: BlocListener<DeleteBookCubit, DeleteBookState>(
@@ -74,6 +97,8 @@ class _BooksScreenState extends State<BooksScreen> {
                     //               )
                     //               .toList();
                     return RefreshIndicator(
+                      color: AppTheme.primaryColor,
+                      backgroundColor: mwhite,
                       onRefresh: () async {
                         context.read<BookCubit>().getBooks();
                         setState(() {});
@@ -99,158 +124,166 @@ class _BooksScreenState extends State<BooksScreen> {
                                 ),
                               );
                             },
-                            child: Container(
-                              height: context.width / 3,
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                               margin: EdgeInsets.only(
                                 bottom: 20,
                                 top: index == 0 ? 20 : 0,
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                color: mwhite,
-                                // border: Border.all(color: AppTheme.primaryColor),
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(20),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          adresse.personName,
-                                          style:
-                                              AppTheme().stylish1(20, mblack),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          adresse.addressLabel,
-                                          style: AppTheme().stylish1(16, mgrey),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          adresse.apartmentSuiteNote,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: AppTheme().stylish1(
-                                            13,
-                                            mgrey,
+                              child: Container(
+                                height: context.width / 3,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: mwhite,
+                                  borderRadius: BorderRadius.circular(
+                                      20), // Doit correspondre au shape de la Card
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            adresse.personName,
+                                            style:
+                                                AppTheme().stylish1(20, mblack),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                        ),
-                                        Text(
-                                          Helpers().timeAgo(
-                                            DateTime.parse(
-                                              adresse.createdAt!.datetime,
+                                          Text(
+                                            adresse.addressLabel,
+                                            style:
+                                                AppTheme().stylish1(16, mgrey),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            adresse.apartmentSuiteNote,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: AppTheme().stylish1(
+                                              13,
+                                              mgrey,
                                             ),
                                           ),
-                                          style: AppTheme().stylish1(
-                                            13,
-                                            mgrey,
+                                          Text(
+                                            Helpers().timeAgo(
+                                              DateTime.parse(
+                                                adresse.createdAt!.datetime,
+                                              ),
+                                            ),
+                                            style: AppTheme().stylish1(
+                                              13,
+                                              mgrey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return EditBookScreen(
+                                                    book: adresse,
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: mgrey[200],
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: const Center(
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: AppTheme.primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              context: context,
+                                              builder: (_) {
+                                                return DeleteAdresseWidget(
+                                                  size: MediaQuery.of(context)
+                                                      .size,
+                                                  onDel: () async {
+                                                    Navigator.pop(context);
+                                                    // Afficher un indicateur de progression
+                                                    showDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      builder: (context) =>
+                                                          const LoadingCircle(),
+                                                    );
+
+                                                    try {
+                                                      // Exécuter la suppression
+                                                      await context
+                                                          .read<
+                                                              DeleteBookCubit>()
+                                                          .deleteBook(
+                                                            IdParms(
+                                                              id: adresse.id!,
+                                                            ),
+                                                          );
+                                                    } finally {
+                                                      Navigator.pop(context);
+                                                    }
+                                                  },
+                                                  onCancel: () {
+                                                    Navigator.pop(_);
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: mgrey[200],
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            child: const Center(
+                                              child: HeroIcon(
+                                                HeroIcons.trash,
+                                                color: mred,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return EditBookScreen(
-                                                  book: adresse,
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: mgrey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          child: const Center(
-                                            child: Icon(
-                                              Icons.edit,
-                                              color: AppTheme.primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                            backgroundColor: Colors.transparent,
-                                            context: context,
-                                            builder: (_) {
-                                              return DeleteAdresseWidget(
-                                                size:
-                                                    MediaQuery.of(context).size,
-                                                onDel: () async {
-                                                  Navigator.pop(context);
-                                                  // Afficher un indicateur de progression
-                                                  showDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    builder: (context) =>
-                                                        const LoadingCircle(),
-                                                  );
-
-                                                  try {
-                                                    // Exécuter la suppression
-                                                    await context
-                                                        .read<DeleteBookCubit>()
-                                                        .deleteBook(
-                                                          IdParms(
-                                                            id: adresse.id!,
-                                                          ),
-                                                        );
-                                                  } finally {
-                                                    Navigator.pop(context);
-                                                  }
-                                                },
-                                                onCancel: () {
-                                                  Navigator.pop(_);
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: mgrey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          child: const Center(
-                                            child: HeroIcon(
-                                              HeroIcons.trash,
-                                              color: mred,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );

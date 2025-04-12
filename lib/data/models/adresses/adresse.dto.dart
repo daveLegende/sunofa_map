@@ -96,7 +96,7 @@ class AdresseDTO {
   final String? info;
   final double? longitude;
   final double? latitude;
-  final int? codePin; // ✅ Change to int?
+  final String? codePin; // ✅ Change to int?
   final bool favory;
   final CreatedAt? createdAt;
   final String user_id;
@@ -133,9 +133,7 @@ class AdresseDTO {
       latitude: json['latitude'] != null
           ? double.tryParse(json['latitude'].toString())
           : null,
-      codePin: json['codePin'] != null
-          ? int.tryParse(json['codePin'].toString())
-          : null, // ✅ Parse as int
+      codePin: json['codePin']?.toString(), 
       favory: json['favory'] as bool? ?? false,
       createdAt: json['createdAt'] != null
           ? CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>)
@@ -154,7 +152,7 @@ class AdresseDTO {
       'adressName': adressName,
       'city': city,
       if (info != null) 'info': info,
-      if (googleAddress != null) 'googleAddress': googleAddress,
+      'googleAddress': googleAddress ?? "",
       if (longitude != null) 'longitude': longitude,
       if (latitude != null) 'latitude': latitude,
       if (codePin != null) 'codePin': codePin, // ✅ Only include if not null
@@ -174,7 +172,7 @@ class AdresseDTO {
       'adressName': adressName,
       'city': city,
       if (info != null) 'info': info,
-      if (googleAddress != null) 'googleAddress': googleAddress,
+      'googleAddress': googleAddress ?? "",
       if (longitude != null) 'longitude': longitude,
       if (latitude != null) 'latitude': latitude,
       if (codePin != null && codePin.toString().isNotEmpty) 'codePin': codePin.toString(), // ✅ Only include if not null

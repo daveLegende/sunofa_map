@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/core/utils/index.dart';
@@ -8,6 +9,7 @@ import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/views/addMap/bloc/create_adresse_cubit.dart';
 import 'package:sunofa_map/presentation/views/addMap/bloc/create_adresse_state.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 
 import 'package:geolocator/geolocator.dart';
 
@@ -28,6 +30,7 @@ class FirstForm extends StatefulWidget {
     required this.isCurrentLocationSelected,
     required this.onGoogleAddressChanged,
     required this.onCurrentLocationChanged,
+    this.onSuggestionClicked,
   });
   final UserEntity user;
   final VoidCallback? onTap;
@@ -38,6 +41,7 @@ class FirstForm extends StatefulWidget {
   final bool isCurrentLocationSelected;
   final ValueChanged<bool> onGoogleAddressChanged;
   final ValueChanged<bool> onCurrentLocationChanged;
+  final void Function(Prediction)? onSuggestionClicked;
   final TextEditingController pseudo, gaController, info, city, adressName;
 
   @override
@@ -113,6 +117,25 @@ class _FirstFormState extends State<FirstForm> {
                 }
                 return null;
               },
+            ),
+            const SizedBox(height: 8),
+            GooglePlacesAutoCompleteTextFormField(
+              textEditingController: widget.gaController,
+              googleAPIKey: APIURL.apiKey,
+              debounceTime: 400,
+              // fetchCoordinates: true,
+              maxLines: 1,
+              overlayContainerBuilder: (child) => Material(
+                elevation: 1.0,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                child: child,
+              ),
+              onPlaceDetailsWithCoordinatesReceived: (prediction) {
+                // this method will return latlng with place detail
+                print("Coordinates: (${prediction.lat},${prediction.lng})");
+              },
+              onSuggestionClicked: widget.onSuggestionClicked,
             ),
             SizedBox(
               height: context.heightPercent(2),

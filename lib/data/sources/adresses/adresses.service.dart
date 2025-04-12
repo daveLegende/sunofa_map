@@ -49,6 +49,45 @@ class AdresseServiceImpl extends AdresseService {
     }
   }
 
+  // @override
+  // Future<Either> getAdresses() async {
+  //   try {
+  //     final token = await PreferenceServices().getToken();
+  //     final user = await PreferenceServices().getUserFromPreference();
+  //     final response = await http.get(
+  //       Uri.parse(APIURL.adresses),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //         'Accept': 'application/json',
+  //         'Authorization': "Bearer $token",
+  //       },
+  //     );
+  //     String message = "";
+  //     print("************************${response.body}");
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       print("************************${response.body}");
+
+  //       print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+  //       List<AdressesEntity> adresses = adressesListJson(response.body);
+
+  //       print("-_-_-_-_-_-_-_-_-_-_$adresses-_-_-_-_-_-_-_-_-_-_-_-");
+  //       final add = adresses
+  //           .where(
+  //             (element) => element.user.id == user.id,
+  //           )
+  //           .toList();
+  //       return Right(add);
+  //     } else {
+  //       message = "Une erreur s'est produite";
+  //       print("message ${response.body}");
+  //       return Left(message);
+  //     }
+  //   } catch (e) {
+  //     print("error $e");
+  //     return const Left("Problème lié à la connexion, veuillez réessayer");
+  //   }
+  // }
+
   @override
   Future<Either> getAdresses() async {
     try {
@@ -62,24 +101,26 @@ class AdresseServiceImpl extends AdresseService {
           'Authorization': "Bearer $token",
         },
       );
-      String message = "";
-      print("************************${response.body}");
+
+      print("API Response: ${response.statusCode} - ${response.body}");
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("************************${response.body}");
-        List<AdressesEntity> adresses = adressesListJson(response.body);
-        final add = adresses
-            .where(
-              (element) => element.user.id == user.id,
-            )
-            .toList();
-        return Right(add);
+        try {
+          List<AdressesEntity> adresses = adressesListJson(response.body);
+          final userAddresses =
+              adresses.where((element) => element.user.id == user.id).toList();
+          return Right(userAddresses);
+        } catch (e) {
+          print('Error processing addresses: $e');
+          return Left("Erreur lors du traitement des adresses");
+        }
       } else {
-        message = "Une erreur s'est produite";
-        print("message ${response.body}");
-        return Left(message);
+        final errorMsg = json.decode(response.body)['message'] ??
+            "Une erreur s'est produite (${response.statusCode})";
+        return Left(errorMsg);
       }
     } catch (e) {
-      print("error $e");
+      print("Network error: $e");
       return const Left("Problème lié à la connexion, veuillez réessayer");
     }
   }
@@ -236,7 +277,7 @@ class AdresseServiceImpl extends AdresseService {
         request.fields['latitude'] = data.latitude.toString();
       }
       if (data.codePin != null) {
-        request.fields['codePin'] = data.codePin.toString();
+        request.fields['codePin'] = data.codePin ?? "";
       }
 
       // Fonction pour ajouter des fichiers s'ils existent

@@ -40,7 +40,6 @@ class _AddresseSearchState extends State<AddresseSearch> {
   final pinController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String url = "";
 
   @override
   void initState() {
@@ -220,19 +219,13 @@ class _AddresseSearchState extends State<AddresseSearch> {
                         child: Row(
                           children: [
                             ClipOval(
-                              child: url.isEmpty
-                                  ? Container(
-                                      width: 60,
-                                      height: 60,
-                                      color: mgrey[200],
-                                    )
-                                  : Image(
+                              child: Image(
                                       width: 60,
                                       height: 60,
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
                                         ad.media!.photo1 != null
-                                            ? "$url/${ad.media!.photo1!}"
+                                            ? "${APIURL.fileUrl}/${ad.media!.photo1!}"
                                             : APIURL.network,
                                       ),
                                     ),
@@ -245,7 +238,7 @@ class _AddresseSearchState extends State<AddresseSearch> {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
-                                    ad.codePin.toString(),
+                                    "${ad.adressName}${ad.codePin}",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: AppTheme().stylish1(

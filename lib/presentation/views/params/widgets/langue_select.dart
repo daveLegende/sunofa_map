@@ -21,6 +21,7 @@ class _SelectLangueSheetState extends State<SelectLangueSheet> {
       listener: (context, state) {
         print("Langue choisie: ${state.selectedLocale.languageCode}");
         setState(() {});
+        Navigator.pop(context);
       },
       builder: (context, state) {
         final isFrench = state.selectedLocale.languageCode == 'fr';

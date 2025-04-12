@@ -12,7 +12,8 @@ class AppTheme {
   static const Color mintGreen = Color(0xFF4DD0E1); // Vert menthe
   static const Color lightGray = Color(0xFFF2F2F2); // Gris clair
   static const Color background = Color.fromARGB(255, 209, 240, 248);
-  static const Color red = Color.fromARGB(255, 189, 4, 4); // Blanc cassé
+  static const Color red = Color.fromARGB(255, 189, 4, 4);
+  static const Color redHover = Color.fromARGB(255, 252, 213, 213); // Blanc cassé
 
   static Color grey = Colors.grey.shade200;
   static const String fontFamilyLato = "Lato";

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:sunofa_map/blocs/langues/langue_choose_bloc.dart';
 import 'package:sunofa_map/common/api/api.dart';
 import 'package:sunofa_map/common/helpers/helper.dart';
@@ -12,6 +13,8 @@ import 'package:sunofa_map/domain/entities/adresses/adresse.entity.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
 import 'package:sunofa_map/presentation/routes/app_routes.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
+import 'package:sunofa_map/presentation/views/home/bloc/user/user_cubit.dart';
+import 'package:sunofa_map/presentation/views/home/bloc/user/user_state.dart';
 import 'package:sunofa_map/presentation/views/viewImage/view_image.dart';
 import 'package:sunofa_map/presentation/views/viewImage/view_video.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
@@ -21,9 +24,11 @@ class GestionAdresseScreen extends StatefulWidget {
     super.key,
     this.adresse,
     this.user,
+    this.onTabSelected,
   });
   final UserEntity? user;
   final AdressesEntity? adresse;
+  final void Function(int)? onTabSelected;
 
   @override
   State<GestionAdresseScreen> createState() => _GestionAdresseScreenState();
@@ -60,6 +65,7 @@ class _GestionAdresseScreenState extends State<GestionAdresseScreen> {
           bottomSheet: GestionAdresseSheet(
             user: widget.user!,
             adresse: widget.adresse!,
+            onTabSelected: widget.onTabSelected,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
@@ -99,16 +105,6 @@ class _GestionAdresseScreenState extends State<GestionAdresseScreen> {
                           subtitle: address.city,
                         ),
                         const SizedBox(height: 20),
-                        ListTileCustom(
-                          title: "gestion_ad.email".tr(),
-                          subtitle: widget.adresse!.user.email,
-                        ),
-                        const SizedBox(height: 20),
-                        ListTileCustom(
-                          title: "gestion_ad.phone".tr(),
-                          subtitle: widget.adresse!.user.phoneNumber,
-                        ),
-                        const SizedBox(height: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -133,6 +129,36 @@ class _GestionAdresseScreenState extends State<GestionAdresseScreen> {
                             ),
                           ],
                         ),
+                        widget.adresse!.googleAddress == null ||
+                                widget.adresse!.googleAddress!.isEmpty
+                            ? const SizedBox()
+                            : Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  ListTileCustom(
+                                    title: "edit_ad.ga".tr(),
+                                    subtitle: widget.adresse!.googleAddress!,
+                                  ),
+                                ],
+                              ),
+                        widget.adresse!.codePin == null ||
+                                widget.adresse!.codePin!.bitLength < 4
+                            ? const SizedBox()
+                            : Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  ListTileCustom(
+                                    title: "edit_ad.pin_label".tr(),
+                                    subtitle:
+                                        widget.adresse!.codePin!.toString(),
+                                  ),
+                                ],
+                              ),
+                        // const SizedBox(height: 20),
+                        // ListTileCustom(
+                        //   title: "gestion_ad.phone".tr(),
+                        //   subtitle: widget.adresse!.user.phoneNumber,
+                        // ),
                         const SizedBox(height: 20),
                         widget.adresse!.media!.photo1 == null ||
                                 widget.adresse!.media!.photo2 == null
@@ -250,9 +276,11 @@ class GestionAdresseSheet extends StatelessWidget {
     super.key,
     required this.adresse,
     required this.user,
+    this.onTabSelected,
   });
   final UserEntity user;
   final AdressesEntity adresse;
+  final void Function(int)? onTabSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -277,6 +305,8 @@ class GestionAdresseSheet extends StatelessWidget {
                             builder: (_) {
                               return EditAdresseScreen(
                                 adresse: adresse,
+                                isAdresseHome: false,
+                                onTabSelected: onTabSelected,
                               );
                             },
                           ),

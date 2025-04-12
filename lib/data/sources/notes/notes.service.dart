@@ -38,7 +38,7 @@ class NoteServiceImpl extends NoteService {
         print("************************${response.body}");
       String message = "";
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("************************${response.body}");
+        // print("************************${response.body}");
         List<NoteEntity> myNotes = noteListJson(response.body);
         final notes = myNotes
             .where(

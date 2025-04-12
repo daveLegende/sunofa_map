@@ -78,58 +78,127 @@ import 'services/notification_services.dart';
 //   FlutterNativeSplash.remove();
 // }
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+// void main() async {
+//   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+//   // await PreferenceServices().removeToken().then((_) async {
+//   //   await PreferenceServices().removeUser().then((_) {});
+//   // });
+//   // Initialize OneSignal
+//   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+//   OneSignal.initialize("14bfcd23-b8b1-4ace-9591-ba5aa2b98c36");
+
+//   await PreferenceServices().clearAllNotifications();
+
+//   // Request notification permission
+//   await OneSignal.Notifications.requestPermission(true);
+
+//   // Save permission in SharedPreferences
+//   await PreferenceServices().saveNotificationPermission();
+
+//   // Handle foreground notifications
+//   OneSignal.Notifications.addForegroundWillDisplayListener((event) async {
+//     event.notification.display();
+//     OneSignal.Notifications.displayNotification(
+//       event.notification.notificationId,
+//     );
+//     print("-----------------------");
+//     print("-----------------------");
+//     print("-----------${event.notification} ------------");
+//     print("------------dffhd-----------");
+//     print("-----------------------");
+
+//     await PreferenceServices().saveNotification(event.notification);
+//   });
+
+//   // Handle notification clicks
+//   OneSignal.Notifications.addClickListener((event) async {
+//     print('NOTIFICATION CLICKED: ${event.notification.body}');
+
+//     // await PreferenceServices().saveNotification(event.notification);
+//     // Prevent duplicate navigations
+//     if (navigatorKey.currentState != null) {
+//       navigatorKey.currentState?.pushNamed(Routes.notifScreen);
+//     }
+//   });
+
+//   // Initialize localization and other dependencies
+//   await EasyLocalization.ensureInitialized();
+//   Animate.restartOnHotReload = true;
+//   await initializeDateFormatting('fr_FR', '');
+
+//   // Set preferred orientations
+//   SystemChrome.setPreferredOrientations([
+//     DeviceOrientation.portraitUp,
+//     DeviceOrientation.portraitDown,
+//   ]);
+
+//   // Preserve splash screen
+//   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+//   // Initialize dependencies
+//   await initializeDependencies();
+//   HttpOverrides.global = MyHttpOverrides();
+
+//   // Run the app
+//   runApp(
+//     EasyLocalization(
+//       supportedLocales: const [Locale('en'), Locale('fr')],
+//       path: 'assets/translations',
+//       fallbackLocale: const Locale('en'),
+//       saveLocale: true,
+//       child: const MyApp(),
+//     ),
+//   );
+
+//   // Remove splash screen
+//   FlutterNativeSplash.remove();
+// }
+
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize OneSignal
+  
+  // Initialisation OneSignal
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize("14bfcd23-b8b1-4ace-9591-ba5aa2b98c36");
 
-  // Request notification permission
+  await PreferenceServices().clearAllNotifications();
   await OneSignal.Notifications.requestPermission(true);
-
-  // Save permission in SharedPreferences
   await PreferenceServices().saveNotificationPermission();
 
-  // Handle foreground notifications
+  // Gestion des notifications reçues (foreground et background)
   OneSignal.Notifications.addForegroundWillDisplayListener((event) async {
+    // Afficher la notification
     event.notification.display();
-    OneSignal.Notifications.displayNotification(
-      event.notification.notificationId,
-    );
+    
+    // Enregistrer la notification dès réception
+    print("Notification reçue: ${event.notification}");
     await PreferenceServices().saveNotification(event.notification);
   });
 
-  // Handle notification clicks
+  // Gestion des clics sur notification (sans enregistrement)
   OneSignal.Notifications.addClickListener((event) async {
-    print('NOTIFICATION CLICKED: ${event.notification.body}');
+    print('Notification cliquée: ${event.notification.body}');
     
-    await PreferenceServices().saveNotification(event.notification);
-    // Prevent duplicate navigations
     if (navigatorKey.currentState != null) {
       navigatorKey.currentState?.pushNamed(Routes.notifScreen);
     }
+    await PreferenceServices().saveNotification(event.notification);
   });
 
-  // Initialize localization and other dependencies
+  // Initialisation des autres dépendances
   await EasyLocalization.ensureInitialized();
   Animate.restartOnHotReload = true;
   await initializeDateFormatting('fr_FR', '');
-
-  // Set preferred orientations
+  
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Preserve splash screen
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  // Initialize dependencies
   await initializeDependencies();
   HttpOverrides.global = MyHttpOverrides();
 
-  // Run the app
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('fr')],
@@ -140,7 +209,6 @@ void main() async {
     ),
   );
 
-  // Remove splash screen
   FlutterNativeSplash.remove();
 }
 

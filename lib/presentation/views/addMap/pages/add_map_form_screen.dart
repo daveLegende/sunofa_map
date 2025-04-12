@@ -76,6 +76,7 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: mwhite,
           appBar: AppBar(
             backgroundColor: mwhite,
             elevation: 0,
@@ -87,10 +88,9 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                   AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
             ),
           ),
-          body: Container(
+          body: SizedBox(
             width: context.width,
             height: context.height,
-            color: AppTheme.lightGray,
             child: BlocListener<CreateAdresseCubit, CreateAdresseState>(
               listener: (context, state) {
                 if (state is CreateAdresseSuccessState) {
@@ -278,6 +278,15 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                                         );
                                       }
                                     },
+                              onSuggestionClicked: (prediction) {
+                                gaController.text = prediction.description!;
+                                gaController.selection =
+                                    TextSelection.fromPosition(
+                                  TextPosition(
+                                    offset: prediction.description!.length,
+                                  ),
+                                );
+                              },
                               onCurrentLocationChanged: (value) {
                                 setState(() {
                                   isCurrentLocationSelected = value;
@@ -374,8 +383,7 @@ class _AddMapFormScreenState extends State<AddMapFormScreen> {
                                                 latitude: latitude,
                                                 codePin: pin.text.trim().isEmpty
                                                     ? null
-                                                    : int.parse(
-                                                        pin.text.trim()),
+                                                    : pin.text.trim(),
                                                 favory: false,
                                                 user_id:
                                                     widget.user!.id!.toString(),

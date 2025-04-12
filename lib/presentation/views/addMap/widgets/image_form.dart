@@ -525,7 +525,7 @@ class ImagePreview extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: Image.file(
             file,
-            height: width * .8,
+            height: 100,
             width: width,
             fit: BoxFit.cover,
           ),
@@ -653,7 +653,7 @@ class _VideoPreviewState extends State<VideoPreview> {
           right: 10,
           child: GestureDetector(
             onTap: widget.onDelete,
-            child: const Icon(Icons.cancel, color: Colors.red, size: 30),
+            child: const CancelStackWidget(),
           ),
         ),
       ],

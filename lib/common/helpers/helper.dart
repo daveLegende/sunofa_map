@@ -328,4 +328,40 @@ class Helpers {
       throw 'Impossible d\'ouvrir Google Maps';
     }
   }
+
+  String extractPinCode(String input) {
+    // Expression régulière pour trouver une séquence de chiffres
+    final regExp = RegExp(r'\d+');
+    final match = regExp.firstMatch(input);
+
+    return match?.group(0) ??
+        ''; // Retourne le premier groupe de chiffres trouvé
+  }
+
+  List<List<Map<String, dynamic>>> groupNotificationByDate(
+      List<Map<String, dynamic>> notifications) {
+    Map<String, List<Map<String, dynamic>>> groupedNotifications = {};
+
+    for (var notification in notifications) {
+      // Ajouter une condition pour ne conserver que les matchs avec l'état "A_VENIR"
+      // if (match.etat == "A_VENIR") {
+      // Convertir la date au format ISO 8601 en objet DateTime
+      DateTime matchDate = DateTime.parse(notification["date"].toString());
+
+      // Formater la date pour l'utiliser comme clé dans la map
+      String dateKey = '${matchDate.year}-${matchDate.month}-${matchDate.day}';
+
+      if (groupedNotifications.containsKey(dateKey)) {
+        groupedNotifications[dateKey]!.add(notification);
+      } else {
+        groupedNotifications[dateKey] = [notification];
+      }
+      // }
+    }
+
+    // Convertir la map en liste pour l'affichage
+    List<List<Map<String, dynamic>>> result =
+        groupedNotifications.values.toList();
+    return result;
+  }
 }

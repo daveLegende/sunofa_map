@@ -13,6 +13,7 @@ import 'package:sunofa_map/domain/entities/adressebook/adresse_book.entity.dart'
 import 'package:sunofa_map/presentation/views/books/bloc/book_cubit.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/edit/edit_cubit.dart';
 import 'package:sunofa_map/presentation/views/books/bloc/edit/edit_state.dart';
+import 'package:sunofa_map/presentation/views/editAdresse/pages/edit_adresse.dart';
 import 'package:sunofa_map/presentation/views/editAdresse/widgets/edit_adresse_sheet.dart';
 import 'package:sunofa_map/themes/app_themes.dart';
 
@@ -64,175 +65,135 @@ class _EditBookScreenState extends State<EditBookScreen> {
     return BlocConsumer<LangueChooseBloc, LangueChooseState>(
         listener: (context, state) {},
         builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
+          return Scaffold(
             backgroundColor: mwhite,
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            leading: const BackArrow(),
-            title: Text(
-              "edit_book.appbar".tr(),
-              style: AppTheme().stylish1(20, AppTheme.primaryColor, isBold: true),
+            appBar: AppBar(
+              backgroundColor: mwhite,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              leading: const BackArrow(),
+              title: Text(
+                "edit_book.appbar".tr(),
+                style: AppTheme()
+                    .stylish1(20, AppTheme.primaryColor, isBold: true),
+              ),
             ),
-          ),
-          body: SizedBox(
-            height: context.height,
-            child: BlocListener<EditBookCubit, EditBookState>(
-              listener: (context, state) {
-                if (state is EditBookSuccessState) {
-                  Helpers().mySnackbar(
-                    context: context,
-                    message: state.message,
-                  );
-                  context.read<BookCubit>().getBooks();
-                } else if (state is EditBookFailedState) {
-                  Helpers().mySnackbar(
-                    context: context,
-                    color: mred,
-                    message: state.message,
-                  );
-                }
-              },
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                  horizontal: 20,
-                ),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "add_book.full_name".tr(),
-                            style: AppTheme().stylish1(
-                              15,
-                              AppTheme.black,
-                              // isBold: true,
+            body: SizedBox(
+              height: context.height,
+              child: BlocListener<EditBookCubit, EditBookState>(
+                listener: (context, state) {
+                  if (state is EditBookSuccessState) {
+                    Helpers().mySnackbar(
+                      context: context,
+                      message: state.message,
+                    );
+                    context.read<BookCubit>().getBooks();
+                  } else if (state is EditBookFailedState) {
+                    Helpers().mySnackbar(
+                      context: context,
+                      color: mred,
+                      message: state.message,
+                    );
+                  }
+                },
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 20,
+                  ),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        ListTileCustom(
+                          title: "add_book.full_name".tr(),
+                          subtitle: "add_book.full_name".tr(),
+                          controller: fullName,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "add_book.locality".tr(),
+                          subtitle: "add_book.locality".tr(),
+                          controller: locality,
+                        ),
+                        const SizedBox(height: 20),
+                        ListTileCustom(
+                          title: "add_book.appart".tr(),
+                          subtitle: "add_book.appart".tr(),
+                          controller: appart,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "add_book.add_ga".tr(),
+                              style: AppTheme().stylish1(
+                                15,
+                                mblack,
+                                isBold: true,
+                              ),
                             ),
-                          ),
-                          SimpleTextField(
-                            hintText: "add_book.full_name".tr(),
-                            controller: fullName,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "add_book.locality".tr(),
-                            style: AppTheme().stylish1(
-                              15,
-                              AppTheme.black,
-                              // isBold: true,
+                            const SizedBox(width: 10),
+                            Checkbox(
+                              activeColor: AppTheme.primaryColor,
+                              value: hasGoogleAddress,
+                              onChanged: (val) {
+                                setState(() {
+                                  hasGoogleAddress = val!;
+                                });
+                              },
                             ),
-                          ),
-                          SimpleTextField(
-                            hintText: "add_book.locality".tr(),
-                            controller: locality,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "add_book.appart".tr(),
-                            style: AppTheme().stylish1(
-                              15,
-                              AppTheme.black,
-                              // isBold: true,
-                            ),
-                          ),
-                          SimpleTextField(
-                            hintText: "add_book.appart".tr(),
-                            controller: appart,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "add_book.add_ga".tr(),
-                          ),
-                          const SizedBox(width: 10),
-                          Checkbox(
-                            value: hasGoogleAddress,
-                            onChanged: (val) {
-                              setState(() {
-                                hasGoogleAddress = val!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      hasGoogleAddress
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "add_book.ga".tr(),
-                                  style: AppTheme().stylish1(
-                                    15,
-                                    AppTheme.black,
-                                    // isBold: true,
-                                  ),
-                                ),
-                                SimpleTextField(
-                                  hintText: "add_book.ga".tr(),
-                                  controller: googleAdress,
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
-                      const SizedBox(height: 40),
-                    ],
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        hasGoogleAddress
+                            ? ListTileCustom(
+                                title: "add_book.ga".tr(),
+                                subtitle: "add_book.ga".tr(),
+                                controller: googleAdress,
+                              )
+                            : const SizedBox(),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          bottomSheet: isKeyboardVisible
-              ? const SizedBox()
-              : EditAdresseSheet(
-                  button: isLoading
-                      ? const LoadingCircle()
-                      : SubmitButton(
-                          text: "edit_book.save".tr(),
-                          onTap: () {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            context
-                                .read<EditBookCubit>()
-                                .editBook(
-                                  AdresseBookDTO(
-                                    id: widget.book.id,
-                                    personName: fullName.text.trim(),
-                                    addressLabel: locality.text.trim(),
-                                    apartmentSuiteNote: appart.text.trim(),
-                                    hasGoogleAddress: hasGoogleAddress,
-                                    googleAddress: googleAdress.text.trim(),
-                                    user_id: widget.book.user!.id!,
-                                  ),
-                                )
-                                .then((value) {
+            bottomSheet: isKeyboardVisible
+                ? const SizedBox()
+                : EditAdresseSheet(
+                    button: isLoading
+                        ? const LoadingCircle()
+                        : SubmitButton(
+                            text: "edit_book.save".tr(),
+                            onTap: () {
                               setState(() {
-                                isLoading = false;
+                                isLoading = true;
                               });
-                            });
-                          },
-                        ),
-                ),
-        );
-      }
-    );
+                              context
+                                  .read<EditBookCubit>()
+                                  .editBook(
+                                    AdresseBookDTO(
+                                      id: widget.book.id,
+                                      personName: fullName.text.trim(),
+                                      addressLabel: locality.text.trim(),
+                                      apartmentSuiteNote: appart.text.trim(),
+                                      hasGoogleAddress: hasGoogleAddress,
+                                      googleAddress: googleAdress.text.trim(),
+                                      user_id: widget.book.user!.id!,
+                                    ),
+                                  )
+                                  .then((value) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              });
+                            },
+                          ),
+                  ),
+          );
+        });
   }
 }

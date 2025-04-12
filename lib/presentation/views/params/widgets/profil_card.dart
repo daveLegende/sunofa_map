@@ -39,9 +39,13 @@ class SettingProfilCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
+                  backgroundColor: AppTheme.lightPrimary,
                   radius: 25,
-                  child: HeroIcon(HeroIcons.user),
+                  child: const HeroIcon(
+                    HeroIcons.user,
+                    color: mblack,
+                  ),
                 ),
                 title: Text(
                   user.name,

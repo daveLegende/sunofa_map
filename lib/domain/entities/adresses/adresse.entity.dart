@@ -131,7 +131,7 @@ class AdressesEntity {
     return AdressesEntity(
       id: json['id'] as String?,
       pseudo: json['pseudo'] as String,
-      adressName: json['adressName'] as String,
+      adressName: json['adressName'] ?? "Unknow Address",
       googleAddress: json['googleAddress'] as String?,
       city: json['city'] as String,
       info: json['info'] as String,
@@ -148,14 +148,40 @@ class AdressesEntity {
     );
   }
 
+  // factory AdressesEntity.fromJson(Map<String, dynamic> json) {
+  //   return AdressesEntity(
+  //     id: json['id'] as String?,
+  //     pseudo: json['pseudo'] as String? ?? '', // Ajout d'une valeur par défaut
+  //     adressName: json['adressName'] as String? ?? '',
+  //     googleAddress: json['googleAddress'] as String?,
+  //     city: json['city'] as String? ?? '',
+  //     info: json['info'] as String? ?? '',
+  //     longitude: json['longitude'] != null
+  //         ? double.tryParse(json['longitude'].toString())
+  //         : null,
+  //     latitude: json['latitude'] != null
+  //         ? double.tryParse(json['latitude'].toString())
+  //         : null,
+  //     codePin: json['codePin'],
+  //     user: UserEntity.fromJson(json['user'] as Map<String, dynamic>),
+  //     favory: (json['favory'] as int?) == 1,
+  //     createdAt: json['createdAt'] != null
+  //         ? CreatedAt.fromJson(json['createdAt'] as Map<String, dynamic>)
+  //         : null,
+  //     media: json['media'] != null
+  //         ? MediaEntity.fromJson(json['media'] as Map<String, dynamic>)
+  //         : null,
+  //   );
+  // }
+
   factory AdressesEntity.fromJson2(Map<String, dynamic> json) {
     return AdressesEntity(
       id: json['id'] as String?,
-      pseudo: json['pseudo'] as String,
+      pseudo: json['pseudo'] ?? "",
       adressName: json['adressName'] as String,
-      googleAddress: json['googleAddress'] as String?,
-      city: json['city'] as String,
-      info: json['info'] as String,
+      googleAddress: json['googleAddress'] ?? "",
+      city: json['city'] ?? "",
+      info: json['info'] ?? "",
       longitude: json['longitude']?.toDouble(),
       latitude: json['latitude']?.toDouble(),
       codePin: json['codePin'],
@@ -223,13 +249,49 @@ class AdressesEntity {
 }
 
 // list des arbitres
+// List<AdressesEntity> adressesListJson(String jsonString) {
+//   // Décoder la chaîne JSON en un objet Dart
+//   final Map<String, dynamic> jsonData = json.decode(jsonString);
+
+//   // Extraire la liste des éléments de la clé "data"
+//   final List<dynamic> dataList = jsonData['data'];
+
+//   // Transformer chaque élément en un objet AdressesEntity
+//   return dataList.map((item) => AdressesEntity.fromJson(item)).toList();
+// }
+
 List<AdressesEntity> adressesListJson(String jsonString) {
-  // Décoder la chaîne JSON en un objet Dart
-  final Map<String, dynamic> jsonData = json.decode(jsonString);
+  try {
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    final List<dynamic> dataList = jsonData['data'] ?? [];
 
-  // Extraire la liste des éléments de la clé "data"
-  final List<dynamic> dataList = jsonData['data'];
-
-  // Transformer chaque élément en un objet AdressesEntity
-  return dataList.map((item) => AdressesEntity.fromJson(item)).toList();
+    return dataList.map((item) {
+      try {
+        return AdressesEntity.fromJson(item as Map<String, dynamic>);
+      } catch (e) {
+        print('Error parsing address item: $e');
+        return AdressesEntity(
+          pseudo: '',
+          adressName: '',
+          city: '',
+          info: '',
+          longitude: null,
+          latitude: null,
+          codePin: null,
+          favory: false,
+          user: UserEntity(
+            id: '',
+            name: '',
+            email: '',
+            phoneNumber: '',
+            password: '',
+            createdAt: null,
+          ),
+        );
+      }
+    }).toList();
+  } catch (e) {
+    print('Error parsing addresses JSON: $e');
+    return [];
+  }
 }

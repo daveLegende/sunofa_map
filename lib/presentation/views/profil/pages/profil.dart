@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:sunofa_map/blocs/langues/langue_choose_bloc.dart';
+import 'package:sunofa_map/chargement.dart';
 import 'package:sunofa_map/common/widgets/index.dart';
 import 'package:sunofa_map/core/utils/index.dart';
 import 'package:sunofa_map/domain/entities/user/user_entity.dart';
@@ -127,13 +130,12 @@ class _ProfilScreenState extends State<ProfilScreen> {
                             children: [
                               Row(
                                 children: [
-                                  const CircleAvatar(
+                                  CircleAvatar(
+                                    backgroundColor: AppTheme.lightPrimary,
                                     radius: 40,
-                                    child: Center(
-                                      child: HeroIcon(
-                                        HeroIcons.user,
-                                        color: mblack,
-                                      ),
+                                    child: const HeroIcon(
+                                      HeroIcons.user,
+                                      color: mblack,
                                     ),
                                   ),
                                   const SizedBox(width: 10),
@@ -222,19 +224,21 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                     delOrLogoutText: "param.logout_profil".tr(),
                                     text: "param.modal_label".tr(),
                                     onDel: () async {
+                                      _cleanupOneSignal();
                                       await PreferenceServices()
                                           .removeToken()
                                           .then((_) async {
                                         await PreferenceServices()
                                             .removeUser()
                                             .then((_) {
-                                          Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(builder: (_) {
-                                              return const OnboardingScreen();
-                                            }),
-                                            (route) => false,
-                                          );
+                                          // Navigator.pushAndRemoveUntil(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (_) {
+                                          //     return const Chargement();
+                                          //   }),
+                                          //   (route) => false,
+                                          // );
+                                          Restart.restartApp();
                                         });
                                       });
                                     },
@@ -294,6 +298,17 @@ class _ProfilScreenState extends State<ProfilScreen> {
         );
       },
     );
+  }
+
+  Future<void> _cleanupOneSignal() async {
+    try {
+      // 1. Supprimer l'ID externe (sans toucher aux permissions)
+      await OneSignal.logout();
+
+      print('Nettoyage OneSignal réussi');
+    } catch (e) {
+      print('Erreur nettoyage OneSignal: $e');
+    }
   }
 }
 

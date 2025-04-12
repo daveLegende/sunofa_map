@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sunofa_map/common/widgets/buttons/submit_button.dart';
 import 'package:sunofa_map/common/widgets/loading_circle.dart';
@@ -125,48 +126,69 @@ class _ThirdFormState extends State<ThirdForm> {
               ),
             ),
             const SizedBox(height: 15),
-            Wrap(
-              children: [
-                Text("add_address.third.accept_desc".tr()),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return const PoliticScreen();
-                      }),
-                    );
-                  },
-                  child: Text(
-                    "add_address.third.politic".tr(),
+            RichText(
+              textAlign: TextAlign.justify,
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: "add_address.third.accept_desc".tr(),
+                    style: AppTheme().stylish1(
+                      14,
+                      mblack,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "add_address.third.politic".tr(),
                     style: AppTheme().stylish1(
                       15,
                       mblack,
                       isBold: true,
                     ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return const PoliticScreen();
+                          }),
+                        );
+                      },
                   ),
-                ),
-                Text(" ${"add_address.third.and".tr()}"),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return const PoliticScreen();
-                      }),
-                    );
-                  },
-                  child: Text(
-                    "${"add_address.third.condition".tr()} ",
+                  TextSpan(
+                    text: " ${"add_address.third.and".tr()}",
+                    style: AppTheme().stylish1(
+                      14,
+                      mblack,
+                    ),
+                  ),
+                  TextSpan(
+                    text: "${"add_address.third.condition".tr()} ",
                     style: AppTheme().stylish1(
                       15,
                       mblack,
                       isBold: true,
                     ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const PoliticScreen();
+                            },
+                          ),
+                        );
+                      },
                   ),
-                ),
-                Text("add_address.third.sunofa".tr()),
-              ],
+                  TextSpan(
+                    text: "add_address.third.sunofa".tr(),
+                    style: AppTheme().stylish1(
+                      14,
+                      mblack,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

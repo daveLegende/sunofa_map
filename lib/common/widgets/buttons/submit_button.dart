@@ -7,8 +7,10 @@ class SubmitButton extends StatelessWidget {
     super.key,
     required this.text,
     this.onTap,
+    this.color = AppTheme.primaryColor,
   });
   final String text;
+  final Color? color;
   final VoidCallback? onTap;
 
   @override
@@ -17,14 +19,14 @@ class SubmitButton extends StatelessWidget {
       width: context.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: AppTheme.primaryColor,
+        color: color,
       ),
       child: InkWell(
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
-            vertical: 15,
+            vertical: 20,
           ),
           child: Center(
             child: Text(

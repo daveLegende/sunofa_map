@@ -4,6 +4,8 @@
         "join_address": "Joindre\n adresse",
         "welcome": "Bienvenue à",
         "sunofa": "Sunofa Map",
+        "login": "Se Connecter",
+        "register": "Créer un compte",
         "connexion": "Connexion"
     },
     "login": {
@@ -77,6 +79,7 @@
             "video_label": "Référence vidéo",
             "import_video": "Importer une vidéo",
             "do_video": "Faire une vidéo",
+            "video_label_tag": "Ajouter une vidéo ?",
             "audio_label": "Référence audio",
             "import_audio": "Importer une audio",
             "do_audio": "Enrégistrer une audio",
